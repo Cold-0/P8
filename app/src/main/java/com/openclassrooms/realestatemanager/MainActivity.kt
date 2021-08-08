@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager
 
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.TextView
 import android.os.Bundle
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 
@@ -20,12 +19,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun configureTextViewMain() {
         binding.textMain.textSize = 15f
-        binding.textMain.text = "Le premier bien immobilier enregistré vaut "
+        binding.textMain.text = getString(R.string.first_registered_real_estate)
     }
 
     private fun configureTextViewQuantity() {
-        val quantity = Utils.convertDollarToEuro(100)
         binding.quantityMain.textSize = 20f
-        binding.quantityMain.text = String.format("%d", quantity)
+        binding.quantityMain.text = String.format("%d", Utils.convertDollarToEuro(100))
     }
 }
