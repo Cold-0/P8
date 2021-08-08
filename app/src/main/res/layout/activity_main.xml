@@ -17,13 +17,13 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/activity_main_activity_text_view_main"
+            android:id="@+id/text_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Voici la valeur d'un bien : "/>
 
         <TextView
-            android:id="@+id/activity_main_activity_text_view_quantity"
+            android:id="@+id/quantity_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
