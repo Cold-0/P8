@@ -4,14 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -37,14 +34,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             var openDrawer by remember { mutableStateOf(true) }
+            var currentEstate by remember { mutableStateOf(DataProvider.estateList.first()) }
             RealEstateManagerTheme {
                 Row(
                     Modifier
                         .fillMaxSize()
-                        .padding(top = 56.dp)
+                        .padding(top = 64.dp)
                 ) {
-                    RealEstateList(openDrawer)
-                    RealEstateInfo(estate = DataProvider.estateList.first())
+                    RealEstateList(openDrawer, currentEstate) {
+                        currentEstate = it
+                    }
+                    RealEstateInfo(estate = currentEstate)
                 }
                 TopAppBar(contentPadding = PaddingValues(16.dp, 8.dp)) {
                     Icon(
@@ -62,21 +62,24 @@ class MainActivity : ComponentActivity() {
 
 @ExperimentalAnimationApi
 @Composable
-fun RealEstateList(openDrawer: Boolean) {
+fun RealEstateList(openDrawer: Boolean, currentEstate: Estate, setEstate: (Estate) -> Unit = {}) {
     AnimatedVisibility(visible = openDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
         LazyColumn() {
             items(DataProvider.estateList) { estate ->
-                RealEstateListItem(estate)
+                RealEstateListItem(estate, estate === currentEstate) {
+                    setEstate(estate)
+                }
             }
         }
     }
 }
 
 @Composable
-fun RealEstateListItem(estate: Estate) {
+fun RealEstateListItem(estate: Estate, current: Boolean, click: () -> (Unit) = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth(0.25f)
+            .background(if (current) MaterialTheme.colors.secondary else MaterialTheme.colors.background)
             .drawBehind {
                 val strokeWidth = 1 * density
                 val y = size.height - strokeWidth / 2
@@ -93,6 +96,10 @@ fun RealEstateListItem(estate: Estate) {
                     strokeWidth
                 )
             }
+            .clickable {
+                click()
+            }
+
     )
     {
         Image(
@@ -125,7 +132,7 @@ fun RealEstateInfo(estate: Estate) {
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Text(text = "Media", style = MaterialTheme.typography.h5)
+        Text(text = estate.name, style = MaterialTheme.typography.h5)
         LazyRow()
         {
             items(10)
@@ -134,7 +141,7 @@ fun RealEstateInfo(estate: Estate) {
             }
         }
         Text(text = "Description", style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp))
-        Text(text = stringResource(R.string.lorem_ipsum), style = MaterialTheme.typography.body2, modifier = Modifier.padding(top = 16.dp))
+        Text(text = estate.description, style = MaterialTheme.typography.body2, modifier = Modifier.padding(top = 16.dp))
     }
 }
 
@@ -175,7 +182,7 @@ fun RealEstatePhoto(estate: Estate, id: Int) {
 @Composable
 fun RealEstateListPreview() {
     RealEstateManagerTheme {
-        RealEstateList(true)
+        RealEstateList(true, Estate())
     }
 }
 
@@ -183,6 +190,6 @@ fun RealEstateListPreview() {
 @Composable
 fun RealEstateItemPreview() {
     RealEstateManagerTheme {
-        RealEstateListItem(Estate("Manhattan", EstateType.Flat, description = DataProvider.loremIpsum, 17870000))
+        RealEstateListItem(Estate("Manhattan", EstateType.Flat, description = DataProvider.loremIpsum, 17870000), false)
     }
 }
