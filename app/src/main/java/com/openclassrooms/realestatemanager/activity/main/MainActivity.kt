@@ -81,10 +81,17 @@ class MainActivity : ComponentActivity() {
                 ) {
                     // When List is Empty we show a message
                     if (estateList.isNullOrEmpty()) {
-                        Text(text = "List is Empty",
-                            style = MaterialTheme.typography.h1,
-                            color = Color.Black,
-                            modifier = Modifier.fillMaxSize())
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "There is no Estate, press the + button in the top right to add new Estate and start editing it",
+                                style = MaterialTheme.typography.h6.copy(color = Color.LightGray),
+                                modifier = Modifier.padding(64.dp)
+                            )
+                        }
                     }
                     // When List isn't Empty
                     else estateList?.let { estateListChecked ->
