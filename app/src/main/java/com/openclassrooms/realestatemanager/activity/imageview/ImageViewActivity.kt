@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager
+package com.openclassrooms.realestatemanager.activity.imageview
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

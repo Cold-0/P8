@@ -1,11 +1,15 @@
-package com.openclassrooms.realestatemanager
+package com.openclassrooms.realestatemanager.activity.main
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.*
+import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +20,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
@@ -29,15 +34,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import coil.compose.rememberImagePainter
-import com.openclassrooms.realestatemanager.model.DataProvider
+import com.openclassrooms.realestatemanager.BuildConfig
+import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.activity.imageview.ImageViewActivity
 import com.openclassrooms.realestatemanager.model.Estate
-import com.openclassrooms.realestatemanager.model.EstateType
 import com.openclassrooms.realestatemanager.ui.theme.RealEstateManagerTheme
 import java.text.NumberFormat
 import java.util.*
@@ -46,27 +51,36 @@ import java.util.*
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
+
+            val viewModel: MainActivityViewModel by viewModels()
 
             val configuration = LocalConfiguration.current
             var openDrawer by remember { mutableStateOf(true) }
             var currentEstateID by remember { mutableStateOf(0) }
 
+            val estateList by viewModel.estateList.observeAsState()
+
             RealEstateManagerTheme {
                 Box {
-                    Row(
-                        Modifier
-                            .fillMaxSize()
-                            .padding(top = 56.dp)
-                    ) {
-                        AnimatedVisibility(visible = openDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
-                            RealEstateList(currentEstateID) {
-                                currentEstateID = it
-                                if (configuration.screenWidthDp <= 450)
-                                    openDrawer = !openDrawer
+                    Row(Modifier
+                        .fillMaxSize()
+                        .padding(top = 56.dp)) {
+
+                        estateList?.let { estateListChecked ->
+
+                            AnimatedVisibility(visible = openDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
+                                RealEstateList(estateListChecked, currentEstateID) { selectedID ->
+                                    currentEstateID = selectedID
+                                    if (configuration.screenWidthDp <= 450)
+                                        openDrawer = !openDrawer
+                                }
                             }
+
+                            RealEstateInfo(estateListChecked[currentEstateID])
+
                         }
-                        RealEstateInfo(DataProvider.estateList[currentEstateID])
                     }
                     TopAppBar(content = {
                         Icon(
@@ -81,6 +95,16 @@ class MainActivity : ComponentActivity() {
                         Text(text = getString(R.string.app_name),
                             style = MaterialTheme.typography.h6.copy(color = Color.White),
                             fontWeight = FontWeight.Bold)
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = getString(R.string.content_description_add_real_estate),
+                                modifier = Modifier
+                                    .clickable(onClick = {
+                                        viewModel.addEstate(Estate())
+                                    })
+                                    .padding(16.dp, 8.dp))
+                        }
                     })
                 }
             }
@@ -112,9 +136,9 @@ fun getRequest(
 
 @ExperimentalAnimationApi
 @Composable
-fun RealEstateList(currentEstateID: Int, selected: (Int) -> Unit = {}) {
+fun RealEstateList(estateList: List<Estate>, currentEstateID: Int, selected: (Int) -> Unit = {}) {
     LazyColumn {
-        itemsIndexed(DataProvider.estateList) { id, estate ->
+        itemsIndexed(estateList) { id, estate ->
             RealEstateListItem(estate, currentEstateID == id) {
                 selected(id)
             }
@@ -277,21 +301,5 @@ fun RealEstatePhoto(photo: Pair<String, String>) {
                 )
             }
         }
-    }
-}
-
-// ----------------------------------------------------------------------------
-//
-// PREVIEW
-//
-// ----------------------------------------------------------------------------
-@Preview(showBackground = true)
-@Composable
-fun RealEstateItemPreview() {
-    RealEstateManagerTheme {
-        RealEstateListItem(
-            Estate(district = "Manhattan", type = EstateType.Flat, description = DataProvider.loremIpsum[0], price = 17870000),
-            false
-        )
     }
 }
