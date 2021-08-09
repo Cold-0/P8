@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,8 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
@@ -22,11 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import coil.compose.rememberImagePainter
@@ -42,12 +44,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
+            val configuration = LocalConfiguration.current
             var openDrawer by remember { mutableStateOf(true) }
             var currentEstateID by remember { mutableStateOf(0) }
 
             RealEstateManagerTheme {
-                Box() {
+                Box {
                     Row(
                         Modifier
                             .fillMaxSize()
@@ -56,11 +58,14 @@ class MainActivity : ComponentActivity() {
                         AnimatedVisibility(visible = openDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
                             RealEstateList(currentEstateID) {
                                 currentEstateID = it
+
+                                if (configuration.screenWidthDp <= 450)
+                                    openDrawer = !openDrawer
                             }
                         }
                         RealEstateInfo(DataProvider.estateList[currentEstateID])
                     }
-                    TopAppBar() {
+                    TopAppBar {
                         Icon(
                             Icons.Default.Menu,
                             "LeftMenuOpen",
@@ -80,7 +85,7 @@ class MainActivity : ComponentActivity() {
 @ExperimentalAnimationApi
 @Composable
 fun RealEstateList(currentEstateID: Int, selected: (Int) -> Unit = {}) {
-    LazyColumn() {
+    LazyColumn {
         itemsIndexed(DataProvider.estateList) { id, estate ->
             RealEstateListItem(estate, currentEstateID == id) {
                 selected(id)
@@ -91,9 +96,11 @@ fun RealEstateList(currentEstateID: Int, selected: (Int) -> Unit = {}) {
 
 @Composable
 fun RealEstateListItem(estate: Estate, isSelected: Boolean, selected: () -> Unit = {}) {
+    val configuration = LocalConfiguration.current
+    val small = configuration.screenWidthDp <= 450
     Row(
         modifier = Modifier
-            .width(250.dp)
+            .width(if (small) configuration.screenWidthDp.dp else 250.dp)
             .background(if (isSelected) MaterialTheme.colors.secondary else MaterialTheme.colors.background)
             .drawBehind {
                 val strokeWidth = 1 * density
@@ -144,10 +151,10 @@ fun RealEstateInfo(estate: Estate) {
     Column(
         Modifier
             .padding(16.dp)
-        //.verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState())
     ) {
         Text(text = "Media", style = MaterialTheme.typography.h5)
-        LazyRow() {
+        LazyRow {
             items(estate.pictures) { photo ->
                 RealEstatePhoto(photo)
             }
@@ -155,43 +162,77 @@ fun RealEstateInfo(estate: Estate) {
         Text(text = "Description", style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp))
         Text(text = estate.description, style = MaterialTheme.typography.body2, modifier = Modifier.padding(top = 16.dp))
         Spacer(modifier = Modifier.height(32.dp))
-        Row(modifier = Modifier
-            .fillMaxSize()
-            .fillMaxHeight()) {
-            Column(Modifier
-                .weight(1.0f)
-            ) {
-                Text(text = "Surface")
-                Text(text = "Number of rooms")
-                Text(text = "Number of bathrooms")
-                Text(text = "Number of bedrooms")
+        Row(modifier = Modifier.fillMaxSize()) {
+            Column(Modifier.weight(1.0f)) {
+                InfoDetailItem(Icons.Default.Face, "Surface", estate.surface.toString())
+                InfoDetailItem(Icons.Default.Person, "Number of rooms", estate.numberOfRooms.toString())
+                InfoDetailItem(Icons.Default.Info, "Number of bathrooms", estate.numberOfBathrooms.toString())
+                InfoDetailItem(Icons.Default.AccountBox, "Number of bedrooms", estate.numberOfBedrooms.toString())
             }
-            Column(Modifier
-                .weight(1.0f)
-            ) {
-                Row() {
-                    Image(Icons.Default.LocationOn, "")
-                    Text(text = "Location")
-                }
-                Row() {
-                    Spacer(Modifier.width(16.dp))
-                    Text(text = estate.address, textAlign = TextAlign.Center)
-                }
-
+            Column(Modifier.weight(1.0f)) {
+                InfoDetailItem(Icons.Default.LocationOn, "Location", estate.address, leftSpacing = 24.dp)
             }
-            Column(Modifier
-                .weight(1.0f)
-            ) {
-                Card(elevation = 8.dp) {
-                    Image(painterResource(id = R.drawable.ic_launcher_background),
-                        contentDescription = "",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.FillWidth)
-                }
+            Column(Modifier.weight(1.0f), verticalArrangement = Arrangement.Top) {
+                MapPinView()
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
     }
+}
+
+fun openImage(context: Context, photo: String) {
+    val intent = Intent(context, ImageViewActivity::class.java).apply {
+        putExtra("img", photo)
+    }
+    startActivity(context, intent, null)
+}
+
+fun getRequest(
+    width: Int = 400,
+    height: Int = 400,
+    localisation: String = "-74.005157,40.710785",
+    apiKey: String = "aee01515a2ed49e8aa2653a1a5a08b24",
+): String {
+    return "https://maps.geoapify.com/v1/staticmap" +
+            "?style=osm-bright-grey" +
+            "&width=$width&height=$height" +
+            "&center=lonlat:$localisation" +
+            "&zoom=16.4226&pitch=44" +
+            "&marker=lonlat:$localisation;color:%23ff0000;size:medium" +
+            "&apiKey=$apiKey"
+}
+
+@Composable
+fun MapPinView(localisation: String = "-74.005157,40.710785") {
+    val context = LocalContext.current
+    Image(
+        rememberImagePainter(
+            data = getRequest(400, 400, localisation),
+            builder = {
+                placeholder(R.drawable.ic_launcher_background)
+                error(R.drawable.ic_launcher_foreground)
+            }
+        ),
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .size(250.dp)
+            .clickable {
+                openImage(context, getRequest(1024, 1024, localisation))
+            },
+        contentDescription = "MapView",
+    )
+}
+
+@Composable
+fun InfoDetailItem(icon: ImageVector, title: String, value: String, leftSpacing: Dp = 64.dp, bottomSpacing: Dp = 8.dp) {
+    Row {
+        Image(icon, icon.name)
+        Text(text = title, modifier = Modifier.padding(paddingValues = PaddingValues(start = 8.dp)))
+    }
+    Row {
+        Spacer(Modifier.width(leftSpacing))
+        Text(text = value, textAlign = TextAlign.Center)
+    }
+    Spacer(Modifier.height(bottomSpacing))
 }
 
 @Composable
@@ -201,14 +242,11 @@ fun RealEstatePhoto(photo: Pair<String, String>) {
     Card(elevation = 4.dp, modifier = Modifier
         .padding(8.dp)
         .clickable {
-            val intent = Intent(context, ImageViewActivity::class.java).apply {
-                putExtra("img", photo.second)
-            }
-            startActivity(context, intent, null)
+            openImage(context, photo.second)
         }
     )
     {
-        Box() {
+        Box {
             Image(
                 image,
                 contentDescription = "A Photo",
@@ -237,21 +275,12 @@ fun RealEstatePhoto(photo: Pair<String, String>) {
 // PREVIEW
 //
 // ----------------------------------------------------------------------------
-@ExperimentalAnimationApi
-@Preview(showBackground = true)
-@Composable
-fun RealEstateListPreview() {
-    RealEstateManagerTheme {
-        RealEstateList(0)
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun RealEstateItemPreview() {
     RealEstateManagerTheme {
         RealEstateListItem(
-            Estate(district = "Manhattan", type = EstateType.Flat, description = DataProvider.loremIpsum, price = 17870000),
+            Estate(district = "Manhattan", type = EstateType.Flat, description = DataProvider.loremIpsum[0], price = 17870000),
             false
         )
     }
