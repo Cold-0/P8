@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager
 
 import android.os.Bundle
+import android.provider.ContactsContract
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -11,18 +12,21 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import com.openclassrooms.realestatemanager.ui.theme.RealEstateManagerTheme
 import java.text.NumberFormat
 import java.util.*
@@ -127,7 +131,7 @@ class MainActivity : ComponentActivity() {
                         .padding(top = 56.dp)
                 ) {
                     RealEstateList()
-                    RealEstateInfo()
+                    RealEstateInfo(estate = DataProvider.estateList.first())
                 }
                 TopAppBar() {
                     Text(text = "Flat")
@@ -170,9 +174,9 @@ fun RealEstateListItem(estate: Estate) {
     )
     {
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
+            painter = rememberImagePainter("https://picsum.photos/400"),
             contentDescription = "Avatar",
-            modifier = Modifier.size(108.dp, 108.dp)
+            modifier = Modifier.size(108.dp)
         )
         Column(
             Modifier
@@ -194,7 +198,7 @@ fun RealEstateListItem(estate: Estate) {
 }
 
 @Composable
-fun RealEstateInfo() {
+fun RealEstateInfo(estate: Estate) {
     Column(
         Modifier
             .padding(16.dp)
@@ -203,9 +207,9 @@ fun RealEstateInfo() {
         Text(text = "Media", style = MaterialTheme.typography.h5)
         LazyRow()
         {
-            items(50)
+            items(10)
             {
-                RealEstatePhoto()
+                RealEstatePhoto(estate, it)
             }
         }
         Text(text = "Description", style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp))
@@ -214,15 +218,27 @@ fun RealEstateInfo() {
 }
 
 @Composable
-fun RealEstatePhoto() {
+fun RealEstatePhoto(estate: Estate, id: Int) {
     Box(Modifier.padding(8.dp)) {
-        Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "A Photo")
-        Text(
-            text = "PhotoX",
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(8.dp),
+        Image(
+            rememberImagePainter("https://picsum.photos/400"),
+            contentDescription = "A Photo",
+            Modifier.size(108.dp)
         )
+        Surface(
+            color = Color.Black.copy(alpha = 0.5f), modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .width(108.dp)
+        ) {
+            Text(
+                text = "PhotoX",
+                style = MaterialTheme.typography.subtitle1.copy(color = Color.White),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(8.dp),
+            )
+        }
+
     }
 }
 
