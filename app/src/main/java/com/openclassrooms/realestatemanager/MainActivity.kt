@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
@@ -22,15 +23,104 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.openclassrooms.realestatemanager.ui.theme.P8Theme
+import com.openclassrooms.realestatemanager.ui.theme.RealEstateManagerTheme
+import java.text.NumberFormat
+import java.util.*
 
-data class Estate(val name: String = "No Name", val description: String = "No Description");
+enum class EstateType(val id: Int) {
+    None(0),
+    Flat(1),
+    House(2),
+    Duplex(3),
+    Penthouse(4)
+}
+
+data class Estate(
+    val name: String = "No Name",
+    val type: EstateType = EstateType.None,
+    val description: String = "No Description",
+    val price: ULong = 0UL
+)
+
+val loremIpsum: String =
+    """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent pulvinar erat eget auctor ultricies. Vestibulum id  
+    purus iaculis, semper mauris id, mollis velit. Maecenas in tempor metus. Sed sed lectus tellus. Duis condimentum odio  
+    arcu, nec sodales nisl feugiat at. Nulla ut nisi eu lorem pulvinar efficitur. Nunc risus felis, fringilla et tempor  
+    quis, convallis quis dolor. Mauris varius mattis imperdiet. Quisque ullamcorper erat ut dui tempus gravida. Maecenas  
+    laoreet et quam vel fringilla. Quisque sed libero varius, auctor augue non, viverra mi. Praesent cursus enim eu mauris  
+    suscipit ornare. In pulvinar nulla finibus ante ultrices, at rhoncus nulla tristique. Ut at sapien ac massa iaculis  
+    pharetra non quis metus. Morbi quis ullamcorper diam, sit amet blandit velit."""
+
+object DataProvider {
+    val estateList: List<Estate> = listOf(
+        Estate(
+            "Manhattan",
+            EstateType.Flat,
+            loremIpsum,
+            17870000UL
+        ),
+        Estate(
+            "Montauk",
+            EstateType.House,
+            loremIpsum,
+            21130000UL
+        ),
+        Estate(
+            "Brooklyn",
+            EstateType.Duplex,
+            loremIpsum,
+            13990000UL
+        ),
+        Estate(
+            "Southampton",
+            EstateType.House,
+            loremIpsum,
+            41480000UL
+        ),
+        Estate(
+            "Upper East Side",
+            EstateType.Penthouse,
+            loremIpsum,
+            29872000UL
+        ),
+        Estate(
+            "Manhattan",
+            EstateType.Flat,
+            loremIpsum,
+            17870000UL
+        ),
+        Estate(
+            "Montauk",
+            EstateType.House,
+            loremIpsum,
+            21130000UL
+        ),
+        Estate(
+            "Brooklyn",
+            EstateType.Duplex,
+            loremIpsum,
+            13990000UL
+        ),
+        Estate(
+            "Southampton",
+            EstateType.House,
+            loremIpsum,
+            41480000UL
+        ),
+        Estate(
+            "Upper East Side",
+            EstateType.Penthouse,
+            loremIpsum,
+            29872000UL
+        ),
+    )
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            P8Theme {
+            RealEstateManagerTheme {
                 Row(
                     Modifier
                         .fillMaxSize()
@@ -50,14 +140,14 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun RealEstateList() {
     LazyColumn() {
-        items(100) {
-            RealEstateListItem("Android")
+        items(DataProvider.estateList) { estate ->
+            RealEstateListItem(estate)
         }
     }
 }
 
 @Composable
-fun RealEstateListItem(name: String) {
+fun RealEstateListItem(estate: Estate) {
     Row(
         modifier = Modifier
             .fillMaxWidth(0.25f)
@@ -79,14 +169,24 @@ fun RealEstateListItem(name: String) {
             }
     )
     {
-        Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "Avatar")
+        Image(
+            painter = painterResource(id = R.drawable.ic_launcher_background),
+            contentDescription = "Avatar",
+            modifier = Modifier.size(108.dp, 108.dp)
+        )
         Column(
             Modifier
                 .padding(start = 8.dp)
                 .align(Alignment.CenterVertically)
         ) {
-            Text(text = "Flat")
-            Text(text = "Manhattan")
+            Text(text = estate.type.toString())
+            Text(text = estate.name)
+
+            // Format value to USD formatting
+            val format: NumberFormat = NumberFormat.getCurrencyInstance()
+            format.maximumFractionDigits = 0
+            format.currency = Currency.getInstance("USD")
+            format.format(1000000)
             Text(text = "$17,870,000")
         }
     }
@@ -128,8 +228,16 @@ fun RealEstatePhoto() {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    P8Theme {
-        RealEstateListItem("Android")
+fun RealEstateListPreview() {
+    RealEstateManagerTheme {
+        RealEstateList()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RealEstateItemPreview() {
+    RealEstateManagerTheme {
+        RealEstateListItem(Estate("Manhattan", EstateType.Flat, description = loremIpsum, 17870000UL))
     }
 }
