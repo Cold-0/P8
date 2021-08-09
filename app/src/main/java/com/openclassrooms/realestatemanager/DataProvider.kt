@@ -11,64 +11,64 @@ object DataProvider {
 
     val estateList: List<Estate> = listOf(
         Estate(
-            "Manhattan",
-            EstateType.Flat,
-            loremIpsum,
-            17870000
+            address = "Manhattan",
+            type = EstateType.Flat,
+            description = loremIpsum,
+            price = 17870000
         ),
         Estate(
-            "Montauk",
-            EstateType.House,
-            loremIpsum,
-            21130000
+            address = "Montauk",
+            type = EstateType.House,
+            description = loremIpsum,
+            price = 21130000
         ),
         Estate(
-            "Brooklyn",
-            EstateType.Duplex,
-            loremIpsum,
-            13990000
+            address = "Brooklyn",
+            type = EstateType.Duplex,
+            description = loremIpsum,
+            price = 13990000
         ),
         Estate(
-            "Southampton",
-            EstateType.House,
-            loremIpsum,
-            41480000
+            address = "Southampton",
+            type = EstateType.House,
+            description = loremIpsum,
+            price = 41480000
         ),
         Estate(
-            "Upper East Side",
-            EstateType.Penthouse,
-            loremIpsum,
-            29872000
+            address = "Upper East Side",
+            type = EstateType.Penthouse,
+            description = loremIpsum,
+            price = 29872000
         ),
         Estate(
-            "Manhattan",
-            EstateType.Flat,
-            loremIpsum,
-            17870000
+            address = "Manhattan",
+            type = EstateType.Flat,
+            description = loremIpsum,
+            price = 17870000
         ),
         Estate(
-            "Montauk",
-            EstateType.House,
-            loremIpsum,
-            21130000
+            address = "Montauk",
+            type = EstateType.House,
+            description = loremIpsum,
+            price = 21130000
         ),
         Estate(
-            "Brooklyn",
-            EstateType.Duplex,
-            loremIpsum,
-            13990000
+            address = "Brooklyn",
+            type = EstateType.Duplex,
+            description = loremIpsum,
+            price = 13990000
         ),
         Estate(
-            "Southampton",
-            EstateType.House,
-            loremIpsum,
-            41480000
+            address = "Southampton",
+            type = EstateType.House,
+            description = loremIpsum,
+            price = 41480000
         ),
         Estate(
-            "Upper East Side",
-            EstateType.Penthouse,
-            loremIpsum,
-            29872000
-        ),
+            address = "Upper East Side",
+            type = EstateType.Penthouse,
+            description = loremIpsum,
+            price = 29872000
+        )
     )
 }

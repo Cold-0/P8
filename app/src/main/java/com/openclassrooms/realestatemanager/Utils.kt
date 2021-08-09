@@ -1,14 +1,17 @@
 package com.openclassrooms.realestatemanager
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.wifi.WifiManager
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 /**
  * Created by Philippe on 21/02/2018.
  */
+@SuppressLint("SimpleDateFormat")
 object Utils {
     /**
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
@@ -17,7 +20,11 @@ object Utils {
      * @return
      */
     fun convertDollarToEuro(dollars: Int): Int {
-        return Math.round(dollars * 0.812).toInt()
+        return (dollars * 0.812).roundToInt()
+    }
+
+    fun convertEuroToDollar(euros: Int): Int {
+        return (euros / 0.812).roundToInt()
     }
 
     /**
@@ -28,6 +35,12 @@ object Utils {
     val todayDate: String
         get() {
             val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd")
+            return dateFormat.format(Date())
+        }
+
+    val todayDate2: String
+        get() {
+            val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yyyy")
             return dateFormat.format(Date())
         }
 
