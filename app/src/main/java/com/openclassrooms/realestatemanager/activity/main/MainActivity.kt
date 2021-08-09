@@ -12,10 +12,7 @@ import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -44,6 +41,8 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.activity.imageview.ImageViewActivity
 import com.openclassrooms.realestatemanager.model.Estate
 import com.openclassrooms.realestatemanager.ui.theme.RealEstateManagerTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.*
 
@@ -54,7 +53,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
-            val viewModel: MainActivityViewModel by viewModels()
+            val viewModel: MainViewModel by viewModels()
 
             val configuration = LocalConfiguration.current
             var openDrawer by remember { mutableStateOf(true) }
@@ -62,54 +61,104 @@ class MainActivity : ComponentActivity() {
 
             val estateList by viewModel.estateList.observeAsState()
 
+            // Add Item to List and Animate it
+            val coroutineScope = rememberCoroutineScope()
+            val listState = rememberLazyListState()
+
             RealEstateManagerTheme {
-                Box {
-                    Row(Modifier
-                        .fillMaxSize()
-                        .padding(top = 56.dp)) {
-
-                        estateList?.let { estateListChecked ->
-
+                TopApplicationBar(
+                    coroutineScope = coroutineScope,
+                    viewModel = viewModel,
+                    listState = listState,
+                    currentEstateID = currentEstateID,
+                    listSize = if (estateList.isNullOrEmpty()) 0 else estateList!!.size,
+                    toggleDrawer = {
+                        openDrawer = !openDrawer
+                    },
+                    setCurrentEstateID = { id: Int ->
+                        currentEstateID = id
+                    }
+                ) {
+                    // When List is Empty we show a message
+                    if (estateList.isNullOrEmpty()) {
+                        Text(text = "List is Empty",
+                            style = MaterialTheme.typography.h1,
+                            color = Color.Black,
+                            modifier = Modifier.fillMaxSize())
+                    }
+                    // When List isn't Empty
+                    else estateList?.let { estateListChecked ->
+                        Row(Modifier.fillMaxSize()) {
                             AnimatedVisibility(visible = openDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
-                                RealEstateList(estateListChecked, currentEstateID) { selectedID ->
+                                RealEstateList(listState, estateListChecked, currentEstateID) { selectedID ->
                                     currentEstateID = selectedID
                                     if (configuration.screenWidthDp <= 450)
                                         openDrawer = !openDrawer
                                 }
                             }
-
                             RealEstateInfo(estateListChecked[currentEstateID])
-
                         }
                     }
-                    TopAppBar(content = {
-                        Icon(
-                            Icons.Default.Menu,
-                            getString(R.string.content_description_open_left_list),
-                            modifier = Modifier
-                                .clickable(onClick = {
-                                    openDrawer = !openDrawer
-                                })
-                                .padding(16.dp, 8.dp)
-                        )
-                        Text(text = getString(R.string.app_name),
-                            style = MaterialTheme.typography.h6.copy(color = Color.White),
-                            fontWeight = FontWeight.Bold)
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = getString(R.string.content_description_add_real_estate),
-                                modifier = Modifier
-                                    .clickable(onClick = {
-                                        viewModel.addEstate(Estate())
-                                    })
-                                    .padding(16.dp, 8.dp))
-                        }
-                    })
                 }
             }
         }
     }
+}
+
+@Composable
+fun TopApplicationBar(
+    coroutineScope: CoroutineScope,
+    viewModel: MainViewModel,
+    listState: LazyListState,
+    currentEstateID: Int,
+    listSize: Int,
+    toggleDrawer: () -> Unit,
+    setCurrentEstateID: (Int) -> Unit,
+    content: @Composable () -> Unit,
+) {
+    Box(modifier = Modifier.padding(top = 56.dp), content = { content() })
+    TopAppBar(contentPadding = PaddingValues(start = 16.dp), content = {
+        if (listSize > 0)
+            Icon(
+                Icons.Default.Menu,
+                stringResource(R.string.content_description_open_left_list),
+                modifier = Modifier
+                    .clickable(onClick = {
+                        toggleDrawer()
+                    })
+                    .padding(horizontal = 8.dp)
+            )
+        Text(text = stringResource(R.string.app_name),
+            style = MaterialTheme.typography.h6.copy(color = Color.White),
+            fontWeight = FontWeight.Bold)
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = stringResource(R.string.content_description_add_real_estate),
+                modifier = Modifier
+                    .clickable(onClick = {
+                        val index = viewModel.addEstate(Estate())
+                        if (index != -1) {
+                            setCurrentEstateID(index)
+                            coroutineScope.launch {
+                                listState.animateScrollToItem(index)
+                            }
+                        }
+                    })
+                    .padding(16.dp, 8.dp))
+            if (listSize > 0)
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = stringResource(R.string.content_description_add_real_estate),
+                    modifier = Modifier
+                        .clickable(onClick = {
+                            viewModel.deleteEstate(currentEstateID)
+                            if (currentEstateID == listSize - 1)
+                                setCurrentEstateID(listSize - 2)
+                        })
+                        .padding(16.dp, 8.dp))
+        }
+    })
 }
 
 fun openImage(context: Context, photo: String) {
@@ -136,8 +185,19 @@ fun getRequest(
 
 @ExperimentalAnimationApi
 @Composable
-fun RealEstateList(estateList: List<Estate>, currentEstateID: Int, selected: (Int) -> Unit = {}) {
-    LazyColumn {
+fun RealEstateList(listState: LazyListState, estateList: List<Estate>, currentEstateID: Int, selected: (Int) -> Unit = {}) {
+    LazyColumn(state = listState, modifier = Modifier
+        .fillMaxHeight()
+        .drawBehind {
+            val strokeWidth = 1 * density
+            val y = size.height - strokeWidth / 2
+            drawLine(
+                Color.LightGray,
+                Offset(size.width, 0f),
+                Offset(size.width, y),
+                strokeWidth
+            )
+        }) {
         itemsIndexed(estateList) { id, estate ->
             RealEstateListItem(estate, currentEstateID == id) {
                 selected(id)
@@ -160,12 +220,6 @@ fun RealEstateListItem(estate: Estate, isSelected: Boolean, selected: () -> Unit
                 drawLine(
                     Color.LightGray,
                     Offset(0f, y),
-                    Offset(size.width, y),
-                    strokeWidth
-                )
-                drawLine(
-                    Color.LightGray,
-                    Offset(size.width, 0f),
                     Offset(size.width, y),
                     strokeWidth
                 )
