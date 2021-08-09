@@ -54,29 +54,29 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val viewModel: MainViewModel by viewModels()
-
             val configuration = LocalConfiguration.current
-            var openDrawer by remember { mutableStateOf(true) }
-            var currentEstateID by remember { mutableStateOf(0) }
+
+            var openLeftDrawer by remember { mutableStateOf(true) }
+            var currentSelectedEstateIndex by remember { mutableStateOf(0) }
 
             val estateList by viewModel.estateList.observeAsState()
 
             // Add Item to List and Animate it
-            val coroutineScope = rememberCoroutineScope()
+            val coroutineAddNewItem = rememberCoroutineScope()
             val listState = rememberLazyListState()
 
             RealEstateManagerTheme {
                 TopApplicationBar(
-                    coroutineScope = coroutineScope,
+                    coroutineScope = coroutineAddNewItem,
                     viewModel = viewModel,
                     listState = listState,
-                    currentEstateID = currentEstateID,
+                    currentEstateID = currentSelectedEstateIndex,
                     listSize = if (estateList.isNullOrEmpty()) 0 else estateList!!.size,
                     toggleDrawer = {
-                        openDrawer = !openDrawer
+                        openLeftDrawer = !openLeftDrawer
                     },
                     setCurrentEstateID = { id: Int ->
-                        currentEstateID = id
+                        currentSelectedEstateIndex = id
                     }
                 ) {
                     // When List is Empty we show a message
@@ -96,14 +96,14 @@ class MainActivity : ComponentActivity() {
                     // When List isn't Empty
                     else estateList?.let { estateListChecked ->
                         Row(Modifier.fillMaxSize()) {
-                            AnimatedVisibility(visible = openDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
-                                RealEstateList(listState, estateListChecked, currentEstateID) { selectedID ->
-                                    currentEstateID = selectedID
+                            AnimatedVisibility(visible = openLeftDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
+                                RealEstateList(listState, estateListChecked, currentSelectedEstateIndex) { selectedID ->
+                                    currentSelectedEstateIndex = selectedID
                                     if (configuration.screenWidthDp <= 450)
-                                        openDrawer = !openDrawer
+                                        openLeftDrawer = !openLeftDrawer
                                 }
                             }
-                            RealEstateInfo(estateListChecked[currentEstateID])
+                            RealEstateInfo(estateListChecked[currentSelectedEstateIndex])
                         }
                     }
                 }
@@ -130,6 +130,7 @@ fun TopApplicationBar(
                 Icons.Default.Menu,
                 stringResource(R.string.content_description_open_left_list),
                 modifier = Modifier
+                    .padding(end = 8.dp)
                     .clickable(onClick = {
                         toggleDrawer()
                     })
