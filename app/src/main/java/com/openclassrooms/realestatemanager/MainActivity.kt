@@ -26,11 +26,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import coil.compose.rememberImagePainter
 import com.openclassrooms.realestatemanager.model.DataProvider
@@ -69,7 +71,7 @@ class MainActivity : ComponentActivity() {
                     TopAppBar(content = {
                         Icon(
                             Icons.Default.Menu,
-                            "LeftMenuOpen",
+                            getString(R.string.content_description_open_left_list),
                             modifier = Modifier
                                 .clickable(onClick = {
                                     openDrawer = !openDrawer
@@ -149,7 +151,7 @@ fun RealEstateListItem(estate: Estate, isSelected: Boolean, selected: () -> Unit
     {
         Image(
             painter = rememberImagePainter(estate.pictures.first().second),
-            contentDescription = "Main",
+            contentDescription = estate.pictures.first().first,
             modifier = Modifier.size(108.dp)
         )
         Column(
@@ -157,16 +159,17 @@ fun RealEstateListItem(estate: Estate, isSelected: Boolean, selected: () -> Unit
                 .padding(start = 8.dp)
                 .align(Alignment.CenterVertically)
         ) {
-            Text(text = estate.type.toString())
-            Text(text = estate.district)
+            Text(text = estate.type.toString(), fontSize = 19.sp, color = Color.Black, fontWeight = FontWeight.Bold)
+            Text(text = estate.district, fontSize = 15.sp, color = Color.DarkGray)
 
             // Format value to USD formatting
             val format: NumberFormat = NumberFormat.getCurrencyInstance()
             format.maximumFractionDigits = 0
             format.currency = Currency.getInstance("USD")
-            Text(text = format.format(estate.price))
-
-
+            Text(text = format.format(estate.price),
+                color = if (isSelected) Color.White else MaterialTheme.colors.secondary,
+                style = MaterialTheme.typography.h6.copy(fontSize = 20.sp),
+                fontWeight = FontWeight.ExtraBold)
         }
     }
 
@@ -179,24 +182,27 @@ fun RealEstateInfo(estate: Estate) {
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Text(text = "Media", style = MaterialTheme.typography.h5)
+        Text(
+            text = stringResource(R.string.media),
+            style = MaterialTheme.typography.h5
+        )
         LazyRow {
             items(estate.pictures) { photo ->
                 RealEstatePhoto(photo)
             }
         }
-        Text(text = "Description", style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp))
+        Text(text = stringResource(R.string.description), style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp))
         Text(text = estate.description, style = MaterialTheme.typography.body2, modifier = Modifier.padding(top = 16.dp))
         Spacer(modifier = Modifier.height(32.dp))
         Row(modifier = Modifier.fillMaxSize()) {
             Column(Modifier.weight(1.0f)) {
-                InfoDetailItem(Icons.Default.Face, "Surface", estate.surface.toString())
-                InfoDetailItem(Icons.Default.Person, "Number of rooms", estate.numberOfRooms.toString())
-                InfoDetailItem(Icons.Default.Info, "Number of bathrooms", estate.numberOfBathrooms.toString())
-                InfoDetailItem(Icons.Default.AccountBox, "Number of bedrooms", estate.numberOfBedrooms.toString())
+                InfoDetailItem(Icons.Default.Face, stringResource(R.string.surface), estate.surface.toString())
+                InfoDetailItem(Icons.Default.Person, stringResource(R.string.number_of_rooms), estate.numberOfRooms.toString())
+                InfoDetailItem(Icons.Default.Info, stringResource(R.string.number_of_bathrooms), estate.numberOfBathrooms.toString())
+                InfoDetailItem(Icons.Default.AccountBox, stringResource(R.string.number_of_bedrooms), estate.numberOfBedrooms.toString())
             }
             Column(Modifier.weight(1.0f)) {
-                InfoDetailItem(Icons.Default.LocationOn, "Location", estate.address, leftSpacing = 24.dp)
+                InfoDetailItem(Icons.Default.LocationOn, stringResource(R.string.location), estate.address, leftSpacing = 24.dp)
             }
             Column(Modifier.weight(1.0f), verticalArrangement = Arrangement.Top) {
                 MapPinView()
@@ -222,7 +228,7 @@ fun MapPinView(localisation: String = "-74.005157,40.710785") {
             .clickable {
                 openImage(context, getRequest(1024, 1024, localisation))
             },
-        contentDescription = "MapView",
+        contentDescription = stringResource(R.string.content_description_mini_map_preview),
     )
 }
 
@@ -253,7 +259,7 @@ fun RealEstatePhoto(photo: Pair<String, String>) {
         Box {
             Image(
                 image,
-                contentDescription = "A Photo",
+                contentDescription = photo.first,
                 Modifier.size(108.dp)
             )
             Surface(
