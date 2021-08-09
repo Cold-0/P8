@@ -22,7 +22,7 @@ class ImageViewActivity : ComponentActivity() {
                     .clickable {
                         finish()
                     }) {
-                    Image(rememberImagePainter("https://picsum.photos/1800"), contentDescription = "", Modifier.fillMaxSize())
+                    Image(rememberImagePainter(intent.getStringExtra("img")), contentDescription = "", Modifier.fillMaxSize())
                 }
             }
         }
