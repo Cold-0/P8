@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.ui.theme
+package com.cold0.realestatemanager.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

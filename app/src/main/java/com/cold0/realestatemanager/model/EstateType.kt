@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.model
+package com.cold0.realestatemanager.model
 
 enum class EstateType(val id: Int) {
     None(0),

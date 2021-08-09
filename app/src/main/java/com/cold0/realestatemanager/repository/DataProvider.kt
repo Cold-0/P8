@@ -1,8 +1,12 @@
-package com.openclassrooms.realestatemanager.model
+package com.cold0.realestatemanager.repository
+
+import com.cold0.realestatemanager.model.Estate
+import com.cold0.realestatemanager.model.EstateType
+import com.cold0.realestatemanager.model.Photo
 
 object DataProvider {
 
-    val loremIpsum: List<String> =
+    private val loremIpsum: List<String> =
         listOf(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent pulvinar erat eget auctor ultricies. Vestibulum id purus iaculis, semper mauris id, mollis velit. Maecenas in tempor metus. Sed sed lectus tellus. Duis condimentum odio arcu, nec sodales nisl feugiat at. Nulla ut nisi eu lorem pulvinar efficitur. Nunc risus felis, fringilla et tempor is, convallis quis dolor. Mauris varius mattis imperdiet. Quisque ullamcorper erat ut dui tempus gravida. Maecenas laoreet et quam vel fringilla. Quisque sed libero varius, auctor augue non, viverra mi. Praesent cursus enim eu mauris suscipit ornare. In pulvinar nulla finibus ante ultrices, at rhoncus nulla tristique. Ut at sapien ac massa iaculis pharetra non quis metus. Morbi quis ullamcorper diam, sit amet blandit velit.",
             "Mauris euismod rutrum mauris, vitae tincidunt turpis fringilla vel. Praesent vehicula urna sed ligula dignissim, vitae rhoncus augue imperdiet. Etiam ac sem justo. Quisque condimentum tincidunt urna, non bibendum nisl. Donec sollicitudin tortor eget nisl ultrices, non mattis tellus varius. Curabitur ultricies lorem et nibh venenatis laoreet. Etiam orci tellus, tincidunt et iaculis sit amet, scelerisque ut velit. Donec et malesuada lectus. Maecenas elit lectus, consequat ultricies dictum aliquet, rutrum a tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin ornare ullamcorper volutpat. Vestibulum ligula augue, commodo ut condimentum nec, bibendum varius mauris.",
@@ -17,9 +21,9 @@ object DataProvider {
             description = loremIpsum[0],
             price = 17870000,
             pictures = listOf(
-                Pair("Facade", "https://picsum.photos/id/81/400"),
-                Pair("Kitchen", "https://picsum.photos/id/5/400"),
-                Pair("Bedroom", "https://picsum.photos/id/6/400")
+                Photo("Facade", "https://picsum.photos/id/81/400"),
+                Photo("Kitchen", "https://picsum.photos/id/5/400"),
+                Photo("Bedroom", "https://picsum.photos/id/6/400")
             )
         ),
         Estate(
@@ -28,9 +32,9 @@ object DataProvider {
             description = loremIpsum[1],
             price = 21130000,
             pictures = listOf(
-                Pair("Facade", "https://picsum.photos/id/82/400"),
-                Pair("Kitchen", "https://picsum.photos/id/7/400"),
-                Pair("Bedroom", "https://picsum.photos/id/8/400")
+                Photo("Facade", "https://picsum.photos/id/82/400"),
+                Photo("Kitchen", "https://picsum.photos/id/7/400"),
+                Photo("Bedroom", "https://picsum.photos/id/8/400")
             )
 
         ),
@@ -40,9 +44,9 @@ object DataProvider {
             description = loremIpsum[2],
             price = 13990000,
             pictures = listOf(
-                Pair("Facade", "https://picsum.photos/id/83/400"),
-                Pair("Kitchen", "https://picsum.photos/id/9/400"),
-                Pair("Bedroom", "https://picsum.photos/id/10/400")
+                Photo("Facade", "https://picsum.photos/id/83/400"),
+                Photo("Kitchen", "https://picsum.photos/id/9/400"),
+                Photo("Bedroom", "https://picsum.photos/id/10/400")
             )
         ),
         Estate(
@@ -51,9 +55,9 @@ object DataProvider {
             description = loremIpsum[3],
             price = 41480000,
             pictures = listOf(
-                Pair("Facade", "https://picsum.photos/id/84/400"),
-                Pair("Kitchen", "https://picsum.photos/id/11/400"),
-                Pair("Bedroom", "https://picsum.photos/id/12/400")
+                Photo("Facade", "https://picsum.photos/id/84/400"),
+                Photo("Kitchen", "https://picsum.photos/id/11/400"),
+                Photo("Bedroom", "https://picsum.photos/id/12/400")
             )
         ),
         Estate(
@@ -62,9 +66,9 @@ object DataProvider {
             description = loremIpsum[4],
             price = 29872000,
             pictures = listOf(
-                Pair("Facade", "https://picsum.photos/id/85/400"),
-                Pair("Kitchen", "https://picsum.photos/id/13/400"),
-                Pair("Bedroom", "https://picsum.photos/id/14/400")
+                Photo("Facade", "https://picsum.photos/id/85/400"),
+                Photo("Kitchen", "https://picsum.photos/id/13/400"),
+                Photo("Bedroom", "https://picsum.photos/id/14/400")
             )
         ),
         Estate(
@@ -73,9 +77,9 @@ object DataProvider {
             description = loremIpsum[3],
             price = 17870000,
             pictures = listOf(
-                Pair("Facade", "https://picsum.photos/id/87/400"),
-                Pair("Kitchen", "https://picsum.photos/id/88/400"),
-                Pair("Bedroom", "https://picsum.photos/id/100/400")
+                Photo("Facade", "https://picsum.photos/id/87/400"),
+                Photo("Kitchen", "https://picsum.photos/id/88/400"),
+                Photo("Bedroom", "https://picsum.photos/id/100/400")
             )
         ),
         Estate(
@@ -84,9 +88,9 @@ object DataProvider {
             description = loremIpsum[2],
             price = 21130000,
             pictures = listOf(
-                Pair("Facade", "https://picsum.photos/id/89/400"),
-                Pair("Kitchen", "https://picsum.photos/id/15/400"),
-                Pair("Bedroom", "https://picsum.photos/id/100/400")
+                Photo("Facade", "https://picsum.photos/id/89/400"),
+                Photo("Kitchen", "https://picsum.photos/id/15/400"),
+                Photo("Bedroom", "https://picsum.photos/id/100/400")
             )
         ),
         Estate(
@@ -95,9 +99,9 @@ object DataProvider {
             description = loremIpsum[4],
             price = 13990000,
             pictures = listOf(
-                Pair("Facade", "https://picsum.photos/id/33/400"),
-                Pair("Kitchen", "https://picsum.photos/id/16/400"),
-                Pair("Bedroom", "https://picsum.photos/id/17/400")
+                Photo("Facade", "https://picsum.photos/id/33/400"),
+                Photo("Kitchen", "https://picsum.photos/id/16/400"),
+                Photo("Bedroom", "https://picsum.photos/id/17/400")
             )
         ),
         Estate(
@@ -106,11 +110,11 @@ object DataProvider {
             description = loremIpsum[1],
             price = 41480000,
             pictures = listOf(
-                Pair("Facade 1", "https://picsum.photos/id/450/400"),
-                Pair("Facade 2", "https://picsum.photos/id/451/400"),
-                Pair("Kitchen", "https://picsum.photos/id/452/400"),
-                Pair("Bedroom 1", "https://picsum.photos/id/453/400"),
-                Pair("Bedroom 2", "https://picsum.photos/id/454/400"),
+                Photo("Facade 1", "https://picsum.photos/id/450/400"),
+                Photo("Facade 2", "https://picsum.photos/id/451/400"),
+                Photo("Kitchen", "https://picsum.photos/id/452/400"),
+                Photo("Bedroom 1", "https://picsum.photos/id/453/400"),
+                Photo("Bedroom 2", "https://picsum.photos/id/454/400"),
             )
         ),
         Estate(
@@ -119,7 +123,7 @@ object DataProvider {
             description = loremIpsum[0],
             price = 29872000,
             pictures = listOf(
-                Pair("Facade 1", "https://picsum.photos/id/350/400"),
+                Photo("Facade 1", "https://picsum.photos/id/350/400"),
             )
         )
     )

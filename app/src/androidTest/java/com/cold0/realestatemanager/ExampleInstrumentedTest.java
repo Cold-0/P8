@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager;
+package com.cold0.realestatemanager;
 
 import android.content.Context;
 

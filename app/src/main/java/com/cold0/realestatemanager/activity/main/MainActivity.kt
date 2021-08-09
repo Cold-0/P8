@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.activity.main
+package com.cold0.realestatemanager.activity.main
 
 import android.content.Context
 import android.content.Intent
@@ -36,30 +36,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import coil.compose.rememberImagePainter
-import com.openclassrooms.realestatemanager.BuildConfig
-import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.activity.imageview.ImageViewActivity
-import com.openclassrooms.realestatemanager.model.Estate
-import com.openclassrooms.realestatemanager.ui.theme.RealEstateManagerTheme
+import com.cold0.realestatemanager.BuildConfig
+import com.cold0.realestatemanager.R
+import com.cold0.realestatemanager.activity.imageview.ImageViewActivity
+import com.cold0.realestatemanager.model.Estate
+import com.cold0.realestatemanager.model.Photo
+import com.cold0.realestatemanager.ui.theme.RealEstateManagerTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.*
 
+
 @ExperimentalAnimationApi
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val viewModel: MainViewModel by viewModels()
+        viewModel.initDatabase(applicationContext)
         setContent {
 
-            val viewModel: MainViewModel by viewModels()
             val configuration = LocalConfiguration.current
 
             var openLeftDrawer by remember { mutableStateOf(true) }
-            var currentSelectedEstateIndex by remember { mutableStateOf(0) }
+            var currentSelectedEstateIndex by remember { mutableStateOf(-1) }
 
             val estateList by viewModel.estateList.observeAsState()
+
+            viewModel.getAllEstate()
 
             // Add Item to List and Animate it
             val coroutineAddNewItem = rememberCoroutineScope()
@@ -95,6 +100,8 @@ class MainActivity : ComponentActivity() {
                     }
                     // When List isn't Empty
                     else estateList?.let { estateListChecked ->
+                        if (currentSelectedEstateIndex == -1)
+                            currentSelectedEstateIndex = estateListChecked.first().uid
                         Row(Modifier.fillMaxSize()) {
                             AnimatedVisibility(visible = openLeftDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
                                 RealEstateList(listState, estateListChecked, currentSelectedEstateIndex) { selectedID ->
@@ -103,7 +110,8 @@ class MainActivity : ComponentActivity() {
                                         openLeftDrawer = !openLeftDrawer
                                 }
                             }
-                            RealEstateInfo(estateListChecked[currentSelectedEstateIndex])
+                            estateListChecked.find { it.uid == currentSelectedEstateIndex }
+                                ?.let { RealEstateInfo(it) }
                         }
                     }
                 }
@@ -206,9 +214,9 @@ fun RealEstateList(listState: LazyListState, estateList: List<Estate>, currentEs
                 strokeWidth
             )
         }) {
-        itemsIndexed(estateList) { id, estate ->
-            RealEstateListItem(estate, currentEstateID == id) {
-                selected(id)
+        items(estateList) { estate ->
+            RealEstateListItem(estate, currentEstateID == estate.uid) {
+                selected(estate.uid)
             }
         }
     }
@@ -236,8 +244,8 @@ fun RealEstateListItem(estate: Estate, isSelected: Boolean, selected: () -> Unit
     )
     {
         Image(
-            painter = rememberImagePainter(estate.pictures.first().second),
-            contentDescription = estate.pictures.first().first,
+            painter = rememberImagePainter(estate.pictures.first().url),
+            contentDescription = estate.pictures.first().name,
             modifier = Modifier.size(108.dp)
         )
         Column(
@@ -332,20 +340,20 @@ fun InfoDetailItem(icon: ImageVector, title: String, value: String, leftSpacing:
 }
 
 @Composable
-fun RealEstatePhoto(photo: Pair<String, String>) {
-    val image = rememberImagePainter(photo.second)
+fun RealEstatePhoto(photo: Photo) {
+    val image = rememberImagePainter(photo.url)
     val context = LocalContext.current
     Card(elevation = 4.dp, modifier = Modifier
         .padding(8.dp)
         .clickable {
-            openImage(context, photo.second)
+            openImage(context, photo.url)
         }
     )
     {
         Box {
             Image(
                 image,
-                contentDescription = photo.first,
+                contentDescription = photo.name,
                 Modifier.size(108.dp)
             )
             Surface(
@@ -355,7 +363,7 @@ fun RealEstatePhoto(photo: Pair<String, String>) {
                     .width(108.dp),
             ) {
                 Text(
-                    text = photo.first,
+                    text = photo.name,
                     style = MaterialTheme.typography.subtitle1.copy(color = Color.White),
                     modifier = Modifier
                         .align(Center)
