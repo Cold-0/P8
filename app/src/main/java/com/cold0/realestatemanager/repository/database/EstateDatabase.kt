@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.repository
+package com.cold0.realestatemanager.repository.database
 
 import android.content.Context
 import androidx.room.Database
@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cold0.realestatemanager.model.Estate
+import com.cold0.realestatemanager.repository.DummyDataProvider
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -27,7 +28,7 @@ abstract class EstateDatabase : RoomDatabase() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 databaseWriteExecutor.execute {
-                    INSTANCE?.estateDao()?.insert(*(DataProvider.estateList.toTypedArray()))
+                    INSTANCE?.estateDao()?.insert(*(DummyDataProvider.estateList.toTypedArray()))
                 }
             }
         }

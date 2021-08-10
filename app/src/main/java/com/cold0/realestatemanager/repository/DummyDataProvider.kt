@@ -4,7 +4,7 @@ import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateType
 import com.cold0.realestatemanager.model.Photo
 
-object DataProvider {
+object DummyDataProvider {
 
     private val loremIpsum: List<String> =
         listOf(

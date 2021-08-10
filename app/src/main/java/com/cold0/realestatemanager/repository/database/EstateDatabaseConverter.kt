@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.repository
+package com.cold0.realestatemanager.repository.database
 
 import androidx.room.TypeConverter
 import com.cold0.realestatemanager.model.EstateType

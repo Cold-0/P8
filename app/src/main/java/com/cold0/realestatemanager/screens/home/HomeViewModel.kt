@@ -1,15 +1,16 @@
-package com.cold0.realestatemanager.activity
+package com.cold0.realestatemanager.screens.home
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.repository.EstateDatabase
 import com.cold0.realestatemanager.repository.Repository
+import com.cold0.realestatemanager.repository.database.EstateDatabase
 import kotlin.concurrent.thread
 
-class EstateViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
     val estateList: MutableLiveData<List<Estate>> = MutableLiveData()
+    val selectedEstate: MutableLiveData<Long> = MutableLiveData()
 
     fun initDatabase(context: Context) {
         Repository.db = EstateDatabase.getDatabase(context)
@@ -35,7 +36,14 @@ class EstateViewModel : ViewModel() {
         }
     }
 
-    fun deleteEstate(index: Int) {
+    fun deleteAllEstate() {
+        thread() {
+            Repository.db?.estateDao()?.deleteAll()
+            updateViewEstateList()
+        }
+    }
+
+    fun deleteEstate(index: Long) {
         thread {
             estateList.value?.let { list ->
                 val estate: Estate? = list.find { estate -> estate.uid == index }

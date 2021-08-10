@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.activity
+package com.cold0.realestatemanager.screens.photoviewer
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import coil.compose.rememberImagePainter
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 
-class ImageViewActivity : ComponentActivity() {
+class PhotoViewerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

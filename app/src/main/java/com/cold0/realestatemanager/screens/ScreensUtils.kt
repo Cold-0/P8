@@ -1,14 +1,14 @@
-package com.cold0.realestatemanager.utils
+package com.cold0.realestatemanager.screens
 
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
 import com.cold0.realestatemanager.BuildConfig
-import com.cold0.realestatemanager.activity.ImageViewActivity
+import com.cold0.realestatemanager.screens.photoviewer.PhotoViewerActivity
 
-object ActivityUtils {
-    fun openImageActivity(context: Context, photo: String) {
-        val intent = Intent(context, ImageViewActivity::class.java).apply {
+object ScreensUtils {
+    fun openPhotoViewerActivity(context: Context, photo: String) {
+        val intent = Intent(context, PhotoViewerActivity::class.java).apply {
             putExtra("img", photo)
         }
         ContextCompat.startActivity(context, intent, null)

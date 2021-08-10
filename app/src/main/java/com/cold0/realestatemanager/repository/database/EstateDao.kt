@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.repository
+package com.cold0.realestatemanager.repository.database
 
 import androidx.room.*
 import com.cold0.realestatemanager.model.Estate
@@ -13,6 +13,9 @@ interface EstateDao {
 
     @Delete
     fun delete(vararg Estates: Estate)
+
+    @Query("DELETE FROM estate")
+    fun deleteAll()
 
     @Update
     fun update(vararg Etates: Estate)

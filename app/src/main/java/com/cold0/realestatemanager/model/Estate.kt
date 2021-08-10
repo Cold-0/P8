@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Estate(
-    @PrimaryKey(autoGenerate = true) var uid: Int = 0,
+    @PrimaryKey(autoGenerate = true) var uid: Long = 0,
     val type: EstateType = EstateType.None,
     val price: Int = 0,
     val surface: Int = 0,

@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.utils
+package com.cold0.realestatemanager
 
 import android.annotation.SuppressLint
 import android.content.Context
