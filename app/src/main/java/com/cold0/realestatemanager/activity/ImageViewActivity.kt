@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.activity.imageview
+package com.cold0.realestatemanager.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import coil.compose.rememberImagePainter
-import com.cold0.realestatemanager.ui.theme.RealEstateManagerTheme
+import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 
 class ImageViewActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

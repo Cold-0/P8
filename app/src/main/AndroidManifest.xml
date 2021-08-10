@@ -14,12 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.cold0.realestatemanager.activity.imageview.ImageViewActivity"
+            android:name="com.cold0.realestatemanager.activity.ImageViewActivity"
             android:exported="true"
             android:label="@string/title_activity_image_view"
             android:theme="@style/Theme.Transparent" />
         <activity
-            android:name="com.cold0.realestatemanager.activity.main.MainActivity"
+            android:name="com.cold0.realestatemanager.activity.MainActivity"
             android:exported="true"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">

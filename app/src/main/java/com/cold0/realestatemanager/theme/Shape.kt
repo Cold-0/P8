@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.ui.theme
+package com.cold0.realestatemanager.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

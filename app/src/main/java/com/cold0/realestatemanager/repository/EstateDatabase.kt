@@ -10,7 +10,6 @@ import com.cold0.realestatemanager.model.Estate
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-
 @Database(entities = [Estate::class], version = 1)
 @TypeConverters(EstateDatabaseConverter::class)
 abstract class EstateDatabase : RoomDatabase() {

@@ -1,7 +1,5 @@
-package com.cold0.realestatemanager.activity.main
+package com.cold0.realestatemanager.activity
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,26 +32,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import coil.compose.rememberImagePainter
-import com.cold0.realestatemanager.BuildConfig
 import com.cold0.realestatemanager.R
-import com.cold0.realestatemanager.activity.imageview.ImageViewActivity
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.Photo
-import com.cold0.realestatemanager.ui.theme.RealEstateManagerTheme
+import com.cold0.realestatemanager.theme.RealEstateManagerTheme
+import com.cold0.realestatemanager.utils.ActivityUtils.formatApiRequestGeoapify
+import com.cold0.realestatemanager.utils.ActivityUtils.openImageActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.*
 
-
 @ExperimentalAnimationApi
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel: MainViewModel by viewModels()
+        val viewModel: EstateViewModel by viewModels()
         viewModel.initDatabase(applicationContext)
         setContent {
             val configuration = LocalConfiguration.current
@@ -62,8 +57,7 @@ class MainActivity : ComponentActivity() {
             var currentSelectedEstateIndex by remember { mutableStateOf(-1) }
 
             val estateList by viewModel.estateList.observeAsState()
-
-            viewModel.updateEstateList()
+            viewModel.updateViewEstateList()
 
             // Add Item to List and Animate it
             val coroutineAddNewItem = rememberCoroutineScope()
@@ -75,11 +69,11 @@ class MainActivity : ComponentActivity() {
                     viewModel = viewModel,
                     listState = listState,
                     currentEstateID = currentSelectedEstateIndex,
-                    listSize = if (estateList.isNullOrEmpty()) 0 else estateList!!.size,
+                    listEstate = estateList,
                     toggleDrawer = {
                         openLeftDrawer = !openLeftDrawer
                     },
-                    setCurrentSelectedEstade = { id: Int ->
+                    setCurrentSelectedEstate = { id: Int ->
                         currentSelectedEstateIndex = id
                     }
                 ) {
@@ -122,17 +116,18 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TopApplicationBar(
     coroutineScope: CoroutineScope,
-    viewModel: MainViewModel,
+    viewModel: EstateViewModel,
     listState: LazyListState,
+    listEstate: List<Estate>?,
     currentEstateID: Int,
-    listSize: Int,
     toggleDrawer: () -> Unit,
-    setCurrentSelectedEstade: (Int) -> Unit,
+    setCurrentSelectedEstate: (Int) -> Unit,
     content: @Composable () -> Unit,
 ) {
+    // Show Content with a padding equal to the TopAppBar size
     Box(modifier = Modifier.padding(top = 56.dp), content = { content() })
     TopAppBar(contentPadding = PaddingValues(start = 16.dp), content = {
-        if (listSize > 0)
+        if (!listEstate.isNullOrEmpty())
             Icon(
                 Icons.Default.Menu,
                 stringResource(R.string.content_description_open_left_list),
@@ -158,41 +153,19 @@ fun TopApplicationBar(
                         }
                     })
                     .padding(16.dp, 8.dp))
-            if (listSize > 0)
+            if (!listEstate.isNullOrEmpty())
                 Icon(
                     imageVector = Icons.Default.Edit,
                     contentDescription = stringResource(R.string.content_description_add_real_estate),
                     modifier = Modifier
                         .clickable(onClick = {
                             viewModel.deleteEstate(currentEstateID)
-                            if (currentEstateID == listSize - 1)
-                                setCurrentSelectedEstade(listSize - 2)
+                            if (listEstate.size > 1)
+                                setCurrentSelectedEstate(listEstate.first().uid)
                         })
                         .padding(16.dp, 8.dp))
         }
     })
-}
-
-fun openImage(context: Context, photo: String) {
-    val intent = Intent(context, ImageViewActivity::class.java).apply {
-        putExtra("img", photo)
-    }
-    startActivity(context, intent, null)
-}
-
-fun getRequest(
-    width: Int = 400,
-    height: Int = 400,
-    localisation: String = "-74.005157,40.710785",
-    apiKey: String = BuildConfig.GEOAPIFY_KEY,
-): String {
-    return "https://maps.geoapify.com/v1/staticmap" +
-            "?style=osm-bright-grey" +
-            "&width=$width&height=$height" +
-            "&center=lonlat:$localisation" +
-            "&zoom=16.4226&pitch=44" +
-            "&marker=lonlat:$localisation;color:%23ff0000;size:medium" +
-            "&apiKey=$apiKey"
 }
 
 @ExperimentalAnimationApi
@@ -249,7 +222,7 @@ fun RealEstateListItem(estate: Estate, isSelected: Boolean, selected: () -> Unit
                 .padding(start = 8.dp)
                 .align(Alignment.CenterVertically)
         ) {
-            Text(text = estate.type.toString(), fontSize = 19.sp, color = Color.Black, fontWeight = FontWeight.Bold)
+            Text(text = estate.type.toString(), fontSize = 18.sp, color = Color.Black, fontWeight = FontWeight.Bold)
             Text(text = estate.district, fontSize = 15.sp, color = Color.DarkGray)
 
             // Format value to USD formatting
@@ -258,7 +231,7 @@ fun RealEstateListItem(estate: Estate, isSelected: Boolean, selected: () -> Unit
             format.currency = Currency.getInstance("USD")
             Text(text = format.format(estate.price),
                 color = if (isSelected) Color.White else MaterialTheme.colors.secondary,
-                style = MaterialTheme.typography.h6.copy(fontSize = 20.sp),
+                style = MaterialTheme.typography.h6.copy(fontSize = 19.sp),
                 fontWeight = FontWeight.ExtraBold)
         }
     }
@@ -306,7 +279,7 @@ fun MapPinView(localisation: String = "-74.005157,40.710785") {
     val context = LocalContext.current
     Image(
         rememberImagePainter(
-            data = getRequest(400, 400, localisation),
+            data = formatApiRequestGeoapify(400, 400, localisation),
             builder = {
                 placeholder(R.drawable.ic_launcher_background)
                 error(R.drawable.ic_launcher_foreground)
@@ -316,7 +289,7 @@ fun MapPinView(localisation: String = "-74.005157,40.710785") {
         modifier = Modifier
             .size(250.dp)
             .clickable {
-                openImage(context, getRequest(1024, 1024, localisation))
+                openImageActivity(context, formatApiRequestGeoapify(1024, 1024, localisation))
             },
         contentDescription = stringResource(R.string.content_description_mini_map_preview),
     )
@@ -342,7 +315,7 @@ fun RealEstatePhoto(photo: Photo) {
     Card(elevation = 4.dp, modifier = Modifier
         .padding(8.dp)
         .clickable {
-            openImage(context, photo.url)
+            openImageActivity(context, photo.url)
         }
     )
     {

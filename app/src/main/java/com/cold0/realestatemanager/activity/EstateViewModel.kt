@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.activity.main
+package com.cold0.realestatemanager.activity
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
@@ -8,14 +8,14 @@ import com.cold0.realestatemanager.repository.EstateDatabase
 import com.cold0.realestatemanager.repository.Repository
 import kotlin.concurrent.thread
 
-class MainViewModel : ViewModel() {
+class EstateViewModel : ViewModel() {
     val estateList: MutableLiveData<List<Estate>> = MutableLiveData()
 
     fun initDatabase(context: Context) {
         Repository.db = EstateDatabase.getDatabase(context)
     }
 
-    fun updateEstateList() {
+    fun updateViewEstateList() {
         thread {
             estateList.postValue(Repository.db?.estateDao()?.getAll())
         }
@@ -24,14 +24,14 @@ class MainViewModel : ViewModel() {
     fun addEstate(estate: Estate) {
         thread {
             Repository.db?.estateDao()?.insert(estate)
-            updateEstateList()
+            updateViewEstateList()
         }
     }
 
     fun addEstate(estateList: List<Estate>) {
         thread {
             Repository.db?.estateDao()?.insert(*(estateList.toTypedArray()))
-            updateEstateList()
+            updateViewEstateList()
         }
     }
 
@@ -41,7 +41,7 @@ class MainViewModel : ViewModel() {
                 val estate: Estate? = list.find { estate -> estate.uid == index }
                 estate?.let { it1 ->
                     Repository.db?.estateDao()?.delete(it1)
-                    updateEstateList()
+                    updateViewEstateList()
                 }
             }
         }
