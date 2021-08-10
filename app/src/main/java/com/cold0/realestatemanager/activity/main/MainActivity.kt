@@ -56,7 +56,6 @@ class MainActivity : ComponentActivity() {
         val viewModel: MainViewModel by viewModels()
         viewModel.initDatabase(applicationContext)
         setContent {
-
             val configuration = LocalConfiguration.current
 
             var openLeftDrawer by remember { mutableStateOf(true) }
@@ -64,7 +63,7 @@ class MainActivity : ComponentActivity() {
 
             val estateList by viewModel.estateList.observeAsState()
 
-            viewModel.getAllEstate()
+            viewModel.updateEstateList()
 
             // Add Item to List and Animate it
             val coroutineAddNewItem = rememberCoroutineScope()
@@ -80,7 +79,7 @@ class MainActivity : ComponentActivity() {
                     toggleDrawer = {
                         openLeftDrawer = !openLeftDrawer
                     },
-                    setCurrentEstateID = { id: Int ->
+                    setCurrentSelectedEstade = { id: Int ->
                         currentSelectedEstateIndex = id
                     }
                 ) {
@@ -128,7 +127,7 @@ fun TopApplicationBar(
     currentEstateID: Int,
     listSize: Int,
     toggleDrawer: () -> Unit,
-    setCurrentEstateID: (Int) -> Unit,
+    setCurrentSelectedEstade: (Int) -> Unit,
     content: @Composable () -> Unit,
 ) {
     Box(modifier = Modifier.padding(top = 56.dp), content = { content() })
@@ -153,12 +152,9 @@ fun TopApplicationBar(
                 contentDescription = stringResource(R.string.content_description_add_real_estate),
                 modifier = Modifier
                     .clickable(onClick = {
-                        val index = viewModel.addEstate(Estate())
-                        if (index != -1) {
-                            setCurrentEstateID(index)
-                            coroutineScope.launch {
-                                listState.animateScrollToItem(index)
-                            }
+                        viewModel.addEstate(Estate())
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(0)
                         }
                     })
                     .padding(16.dp, 8.dp))
@@ -170,7 +166,7 @@ fun TopApplicationBar(
                         .clickable(onClick = {
                             viewModel.deleteEstate(currentEstateID)
                             if (currentEstateID == listSize - 1)
-                                setCurrentEstateID(listSize - 2)
+                                setCurrentSelectedEstade(listSize - 2)
                         })
                         .padding(16.dp, 8.dp))
         }

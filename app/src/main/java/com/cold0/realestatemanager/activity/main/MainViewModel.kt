@@ -3,46 +3,46 @@ package com.cold0.realestatemanager.activity.main
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.repository.AppDatabase
-import com.cold0.realestatemanager.repository.DataProvider
+import com.cold0.realestatemanager.repository.EstateDatabase
 import com.cold0.realestatemanager.repository.Repository
 import kotlin.concurrent.thread
 
 class MainViewModel : ViewModel() {
-    val estateList: MutableLiveData<List<Estate>> = MutableLiveData(DataProvider.estateList)
+    val estateList: MutableLiveData<List<Estate>> = MutableLiveData()
 
     fun initDatabase(context: Context) {
-        Repository.db = Room.databaseBuilder(context, AppDatabase::class.java, "realEstateOffline.SQLite.db").build()
+        Repository.db = EstateDatabase.getDatabase(context)
     }
 
-    fun getAllEstate() {
+    fun updateEstateList() {
         thread {
             estateList.postValue(Repository.db?.estateDao()?.getAll())
         }
     }
 
-    fun addEstate(estate: Estate): Int {
+    fun addEstate(estate: Estate) {
         thread {
             Repository.db?.estateDao()?.insert(estate)
+            updateEstateList()
         }
-        val value = estateList.value
-        return if (value != null) {
-            estateList.postValue(value + listOf(estate))
-            value.size
-        } else
-            -1
+    }
+
+    fun addEstate(estateList: List<Estate>) {
+        thread {
+            Repository.db?.estateDao()?.insert(*(estateList.toTypedArray()))
+            updateEstateList()
+        }
     }
 
     fun deleteEstate(index: Int) {
-        estateList.value?.let { list ->
-            val estate: Estate? = list.find { estate -> estate.uid == index }
-            estate?.let { it1 ->
-                thread {
+        thread {
+            estateList.value?.let { list ->
+                val estate: Estate? = list.find { estate -> estate.uid == index }
+                estate?.let { it1 ->
                     Repository.db?.estateDao()?.delete(it1)
+                    updateEstateList()
                 }
-                estateList.postValue(list - it1)
             }
         }
     }
