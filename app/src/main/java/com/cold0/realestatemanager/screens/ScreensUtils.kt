@@ -1,5 +1,7 @@
 package com.cold0.realestatemanager.screens
 
+import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
@@ -11,7 +13,7 @@ object ScreensUtils {
         val intent = Intent(context, PhotoViewerActivity::class.java).apply {
             putExtra("img", photo)
         }
-        ContextCompat.startActivity(context, intent, null)
+        ContextCompat.startActivity(context, intent, ActivityOptions.makeSceneTransitionAnimation(context as Activity).toBundle())
     }
 
     fun formatApiRequestGeoapify(

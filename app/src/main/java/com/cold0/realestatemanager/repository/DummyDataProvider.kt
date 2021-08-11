@@ -94,7 +94,7 @@ object DummyDataProvider {
     }
 
     private fun randomLocation(): String {
-        return "-74.00515${Random.nextInt(0, 100).toString().padStart(2, '0')},40.71078${Random.nextInt(0, 100).toString().padStart(2, '0')}"
+        return "-74.00${Random.nextInt(0, 1000).toString().padStart(3, '0')},40.71${Random.nextInt(0, 1000).toString().padStart(3, '0')}"
     }
 
     fun getRandomEstateList(): List<Estate> {
