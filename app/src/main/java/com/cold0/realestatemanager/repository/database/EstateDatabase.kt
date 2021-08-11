@@ -28,7 +28,7 @@ abstract class EstateDatabase : RoomDatabase() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 databaseWriteExecutor.execute {
-                    INSTANCE?.estateDao()?.insert(*(DummyDataProvider.estateList.toTypedArray()))
+                    INSTANCE?.estateDao()?.insert(*(DummyDataProvider.getRandomEstateList().toTypedArray()))
                 }
             }
         }

@@ -52,22 +52,20 @@ fun EstateDetails(estate: Estate) {
                 EstateDetailsInfoItem(Icons.Default.Face, stringResource(R.string.surface), estate.surface.toString())
                 EstateDetailsInfoItem(Icons.Default.Person, stringResource(R.string.number_of_rooms), estate.numberOfRooms.toString())
                 EstateDetailsInfoItem(Icons.Default.Info, stringResource(R.string.number_of_bathrooms), estate.numberOfBathrooms.toString())
-                EstateDetailsInfoItem(Icons.Default.AccountBox,
-                    stringResource(R.string.number_of_bedrooms),
-                    estate.numberOfBedrooms.toString())
+                EstateDetailsInfoItem(Icons.Default.AccountBox, stringResource(R.string.number_of_bedrooms), estate.numberOfBedrooms.toString())
             }
             Column(Modifier.weight(1.0f)) {
                 EstateDetailsInfoItem(Icons.Default.LocationOn, stringResource(R.string.location), estate.address, leftSpacing = 24.dp)
             }
             Column(Modifier.weight(1.0f), verticalArrangement = Arrangement.Top) {
-                EstateDetailsMinimap()
+                EstateDetailsMinimap(estate.location)
             }
         }
     }
 }
 
 @Composable
-fun EstateDetailsMinimap(localisation: String = "-74.005157,40.710785") {
+fun EstateDetailsMinimap(localisation: String) {
     val context = LocalContext.current
     Image(
         rememberImagePainter(

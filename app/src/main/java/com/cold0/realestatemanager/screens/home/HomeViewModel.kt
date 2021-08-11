@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.repository.Repository
 import com.cold0.realestatemanager.repository.database.EstateDatabase
+import java.util.*
 import kotlin.concurrent.thread
 
 class HomeViewModel : ViewModel() {
@@ -43,7 +44,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun deleteEstate(index: Long) {
+    fun deleteEstate(index: UUID) {
         thread {
             estateList.value?.let { list ->
                 val estate: Estate? = list.find { estate -> estate.uid == index }

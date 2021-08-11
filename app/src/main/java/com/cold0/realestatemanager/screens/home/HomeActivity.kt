@@ -13,10 +13,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -34,6 +31,7 @@ import com.cold0.realestatemanager.repository.DummyDataProvider
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 @ExperimentalAnimationApi
@@ -48,7 +46,7 @@ class HomeActivity : ComponentActivity() {
             val configuration = LocalConfiguration.current
 
             var openLeftDrawer by remember { mutableStateOf(true) }
-            var currentSelectedEstateIndex by remember { mutableStateOf(-1L) }
+            var currentSelectedEstateIndex by remember { mutableStateOf(UUID(0, 0)) }
 
             val estateList by viewModel.estateList.observeAsState()
             viewModel.updateViewEstateList()
@@ -67,7 +65,7 @@ class HomeActivity : ComponentActivity() {
                     toggleDrawer = {
                         openLeftDrawer = !openLeftDrawer
                     },
-                    setCurrentSelectedEstate = { id: Long ->
+                    setCurrentSelectedEstate = { id: UUID ->
                         currentSelectedEstateIndex = id
                     }
                 ) {
@@ -91,7 +89,7 @@ class HomeActivity : ComponentActivity() {
                     // When List is not Empty
                     // ----------------------------
                     else estateList?.let { estateListChecked ->
-                        if (currentSelectedEstateIndex == -1L)
+                        if (currentSelectedEstateIndex == UUID(0, 0))
                             currentSelectedEstateIndex = estateListChecked.first().uid
                         Row(Modifier.fillMaxSize()) {
                             AnimatedVisibility(visible = openLeftDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
@@ -123,11 +121,27 @@ class HomeActivity : ComponentActivity() {
 fun DebugView(viewModel: HomeViewModel) {
     Box(modifier = Modifier.fillMaxSize())
     {
+        var expanded by remember { mutableStateOf(false) }
+
         Button(onClick = {
-            viewModel.deleteAllEstate()
-            viewModel.addEstate(DummyDataProvider.estateList)
-        }, modifier = Modifier.align(BottomEnd)) {
-            Text(text = "Reset")
+            expanded = !expanded
+        }, modifier = Modifier
+            .align(BottomEnd)
+            .padding(8.dp)) {
+            Icon(imageVector = Icons.Filled.Settings, contentDescription = stringResource(R.string.content_description_debug_button), tint = Color.White)
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                DropdownMenuItem(
+                    onClick = {
+                        viewModel.deleteAllEstate()
+                        viewModel.addEstate(DummyDataProvider.getRandomEstateList())
+                    })
+                {
+                    Text("Delete all list and add new Dummies")
+                }
+            }
         }
     }
 }
@@ -138,9 +152,9 @@ fun HomeTopAppBar(
     viewModel: HomeViewModel,
     listState: LazyListState,
     listEstate: List<Estate>?,
-    currentEstateID: Long,
+    currentEstateID: UUID,
     toggleDrawer: () -> Unit,
-    setCurrentSelectedEstate: (Long) -> Unit,
+    setCurrentSelectedEstate: (UUID) -> Unit,
     content: @Composable () -> Unit,
 ) {
     Column {

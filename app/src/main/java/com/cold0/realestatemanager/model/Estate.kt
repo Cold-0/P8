@@ -1,11 +1,12 @@
 package com.cold0.realestatemanager.model
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
+import java.util.*
 
-@Entity
+@Entity(primaryKeys = ["uid", "timestamp"])
 data class Estate(
-    @PrimaryKey(autoGenerate = true) var uid: Long = 0,
+    val uid: UUID = UUID.randomUUID(),
+    val timestamp: Date = Date(),
     val type: EstateType = EstateType.None,
     val price: Int = 0,
     val surface: Int = 0,
@@ -20,4 +21,5 @@ data class Estate(
     val numberOfBathrooms: Int = 0,
     val numberOfBedrooms: Int = 0,
     val address: String = "No Address",
+    val location: String = "-74.005157,40.710785",
 )

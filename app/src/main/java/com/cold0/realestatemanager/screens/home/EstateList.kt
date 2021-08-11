@@ -27,7 +27,7 @@ import java.util.*
 
 @ExperimentalAnimationApi
 @Composable
-fun EstateList(listState: LazyListState, estateList: List<Estate>, currentEstateID: Long, selected: (Long) -> Unit = {}) {
+fun EstateList(listState: LazyListState, estateList: List<Estate>, currentEstateID: UUID, selected: (UUID) -> Unit = {}) {
     LazyColumn(state = listState, modifier = Modifier
         .fillMaxHeight()
         .drawBehind {
