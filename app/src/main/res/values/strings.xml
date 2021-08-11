@@ -2,8 +2,8 @@
     <string name="app_name">Real Estate Manager</string>
     <string name="first_registered_real_estate">"Le premier bien immobilier enregistré vaut "</string>
     <string name="here_real_estate_value">Voici la valeur d\'un bien :</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_image_view">ImageView</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_photo_viewer">PhotoViewerActivity</string>
     <string name="media">Media</string>
     <string name="description">Description</string>
     <string name="surface">Surface</string>
@@ -15,4 +15,5 @@
     <string name="content_description_open_left_list">Open Left List</string>
     <string name="content_description_add_real_estate">Add Real Estate</string>
     <string name="content_description_edit_current_selected_estate">Edit current selected Estate</string>
+    <string name="content_description_debug_button">Debug button</string>
 </resources>
