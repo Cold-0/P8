@@ -14,4 +14,5 @@
     <string name="content_description_mini_map_preview">Mini Map Preview</string>
     <string name="content_description_open_left_list">Open Left List</string>
     <string name="content_description_add_real_estate">Add Real Estate</string>
+    <string name="content_description_edit_current_selected_estate">Edit current selected Estate</string>
 </resources>
