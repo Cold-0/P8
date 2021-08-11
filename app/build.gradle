@@ -7,12 +7,13 @@ def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 30
     defaultConfig {
         buildConfigField("String", "GEOAPIFY_KEY", apikeyProperties['GEOAPIFY_KEY'])
         applicationId "com.openclassrooms.realestatemanager"
         minSdkVersion 21
-        targetSdkVersion 31
+        //noinspection OldTargetApi // For f sack 31 don't have source code yet avaiable
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
