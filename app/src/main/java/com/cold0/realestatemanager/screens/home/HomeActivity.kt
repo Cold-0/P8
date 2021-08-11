@@ -105,13 +105,13 @@ class HomeActivity : ComponentActivity() {
                                 ?.let { EstateDetails(it) }
                         }
                     }
+                }
 
-                    // ----------------------------
-                    // Debug Build
-                    // ----------------------------
-                    if (BuildConfig.DEBUG) {
-                        DebugView(viewModel = viewModel)
-                    }
+                // ----------------------------
+                // Debug Build
+                // ----------------------------
+                if (BuildConfig.DEBUG) {
+                    DebugView(viewModel = viewModel)
                 }
             }
         }
