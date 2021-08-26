@@ -16,4 +16,5 @@
     <string name="content_description_add_real_estate">Add Real Estate</string>
     <string name="content_description_edit_current_selected_estate">Edit current selected Estate</string>
     <string name="content_description_debug_button">Debug button</string>
+    <string name="title_activity_converter">Converter Activity</string>
 </resources>

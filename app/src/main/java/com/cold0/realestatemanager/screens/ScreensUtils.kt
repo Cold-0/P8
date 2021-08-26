@@ -4,12 +4,20 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
 import com.cold0.realestatemanager.BuildConfig
+import com.cold0.realestatemanager.screens.converter.ConverterActivity
 import com.cold0.realestatemanager.screens.photoviewer.PhotoViewerActivity
 
 object ScreensUtils {
 	fun openPhotoViewerActivity(context: Context, photo: String) {
 		val intent = Intent(context, PhotoViewerActivity::class.java).apply {
 			putExtra("img", photo)
+		}
+		ContextCompat.startActivity(context, intent, null)
+	}
+
+	fun openConverterActivity(context: Context) {
+		val intent = Intent(context, ConverterActivity::class.java).apply {
+			//putExtra("img", photo)
 		}
 		ContextCompat.startActivity(context, intent, null)
 	}
