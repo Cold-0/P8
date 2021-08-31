@@ -17,4 +17,5 @@
     <string name="content_description_edit_current_selected_estate">Edit current selected Estate</string>
     <string name="content_description_debug_button">Debug button</string>
     <string name="title_activity_converter">Converter Activity</string>
+    <string name="content_description_return_to_home_screen">Return to Home screen</string>
 </resources>
