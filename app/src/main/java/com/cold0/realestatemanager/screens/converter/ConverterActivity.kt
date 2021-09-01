@@ -84,7 +84,6 @@ fun Converter() {
 			}
 			.padding(8.dp)
 	)
-
 	TextField(
 		value = dollar,
 		onValueChange = {

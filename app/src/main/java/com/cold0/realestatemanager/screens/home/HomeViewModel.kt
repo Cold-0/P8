@@ -11,7 +11,7 @@ import kotlin.concurrent.thread
 
 class HomeViewModel : ViewModel() {
 	val estateList: MutableLiveData<List<Estate>> = MutableLiveData()
-	val selectedEstate: MutableLiveData<Pair<UUID, Long>> = MutableLiveData()
+	val selectedEstate: MutableLiveData<Pair<UUID, Date>> = MutableLiveData()
 
 	fun initDatabase(context: Context) {
 		Repository.db = EstateDatabase.getDatabase(context)
@@ -23,10 +23,21 @@ class HomeViewModel : ViewModel() {
 		}
 	}
 
+	fun setSelectedEstate(pair: Pair<UUID, Date>) {
+		selectedEstate.postValue(pair)
+	}
+
+	fun setSelectedEstate(uuid: UUID) {
+		selectedEstate.postValue(Pair(uuid, Date()))
+	}
+
 	fun addEstate(estate: Estate) {
 		thread {
 			Repository.db?.estateDao()?.insert(estate)
 			updateViewEstateList()
+			estateList.value?.last()?.let {
+				setSelectedEstate(it.uid)
+			}
 		}
 	}
 

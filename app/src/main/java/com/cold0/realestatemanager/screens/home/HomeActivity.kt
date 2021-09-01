@@ -1,6 +1,7 @@
 package com.cold0.realestatemanager.screens.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -20,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
@@ -32,8 +32,6 @@ import com.cold0.realestatemanager.repository.DummyDataProvider
 import com.cold0.realestatemanager.screens.ScreensUtils.openConverterActivity
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import java.util.*
 
 
 @ExperimentalAnimationApi
@@ -45,30 +43,20 @@ class HomeActivity : ComponentActivity() {
 		viewModel.initDatabase(applicationContext)
 
 		setContent {
-			val configuration = LocalConfiguration.current
-
 			var openLeftDrawer by remember { mutableStateOf(true) }
-			var currentSelectedEstateIndex by remember { mutableStateOf(UUID(0, 0)) }
 
 			val estateList by viewModel.estateList.observeAsState()
 			viewModel.updateViewEstateList()
+			val estateSelected by viewModel.selectedEstate.observeAsState()
 
-			// Add Item to List and Animate it
-			val coroutineAddNewItem = rememberCoroutineScope()
-			val listState = rememberLazyListState()
+			Log.e("", "onCreate: $estateSelected")
 
 			RealEstateManagerTheme {
 				HomeTopAppBar(
-					coroutineScope = coroutineAddNewItem,
 					viewModel = viewModel,
-					listState = listState,
-					currentEstateID = currentSelectedEstateIndex,
 					listEstate = estateList,
 					toggleDrawer = {
 						openLeftDrawer = !openLeftDrawer
-					},
-					setCurrentSelectedEstate = { id: UUID ->
-						currentSelectedEstateIndex = id
 					}
 				) {
 					// ----------------------------
@@ -91,17 +79,15 @@ class HomeActivity : ComponentActivity() {
 					// When List is not Empty
 					// ----------------------------
 					else estateList?.let { estateListChecked ->
-						if (currentSelectedEstateIndex == UUID(0, 0))
-							currentSelectedEstateIndex = estateListChecked.first().uid
+						if (estateListChecked.find { it.uid == viewModel.selectedEstate.value?.first ?: -1 } == null) {
+							if (!viewModel.estateList.value.isNullOrEmpty())
+								viewModel.estateList.value?.first()?.let { viewModel.setSelectedEstate(it.uid) }
+						}
 						Row(Modifier.fillMaxSize()) {
 							AnimatedVisibility(visible = openLeftDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
-								EstateList(listState, estateListChecked, currentSelectedEstateIndex) { selectedID ->
-									currentSelectedEstateIndex = selectedID
-									if (configuration.screenWidthDp <= 450)
-										openLeftDrawer = !openLeftDrawer
-								}
+								EstateList(estateListChecked, viewModel)
 							}
-							estateListChecked.find { it.uid == currentSelectedEstateIndex }
+							estateListChecked.find { it.uid == viewModel.selectedEstate.value?.first ?: 0 }
 								?.let { EstateDetails(it) }
 						}
 					}
@@ -128,8 +114,8 @@ fun DebugView(viewModel: HomeViewModel) {
 		Button(onClick = {
 			expanded = !expanded
 		}, modifier = Modifier
-            .align(BottomEnd)
-            .padding(8.dp)) {
+			.align(BottomEnd)
+			.padding(8.dp)) {
 			Icon(imageVector = Icons.Filled.Settings, contentDescription = stringResource(R.string.content_description_debug_button), tint = Color.White)
 			DropdownMenu(
 				expanded = expanded,
@@ -150,13 +136,9 @@ fun DebugView(viewModel: HomeViewModel) {
 
 @Composable
 fun HomeTopAppBar(
-	coroutineScope: CoroutineScope,
 	viewModel: HomeViewModel,
-	listState: LazyListState,
 	listEstate: List<Estate>?,
-	currentEstateID: UUID,
 	toggleDrawer: () -> Unit,
-	setCurrentSelectedEstate: (UUID) -> Unit,
 	content: @Composable () -> Unit,
 ) {
 	Column {
@@ -176,9 +158,6 @@ fun HomeTopAppBar(
 				IconButton(
 					onClick = {
 						viewModel.addEstate(Estate())
-						coroutineScope.launch {
-							listState.animateScrollToItem(0)
-						}
 					},
 				) {
 					Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
@@ -189,9 +168,9 @@ fun HomeTopAppBar(
 				// ----------------------------
 				if (!listEstate.isNullOrEmpty())
 					IconButton(onClick = {
-						viewModel.deleteEstate(currentEstateID)
+						viewModel.selectedEstate.value?.let { viewModel.deleteEstate(it.first) }
 						if (listEstate.size > 1)
-							setCurrentSelectedEstate(listEstate.first().uid)
+							viewModel.selectedEstate.value = Pair(listEstate.first().uid, listEstate.first().timestamp)
 					}) {
 						Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.content_description_edit_current_selected_estate), tint = Color.White)
 					}
@@ -199,14 +178,14 @@ fun HomeTopAppBar(
 				// ----------------------------
 				// More Vertical Button and Drop Down Menu (Only show if Estate list isn't Empty)
 				// ----------------------------
-				var expanded by remember { mutableStateOf(false) }
-
+				var threeDotExpanded by remember { mutableStateOf(false) }
+				4
 				if (!listEstate.isNullOrEmpty()) {
 					val context = LocalContext.current
 
 					IconButton(
 						onClick = {
-							expanded = !expanded
+							threeDotExpanded = !threeDotExpanded
 						},
 					) {
 						Icon(imageVector = Icons.Filled.MoreVert, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
@@ -214,16 +193,9 @@ fun HomeTopAppBar(
 
 					DropdownMenu(
 						offset = DpOffset((-4).dp, 4.dp),
-						expanded = expanded,
-						onDismissRequest = { expanded = false }
+						expanded = threeDotExpanded,
+						onDismissRequest = { threeDotExpanded = false }
 					) {
-						DropdownMenuItem(onClick = { /* Handle refresh! */ }) {
-							Text("Refresh")
-						}
-						DropdownMenuItem(onClick = { /* Handle settings! */ }) {
-							Text("Settings")
-						}
-						Divider()
 						DropdownMenuItem(onClick = { openConverterActivity(context) }) {
 							Text("Converter Tool")
 						}
