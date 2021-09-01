@@ -1,12 +1,30 @@
 package com.cold0.realestatemanager.repository
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateType
 import com.cold0.realestatemanager.model.Photo
 import java.util.*
 import kotlin.random.Random
 
+
+
+
+
 object DummyDataProvider {
+
+//    private fun loadImageFromFile(path: String): Any{
+//        val bImage: BufferedImage = ImageIO.read(File("sample.jpg"))
+//        val bos = ByteArrayOutputStream()
+//        ImageIO.write(bImage, "jpg", bos)
+//        val data: ByteArray = bos.toByteArray()
+//    }
+
+    private fun byteArrayToBitmap(byteArray: ByteArray) : Bitmap
+    {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
 
     private fun randomLoremIpsum(): String {
         return listOf(

@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/EstateTheme">
         <activity
-            android:name="com.cold0.realestatemanager.screens.photoviewer.PhotoViewerActivity"
+            android:name="com.cold0.realestatemanager.screens.addestate.PhotoViewerActivity"
             android:exported="true"
             android:label="@string/title_activity_photo_viewer"
             android:theme="@style/EstateTheme.Transparent"/>

@@ -35,7 +35,7 @@ class PhotoViewerActivity : ComponentActivity() {
                     .clickable {
                         finish()
                     }) {
-                    ZoomableImage(intent.getStringExtra("img"))
+                    com.cold0.realestatemanager.screens.addestate.ZoomableImage(intent.getStringExtra("img"))
                 }
             }
         }

@@ -45,64 +45,15 @@ class ConverterActivity : ComponentActivity() {
 
 						if (configuration.screenWidthDp > 450)
 							Row(modifier = Modifier.padding(8.dp)) {
-								Converter()
+								ConverterComposable()
 							}
 						else
 							Column(modifier = Modifier.padding(8.dp)) {
-								Converter()
+								ConverterComposable()
 							}
 					}
 				}
 			}
 		}
 	}
-}
-
-@Composable
-fun Converter() {
-	var euro by remember { mutableStateOf("") }
-	var dollar by remember { mutableStateOf("") }
-
-	TextField(
-		value = euro,
-		onValueChange = {
-			euro = it
-			val result = it.toIntOrNull()
-			dollar = if (result != null)
-				Utils.convertEuroToDollar(result).toString()
-			else
-				"Incorrect Euro Value"
-		},
-		keyboardOptions = KeyboardOptions(
-			keyboardType = KeyboardType.Number
-		),
-		label = { Text("Euro") },
-		modifier = Modifier
-			.onFocusChanged {
-				if (it.isFocused)
-					euro = ""
-			}
-			.padding(8.dp)
-	)
-	TextField(
-		value = dollar,
-		onValueChange = {
-			dollar = it
-			val result = it.toIntOrNull()
-			euro = if (result != null)
-				Utils.convertDollarToEuro(result).toString()
-			else
-				"Incorrect Dollar Value"
-		},
-		keyboardOptions = KeyboardOptions(
-			keyboardType = KeyboardType.Number
-		),
-		label = { Text("Dollar") },
-		modifier = Modifier
-			.onFocusChanged {
-				if (it.isFocused)
-					dollar = ""
-			}
-			.padding(8.dp)
-	)
 }

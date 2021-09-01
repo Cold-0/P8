@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.core.content.ContextCompat
 import com.cold0.realestatemanager.BuildConfig
 import com.cold0.realestatemanager.screens.converter.ConverterActivity
-import com.cold0.realestatemanager.screens.photoviewer.PhotoViewerActivity
+import com.cold0.realestatemanager.screens.addestate.PhotoViewerActivity
 
 object ScreensUtils {
 	fun openPhotoViewerActivity(context: Context, photo: String) {
