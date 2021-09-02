@@ -25,11 +25,11 @@ class ConverterActivity : ComponentActivity() {
 						val configuration = LocalConfiguration.current
 						if (configuration.screenWidthDp > 450)
 							Row(modifier = Modifier.padding(8.dp)) {
-								ConverterComposable()
+								ConverterFields()
 							}
 						else
 							Column(modifier = Modifier.padding(8.dp)) {
-								ConverterComposable()
+								ConverterFields()
 							}
 					}
 				}

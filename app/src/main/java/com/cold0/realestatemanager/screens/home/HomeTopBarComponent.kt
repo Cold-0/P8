@@ -1,6 +1,5 @@
 package com.cold0.realestatemanager.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -20,7 +19,7 @@ import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.ScreensUtils
 import com.cold0.realestatemanager.screens.ScreensUtils.openEditEstateActivity
 
-@OptIn(ExperimentalCoilApi::class)
+@ExperimentalCoilApi
 @Composable
 fun HomeTopAppBar(
 	viewModel: HomeViewModel,

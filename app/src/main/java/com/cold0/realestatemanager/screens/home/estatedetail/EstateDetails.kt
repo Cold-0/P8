@@ -1,9 +1,5 @@
-package com.cold0.realestatemanager.screens.editestate
+package com.cold0.realestatemanager.screens.home.estatedetail
 
-import android.os.Bundle
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -20,38 +16,13 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.screens.commons.TopBarReturn
-import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetailInfoLabel
-import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetailMinimap
-import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetailPhotoItem
-import com.cold0.realestatemanager.theme.RealEstateManagerTheme
-
-
-@ExperimentalCoilApi
-class EditEstateActivity : ComponentActivity() {
-
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		Log.e("EditEstateActivity", "onCreate: ")
-		val intent = this.intent
-		val estate: Estate = intent.extras?.getParcelable("estate")!!
-
-		setContent {
-			RealEstateManagerTheme {
-				TopBarReturn(this, "Edit Estate") {
-					EstateDetails(estate)
-				}
-			}
-		}
-	}
-}
 
 @ExperimentalCoilApi
 @Composable
 fun EstateDetails(estate: Estate) {
 	Column(Modifier
-		.padding(16.dp)
-		.verticalScroll(rememberScrollState())) {
+        .padding(16.dp)
+        .verticalScroll(rememberScrollState())) {
 		Text(
 			text = stringResource(R.string.media),
 			style = MaterialTheme.typography.h5
@@ -73,7 +44,6 @@ fun EstateDetails(estate: Estate) {
 			}
 			Column(Modifier.weight(1.0f)) {
 				EstateDetailInfoLabel(Icons.Default.LocationOn, stringResource(R.string.location), estate.address, leftSpacing = 24.dp)
-				EstateDetailInfoLabel(Icons.Default.Info, stringResource(R.string.point_of_interest), estate.interest, leftSpacing = 24.dp)
 			}
 			Column(Modifier.weight(1.0f), verticalArrangement = Arrangement.Top) {
 				EstateDetailMinimap(estate.location)

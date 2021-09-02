@@ -19,4 +19,5 @@
     <string name="title_activity_converter">ConverterActivity</string>
     <string name="content_description_return_to_home_screen">Return to Home screen</string>
     <string name="title_activity_editestate">EditEstateActivity</string>
+    <string name="point_of_interest">Point of Interest</string>
 </resources>

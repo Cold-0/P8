@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.BuildConfig
+import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetails
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 
 
@@ -90,7 +91,7 @@ class HomeActivity : ComponentActivity() {
 				// Debug Build
 				// ----------------------------
 				if (BuildConfig.DEBUG) {
-					HomeDebugView(viewModel = viewModel)
+					HomeDebug(viewModel = viewModel)
 				}
 			}
 		}

@@ -22,7 +22,7 @@ class PhotoViewerActivity : ComponentActivity() {
                     .clickable {
                         finish()
                     }) {
-					ZoomableImageComposable(intent.getStringExtra("img"))
+					ZoomableImage(intent.getStringExtra("img"))
 				}
 			}
 		}

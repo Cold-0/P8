@@ -21,7 +21,7 @@ import coil.compose.rememberImagePainter
 
 @ExperimentalCoilApi
 @Composable
-fun ZoomableImageComposable(url: String?) {
+fun ZoomableImage(url: String?) {
 	val scale = remember { mutableStateOf(1f) }
 	val rotationState = remember { mutableStateOf(1f) }
 	val offsetState = remember { mutableStateOf(Offset(0f, 0f)) }
