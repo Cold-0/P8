@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.screens.home
+package com.cold0.realestatemanager.screens.home.estatelist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.cold0.realestatemanager.model.Estate
+import com.cold0.realestatemanager.screens.home.HomeViewModel
 import java.text.NumberFormat
 import java.util.*
 

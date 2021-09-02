@@ -53,7 +53,7 @@ fun HomeTopAppBar(
 				// ----------------------------
 				// Remove Button (Only show if Estate list isn't Empty)
 				// ----------------------------
-				var estateToEdit by remember { mutableStateOf<Estate?>(null) }
+				var estateToEdit by remember { mutableStateOf<Estate?>(null) } // Needed because onClick can't be @Composable
 				if (!listEstate.isNullOrEmpty())
 					IconButton(onClick = {
 						estateToEdit = viewModel.getSelectedEstate()
@@ -64,8 +64,8 @@ fun HomeTopAppBar(
 				estateToEdit?.let {
 					ScreensUtils.OpenEditEstateActivity(context, estateToEdit!!) { estate ->
 						viewModel.updateEstate(estate)
-						estateToEdit = null
 					}
+					estateToEdit = null
 				}
 
 				// ----------------------------
@@ -90,7 +90,7 @@ fun HomeTopAppBar(
 						onDismissRequest = { threeDotExpanded = false }
 					) {
 						DropdownMenuItem(onClick = {
-							viewModel.deleteEstate(viewModel.getSelectedEstate())
+							viewModel.deleteEstate(viewModel.getSelectedEstate().getKeys())
 							if (listEstate.size > 1)
 								viewModel.setSelectedEstate(Pair(listEstate.first().uid, listEstate.first().timestamp))
 						}) {

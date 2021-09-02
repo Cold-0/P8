@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package com.cold0.realestatemanager.repository
 
 import com.cold0.realestatemanager.model.Estate

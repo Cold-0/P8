@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getContext();
 
-        assertEquals("com.openclassrooms.go4lunch", appContext.getPackageName());
+        assertEquals("com.cold0.go4lunch", appContext.getPackageName());
     }
 }

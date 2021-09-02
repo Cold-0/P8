@@ -30,4 +30,8 @@ data class Estate(
 	fun compareKeys(estate: Estate): Boolean {
 		return this.uid == estate.uid && this.timestamp == estate.timestamp
 	}
+
+	fun getKeys(): Pair<UUID, Date>{
+		return Pair(uid, timestamp)
+	}
 }

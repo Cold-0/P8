@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
-    <string name="first_registered_real_estate">"Le premier bien immobilier enregistré vaut "</string>
-    <string name="here_real_estate_value">Voici la valeur d\'un bien :</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_photo_viewer">PhotoViewerActivity</string>
     <string name="media">Media</string>

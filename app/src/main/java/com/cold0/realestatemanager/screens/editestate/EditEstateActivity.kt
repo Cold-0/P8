@@ -40,23 +40,25 @@ import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 
 @ExperimentalCoilApi
 class EditEstateActivity : ComponentActivity() {
-
-	private val TAG = "EditEstateActivity"
-
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContent {
 			var estate by remember { mutableStateOf(this.intent.extras?.getParcelable<Estate>("estate")!!, policy = neverEqualPolicy()) }
+
+			@Suppress("SelfAssignment")
+			fun Estate.hasBeenUpdated() {
+				estate = this
+			} // Small hack to properly notify that the estate have been updated
 			RealEstateManagerTheme {
 				TopBarReturn(this, "Edit Estate") {
 					//Simple FAB
 					FloatingActionButton(onClick = {
-						val resultIntent = Intent();
-						resultIntent.putExtra("estate", estate);
-						setResult(Activity.RESULT_OK, resultIntent);
+						val resultIntent = Intent()
+						resultIntent.putExtra("estate", estate)
+						setResult(Activity.RESULT_OK, resultIntent)
 						finish()
 					}) {
-						Icon(Icons.Filled.Save,"Save current Estate")
+						Icon(Icons.Filled.Save, "Save current Estate")
 					}
 					Column(Modifier
 						.padding(16.dp)
@@ -67,11 +69,11 @@ class EditEstateActivity : ComponentActivity() {
 						)
 						LazyRow {
 							itemsIndexed(estate.pictures) { index, photo ->
-								Column() {
+								Column {
 									Row(modifier = Modifier.padding(4.dp)) {
 										Button(shape = RoundedCornerShape(20.dp), onClick = {
 											estate.pictures -= photo
-											estate = estate
+											estate.hasBeenUpdated()
 										}) {
 											Icon(imageVector = Icons.Filled.Delete,
 												contentDescription = "Remove picture from Estate",
@@ -111,7 +113,7 @@ class EditEstateActivity : ComponentActivity() {
 															val mList = estate.pictures.toMutableList()
 															photo.name = newName
 															mList[index] = photo
-															estate = estate
+															estate.hasBeenUpdated()
 															openDialog = false
 														}
 													) {
@@ -131,17 +133,17 @@ class EditEstateActivity : ComponentActivity() {
 									EstateDetailPhotoItem(photo)
 								}
 							}
-							item() {
+							item {
 								GetImageFromLibrary(onPhotoSelected = { photo ->
 									estate.pictures += photo
-									estate = estate
+									estate.hasBeenUpdated()
 								})
 							}
 						}
 						Text(text = stringResource(R.string.description), style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp))
 						TextField(
 							value = estate.description,
-							onValueChange = { estate.description = it; estate = estate },
+							onValueChange = { estate.description = it; estate.hasBeenUpdated() },
 							modifier = Modifier.padding(top = 16.dp)
 						)
 						Spacer(modifier = Modifier.height(32.dp))
@@ -151,35 +153,35 @@ class EditEstateActivity : ComponentActivity() {
 									val new = it.toIntOrNull()
 									if (new != null)
 										estate.surface = new
-									estate = estate
+									estate.hasBeenUpdated()
 								}
 								EditEstateField(Icons.Default.Person, stringResource(R.string.number_of_rooms), estate.numberOfRooms.toString()) {
 									val new = it.toIntOrNull()
 									if (new != null)
 										estate.numberOfRooms = new
-									estate = estate
+									estate.hasBeenUpdated()
 								}
 								EditEstateField(Icons.Default.Info, stringResource(R.string.number_of_bathrooms), estate.numberOfBathrooms.toString()) {
 									val new = it.toIntOrNull()
 									if (new != null)
 										estate.numberOfBathrooms = new
-									estate = estate
+									estate.hasBeenUpdated()
 								}
 								EditEstateField(Icons.Default.AccountBox, stringResource(R.string.number_of_bedrooms), estate.numberOfBedrooms.toString()) {
 									val new = it.toIntOrNull()
 									if (new != null)
 										estate.numberOfBedrooms = new
-									estate = estate
+									estate.hasBeenUpdated()
 								}
 							}
 							Column(Modifier.weight(1.0f)) {
 								EditEstateField(Icons.Default.LocationOn, stringResource(R.string.location), estate.address) {
 									estate.address = it
-									estate = estate
+									estate.hasBeenUpdated()
 								}
 								EditEstateField(Icons.Default.Info, stringResource(R.string.point_of_interest), estate.interest) {
 									estate.interest = it
-									estate = estate
+									estate.hasBeenUpdated()
 								}
 							}
 							Column(Modifier.weight(1.0f), verticalArrangement = Arrangement.Top) {
@@ -219,7 +221,7 @@ fun GetImageFromLibrary(onPhotoSelected: (Photo) -> (Unit)) {
 			},
 			modifier = Modifier.fillMaxSize(),
 			content = {
-				Icon(imageVector = Icons.Default.Image, contentDescription = "Add picture from galery to Estate", modifier = Modifier
+				Icon(imageVector = Icons.Default.Image, contentDescription = "Add picture from gallery to Estate", modifier = Modifier
 					.fillMaxSize())
 			}
 		)

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.BuildConfig
 import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetails
+import com.cold0.realestatemanager.screens.home.estatelist.EstateList
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 
 
@@ -38,7 +39,7 @@ class HomeActivity : ComponentActivity() {
 		setContent {
 			var openLeftDrawer by remember { mutableStateOf(true) }
 
-			val estateList by viewModel.rememberEstateList();
+			val estateList by viewModel.rememberEstateList()
 			viewModel.updateEstateListFromDB()
 			val estateSelected by viewModel.rememberEstateSelected()
 

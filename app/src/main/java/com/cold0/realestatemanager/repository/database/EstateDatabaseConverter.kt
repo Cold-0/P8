@@ -9,7 +9,8 @@ import java.lang.reflect.Type
 import java.util.*
 
 class EstateDatabaseConverter {
-	var gson: Gson = Gson()
+	// Gson serializer
+	private var gson: Gson = Gson()
 
 	@TypeConverter
 	fun timestampFromDate(date: Date): Long {
@@ -42,7 +43,7 @@ class EstateDatabaseConverter {
 		if (data == null) {
 			return Collections.emptyList()
 		}
-		val listType: Type = object : TypeToken<List<Photo?>?>() {}.getType()
+		val listType: Type = object : TypeToken<List<Photo?>?>() {}.type
 		return gson.fromJson(data, listType)
 	}
 

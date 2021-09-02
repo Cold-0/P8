@@ -15,7 +15,7 @@ import com.cold0.realestatemanager.R
 
 @Composable
 fun TopBarReturn(context: Activity, title: String, content: @Composable () -> Unit) {
-	Column() {
+	Column {
 		TopAppBar(
 			elevation = 4.dp,
 			title = { Text(title) },

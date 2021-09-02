@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.screens.home
+package com.cold0.realestatemanager.screens.home.estatelist
 
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,6 +10,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.model.Estate
+import com.cold0.realestatemanager.screens.home.HomeViewModel
 
 @ExperimentalCoilApi
 @Composable

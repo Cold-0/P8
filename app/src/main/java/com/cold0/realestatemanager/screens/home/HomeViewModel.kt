@@ -102,6 +102,13 @@ class HomeViewModel : ViewModel() {
 		}
 	}
 
+	fun deleteEstate(keys: Pair<UUID, Date>) {
+		thread {
+			Repository.db?.estateDao()?.deleteByUIDAndTimestamp(keys.first, keys.second)
+			updateEstateListFromDB()
+		}
+	}
+
 	fun deleteEstate(estate: Estate) {
 		thread {
 			Repository.db?.estateDao()?.delete(estate)
@@ -117,7 +124,7 @@ class HomeViewModel : ViewModel() {
 	}
 
 	fun deleteAllEstate() {
-		thread() {
+		thread {
 			Repository.db?.estateDao()?.deleteAll()
 			updateEstateListFromDB()
 		}

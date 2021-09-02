@@ -1,8 +1,6 @@
 package com.cold0.realestatemanager;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.net.wifi.WifiManager;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -14,31 +12,27 @@ import java.util.Date;
  * Created by Philippe on 21/02/2018.
  */
 
+@SuppressWarnings({"unused", "SpellCheckingInspection"}) // Can't edit for the "SOUTENANCE"
 public class Utils {
 
 	/**
-	 * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
+	 * Convert price of an estate (Dollars to Euros)
 	 * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
 	 */
 	public static int convertDollarToEuro(int dollars) {
 		return (int) Math.round(dollars * 0.8467188);
 	}
 
+	/**
+	 * Convert price of an estate (Euros to Dollars)
+	 * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
+	 */
 	public static int convertEuroToDollar(int euros) {
 		return (int) Math.round(euros * 1.18103);
 	}
 
 	/**
-	 * Conversion de la date d'aujourd'hui en un format plus approprié
-	 * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
-	 */
-	public static String getTodayDateOld() {
-		@SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		return dateFormat.format(new Date());
-	}
-
-	/**
-	 * Conversion de la date d'aujourd'hui en un format plus approprié
+	 * Convert today date in a more apropriate format
 	 * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
 	 */
 	public static String getTodayDate() {
@@ -47,7 +41,7 @@ public class Utils {
 	}
 
 	/**
-	 * Vérification de la connexion réseau
+	 * Check that you have internet access
 	 * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
 	 */
 	public boolean isInternetAvailable() {
