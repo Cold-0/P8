@@ -21,12 +21,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.BuildConfig
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 
 
 @ExperimentalAnimationApi
 class HomeActivity : ComponentActivity() {
+	@ExperimentalCoilApi
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 

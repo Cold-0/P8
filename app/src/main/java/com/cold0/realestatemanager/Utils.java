@@ -1,5 +1,6 @@
 package com.cold0.realestatemanager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 
@@ -18,9 +19,6 @@ public class Utils {
 	/**
 	 * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
 	 * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
-	 *
-	 * @param dollars
-	 * @return
 	 */
 	public static int convertDollarToEuro(int dollars) {
 		return (int) Math.round(dollars * 0.8467188);
@@ -33,30 +31,24 @@ public class Utils {
 	/**
 	 * Conversion de la date d'aujourd'hui en un format plus approprié
 	 * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
-	 *
-	 * @return
 	 */
 	public static String getTodayDateOld() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		@SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		return dateFormat.format(new Date());
 	}
 
 	/**
 	 * Conversion de la date d'aujourd'hui en un format plus approprié
 	 * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
-	 *
-	 * @return
 	 */
 	public static String getTodayDate() {
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		@SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		return dateFormat.format(new Date());
 	}
 
 	/**
 	 * Vérification de la connexion réseau
 	 * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
-	 *
-	 * @return
 	 */
 	public boolean isInternetAvailable() {
 		InetAddress address = null;

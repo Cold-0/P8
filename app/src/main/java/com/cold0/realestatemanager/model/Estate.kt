@@ -22,4 +22,5 @@ data class Estate(
     val numberOfBedrooms: Int = 0,
     val address: String = "No Address",
     val location: String = "-74.005157,40.710785",
+    val interest: String = "Nothing"
 )

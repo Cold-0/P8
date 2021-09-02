@@ -15,12 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/EstateTheme">
         <activity
-            android:name="com.cold0.realestatemanager.screens.addestate.PhotoViewerActivity"
+            android:name="com.cold0.realestatemanager.screens.photoviewer.PhotoViewerActivity"
             android:exported="true"
             android:label="@string/title_activity_photo_viewer"
-            android:theme="@style/EstateTheme.Transparent"/>
+            android:theme="@style/EstateTheme.Transparent" />
         <activity
             android:name="com.cold0.realestatemanager.screens.converter.ConverterActivity"
+            android:exported="true"
+            android:label="@string/title_activity_converter" />
+        <activity
+            android:name="com.cold0.realestatemanager.screens.editestate.EditEstateActivity"
             android:exported="true"
             android:label="@string/title_activity_converter" />
         <activity
