@@ -28,7 +28,7 @@ object ScreensUtils {
 		ContextCompat.startActivity(context, intent, null)
 	}
 
-	fun openEditEstateActivity(context: Context, estate: Estate) {
+	fun openEditEstateActivity(context: Context, estate: Estate, onResult: (Estate) -> (Unit) = {}) {
 		val intent = Intent(context, EditEstateActivity::class.java)
 		intent.putExtra("estate", estate)
 		ContextCompat.startActivity(context, intent, null)

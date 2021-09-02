@@ -38,7 +38,9 @@ fun EstateDetailPhotoItem(photo: Photo, content: @Composable () -> Unit = {}) {
 			Image(
 				image,
 				contentDescription = photo.name,
-				Modifier.size(108.dp)
+				Modifier
+					.size(108.dp)
+					.align(Alignment.Center)
 			)
 			Surface(
 				color = Color.Black.copy(alpha = 0.5f),
