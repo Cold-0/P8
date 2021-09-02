@@ -24,8 +24,8 @@ import com.cold0.realestatemanager.screens.ScreensUtils
 
 @ExperimentalCoilApi
 @Composable
-fun EstateDetailPhotoItem(photo: Photo) {
-	val image = rememberImagePainter(photo.url)
+fun EstateDetailPhotoItem(photo: Photo, content: @Composable () -> Unit = {}) {
+	val image = rememberImagePainter(if (photo.data != null) photo.data else photo.url)
 	val context = LocalContext.current
 	Card(elevation = 4.dp, modifier = Modifier
 		.padding(8.dp)
@@ -54,6 +54,7 @@ fun EstateDetailPhotoItem(photo: Photo) {
 						.padding(8.dp),
 				)
 			}
+			content()
 		}
 	}
 }

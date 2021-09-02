@@ -21,8 +21,8 @@ import com.cold0.realestatemanager.model.Estate
 @Composable
 fun EstateDetails(estate: Estate) {
 	Column(Modifier
-        .padding(16.dp)
-        .verticalScroll(rememberScrollState())) {
+		.padding(16.dp)
+		.verticalScroll(rememberScrollState())) {
 		Text(
 			text = stringResource(R.string.media),
 			style = MaterialTheme.typography.h5
@@ -44,6 +44,7 @@ fun EstateDetails(estate: Estate) {
 			}
 			Column(Modifier.weight(1.0f)) {
 				EstateDetailInfoLabel(Icons.Default.LocationOn, stringResource(R.string.location), estate.address, leftSpacing = 24.dp)
+				EstateDetailInfoLabel(Icons.Default.Info, stringResource(R.string.point_of_interest), estate.interest, leftSpacing = 24.dp)
 			}
 			Column(Modifier.weight(1.0f), verticalArrangement = Arrangement.Top) {
 				EstateDetailMinimap(estate.location)

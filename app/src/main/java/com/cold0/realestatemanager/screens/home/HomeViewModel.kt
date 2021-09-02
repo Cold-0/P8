@@ -35,9 +35,6 @@ class HomeViewModel : ViewModel() {
 		thread {
 			Repository.db?.estateDao()?.insert(estate)
 			setSelectedEstate(estate.uid)
-//			estateList.value?.last()?.let {
-//
-//			}
 			updateViewEstateList()
 		}
 	}

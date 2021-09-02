@@ -27,9 +27,9 @@ import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetails
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 
 
+@ExperimentalCoilApi
 @ExperimentalAnimationApi
 class HomeActivity : ComponentActivity() {
-	@ExperimentalCoilApi
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
