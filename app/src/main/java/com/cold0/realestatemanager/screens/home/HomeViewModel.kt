@@ -34,10 +34,11 @@ class HomeViewModel : ViewModel() {
 	fun addEstate(estate: Estate) {
 		thread {
 			Repository.db?.estateDao()?.insert(estate)
+			setSelectedEstate(estate.uid)
+//			estateList.value?.last()?.let {
+//
+//			}
 			updateViewEstateList()
-			estateList.value?.last()?.let {
-				setSelectedEstate(it.uid)
-			}
 		}
 	}
 

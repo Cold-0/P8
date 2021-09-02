@@ -1,5 +1,6 @@
 package com.cold0.realestatemanager.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -13,10 +14,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.ScreensUtils
+import com.cold0.realestatemanager.screens.ScreensUtils.openEditEstateActivity
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun HomeTopAppBar(
 	viewModel: HomeViewModel,
@@ -35,6 +39,8 @@ fun HomeTopAppBar(
 					}
 			},
 			actions = {
+				val context = LocalContext.current
+
 				// ----------------------------
 				// Add Button
 				// ----------------------------
@@ -51,9 +57,14 @@ fun HomeTopAppBar(
 				// ----------------------------
 				if (!listEstate.isNullOrEmpty())
 					IconButton(onClick = {
-						viewModel.selectedEstate.value?.let { viewModel.deleteEstate(it.first) }
-						if (listEstate.size > 1)
-							viewModel.selectedEstate.value = Pair(listEstate.first().uid, listEstate.first().timestamp)
+//						viewModel.selectedEstate.value?.let { viewModel.deleteEstate(it.first) }
+//						if (listEstate.size > 1)
+//							viewModel.selectedEstate.value = Pair(listEstate.first().uid, listEstate.first().timestamp)
+						viewModel.selectedEstate.value?.let { index ->
+							viewModel.estateList.value?.find { estate -> estate.uid == index.first }?.let { estate ->
+								openEditEstateActivity(context, estate)
+							}
+						}
 					}) {
 						Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.content_description_edit_current_selected_estate), tint = Color.White)
 					}
@@ -64,7 +75,7 @@ fun HomeTopAppBar(
 				var threeDotExpanded by remember { mutableStateOf(false) }
 
 				if (!listEstate.isNullOrEmpty()) {
-					val context = LocalContext.current
+
 
 					IconButton(
 						onClick = {
@@ -79,6 +90,14 @@ fun HomeTopAppBar(
 						expanded = threeDotExpanded,
 						onDismissRequest = { threeDotExpanded = false }
 					) {
+						DropdownMenuItem(onClick = {
+							viewModel.selectedEstate.value?.let { viewModel.deleteEstate(it.first) }
+							if (listEstate.size > 1)
+								viewModel.selectedEstate.value = Pair(listEstate.first().uid, listEstate.first().timestamp)
+						}) {
+							Text("Delete Estate")
+						}
+						Divider()
 						DropdownMenuItem(onClick = { ScreensUtils.openConverterActivity(context) }) {
 							Text("Converter Tool")
 						}

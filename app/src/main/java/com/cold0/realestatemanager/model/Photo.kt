@@ -1,13 +1,16 @@
 package com.cold0.realestatemanager.model
 
+import android.os.Parcelable
 import androidx.room.Entity
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity
 data class Photo(
 	val name: String = "",
 	val url: String = "",
 	var data: ByteArray? = null,
-) {
+) : Parcelable {
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true
 		if (javaClass != other?.javaClass) return false

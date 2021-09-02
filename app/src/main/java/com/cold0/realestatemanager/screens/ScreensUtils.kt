@@ -8,9 +8,10 @@ import com.cold0.realestatemanager.BuildConfig
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.converter.ConverterActivity
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
-import com.cold0.realestatemanager.screens.home.HomeViewModel
 import com.cold0.realestatemanager.screens.photoviewer.PhotoViewerActivity
 
+
+@ExperimentalCoilApi
 object ScreensUtils {
 	@ExperimentalCoilApi
 	fun openPhotoViewerActivity(context: Context, photo: String) {
@@ -27,8 +28,9 @@ object ScreensUtils {
 		ContextCompat.startActivity(context, intent, null)
 	}
 
-	fun openEditEstateActivity(context: Context, viewModel: HomeViewModel, estate: Estate) {
+	fun openEditEstateActivity(context: Context, estate: Estate) {
 		val intent = Intent(context, EditEstateActivity::class.java)
+		intent.putExtra("estate", estate)
 		ContextCompat.startActivity(context, intent, null)
 	}
 
