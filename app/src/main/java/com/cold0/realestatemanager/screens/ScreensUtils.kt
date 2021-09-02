@@ -2,6 +2,10 @@ package com.cold0.realestatemanager.screens
 
 import android.content.Context
 import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.core.content.ContextCompat
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.BuildConfig
@@ -28,10 +32,21 @@ object ScreensUtils {
 		ContextCompat.startActivity(context, intent, null)
 	}
 
-	fun openEditEstateActivity(context: Context, estate: Estate, onResult: (Estate) -> (Unit) = {}) {
+	@Composable
+	fun OpenEditEstateActivity(context: Context, estate: Estate, onResult: (Estate) -> (Unit) = {}) {
 		val intent = Intent(context, EditEstateActivity::class.java)
 		intent.putExtra("estate", estate)
-		ContextCompat.startActivity(context, intent, null)
+		val loginLauncher = rememberLauncherForActivityResult(
+			ActivityResultContracts.StartActivityForResult()
+		) { result ->
+			if (result != null) {
+				result.data?.getParcelableExtra<Estate>("estate")?.let { onResult(it) }
+			}
+		}
+		SideEffect {
+			loginLauncher.launch(intent)
+		}
+		//ContextCompat.startActivity(context, intent, null)
 	}
 
 	fun formatApiRequestGeoapify(

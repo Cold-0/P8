@@ -26,4 +26,8 @@ data class Estate(
 	var address: String = "No Address",
 	var location: String = "-74.005157,40.710785",
 	var interest: String = "Nothing",
-) : Parcelable
+) : Parcelable {
+	fun compareKeys(estate: Estate): Boolean {
+		return this.uid == estate.uid && this.timestamp == estate.timestamp
+	}
+}

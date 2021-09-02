@@ -17,7 +17,6 @@ import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.ScreensUtils
-import com.cold0.realestatemanager.screens.ScreensUtils.openEditEstateActivity
 
 @ExperimentalCoilApi
 @Composable
@@ -54,19 +53,20 @@ fun HomeTopAppBar(
 				// ----------------------------
 				// Remove Button (Only show if Estate list isn't Empty)
 				// ----------------------------
+				var estateToEdit by remember { mutableStateOf<Estate?>(null) }
 				if (!listEstate.isNullOrEmpty())
 					IconButton(onClick = {
-//						viewModel.selectedEstate.value?.let { viewModel.deleteEstate(it.first) }
-//						if (listEstate.size > 1)
-//							viewModel.selectedEstate.value = Pair(listEstate.first().uid, listEstate.first().timestamp)
-						viewModel.selectedEstate.value?.let { index ->
-							viewModel.estateList.value?.find { estate -> estate.uid == index.first }?.let { estate ->
-								openEditEstateActivity(context, estate)
-							}
-						}
+						estateToEdit = viewModel.getSelectedEstate()
 					}) {
 						Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.content_description_edit_current_selected_estate), tint = Color.White)
 					}
+
+				estateToEdit?.let {
+					ScreensUtils.OpenEditEstateActivity(context, estateToEdit!!) { estate ->
+						viewModel.updateEstate(estate)
+						estateToEdit = null
+					}
+				}
 
 				// ----------------------------
 				// More Vertical Button and Drop Down Menu (Only show if Estate list isn't Empty)
@@ -90,9 +90,9 @@ fun HomeTopAppBar(
 						onDismissRequest = { threeDotExpanded = false }
 					) {
 						DropdownMenuItem(onClick = {
-							viewModel.selectedEstate.value?.let { viewModel.deleteEstate(it.first) }
+							viewModel.deleteEstate(viewModel.getSelectedEstate())
 							if (listEstate.size > 1)
-								viewModel.selectedEstate.value = Pair(listEstate.first().uid, listEstate.first().timestamp)
+								viewModel.setSelectedEstate(Pair(listEstate.first().uid, listEstate.first().timestamp))
 						}) {
 							Text("Delete Estate")
 						}

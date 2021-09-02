@@ -1,6 +1,9 @@
 package com.cold0.realestatemanager.screens.home
 
 import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cold0.realestatemanager.model.Estate
@@ -10,58 +13,113 @@ import java.util.*
 import kotlin.concurrent.thread
 
 class HomeViewModel : ViewModel() {
-	val estateList: MutableLiveData<List<Estate>> = MutableLiveData()
-	val selectedEstate: MutableLiveData<Pair<UUID, Date>> = MutableLiveData()
-
+	// ----------------------------
+	// Lazy Database Init
+	// ----------------------------
 	fun initDatabase(context: Context) {
 		Repository.db = EstateDatabase.getDatabase(context)
 	}
 
-	fun updateViewEstateList() {
+	// ----------------------------
+	// LiveData
+	// ----------------------------
+	private val estateList: MutableLiveData<List<Estate>> = MutableLiveData()
+
+	@Composable
+	fun rememberEstateList(): State<List<Estate>?> {
+		return estateList.observeAsState()
+	}
+
+	private val estateSelected: MutableLiveData<Pair<UUID, Date>> = MutableLiveData()
+
+	@Composable
+	fun rememberEstateSelected(): State<Pair<UUID, Date>?> {
+		return estateSelected.observeAsState()
+	}
+
+	// ----------------------------
+	// Set/Get Selected Estate
+	// ----------------------------
+	fun setSelectedEstate(pair: Pair<UUID, Date>) {
+		estateSelected.postValue(pair)
+	}
+
+	fun setSelectedEstate(uuid: UUID, timestamp: Date) {
+		estateSelected.postValue(Pair(uuid, timestamp))
+	}
+
+	fun setSelectedEstate(estate: Estate) {
+		estateSelected.postValue(Pair(estate.uid, estate.timestamp))
+	}
+
+	fun getSelectedEstate(): Estate {
+		return estateList.value?.find {
+			it.uid == estateSelected.value?.first ?: false
+					&& it.timestamp == estateSelected.value?.second ?: false
+		} ?: Estate()
+	}
+
+	// ----------------------------
+	// EstateList Method
+	// ----------------------------
+	fun updateEstateListFromDB() {
 		thread {
 			estateList.postValue(Repository.db?.estateDao()?.getAll())
 		}
 	}
 
-	fun setSelectedEstate(pair: Pair<UUID, Date>) {
-		selectedEstate.postValue(pair)
-	}
-
-	fun setSelectedEstate(uuid: UUID) {
-		selectedEstate.postValue(Pair(uuid, Date()))
-	}
 
 	fun addEstate(estate: Estate) {
 		thread {
 			Repository.db?.estateDao()?.insert(estate)
-			setSelectedEstate(estate.uid)
-			updateViewEstateList()
+			setSelectedEstate(estate.uid, estate.timestamp)
+			updateEstateListFromDB()
 		}
 	}
 
 	fun addEstate(estateList: List<Estate>) {
 		thread {
 			Repository.db?.estateDao()?.insert(*(estateList.toTypedArray()))
-			updateViewEstateList()
+			updateEstateListFromDB()
+		}
+	}
+
+	fun updateEstate(estate: Estate) {
+		thread {
+			Repository.db?.estateDao()?.update(estate)
+			updateEstateListFromDB()
+		}
+	}
+
+
+	// ----------------------------
+	// Delete
+	// ----------------------------
+	fun deleteEstate(index: UUID, timestamp: Date) {
+		thread {
+			Repository.db?.estateDao()?.deleteByUIDAndTimestamp(index, timestamp)
+			updateEstateListFromDB()
+		}
+	}
+
+	fun deleteEstate(estate: Estate) {
+		thread {
+			Repository.db?.estateDao()?.delete(estate)
+			updateEstateListFromDB()
+		}
+	}
+
+	fun deleteEstate(estateList: List<Estate>) {
+		thread {
+			Repository.db?.estateDao()?.delete(*(estateList.toTypedArray()))
+			updateEstateListFromDB()
 		}
 	}
 
 	fun deleteAllEstate() {
 		thread() {
 			Repository.db?.estateDao()?.deleteAll()
-			updateViewEstateList()
-		}
-	}
-
-	fun deleteEstate(index: UUID) {
-		thread {
-			estateList.value?.let { list ->
-				val estate: Estate? = list.find { estate -> estate.uid == index }
-				estate?.let { it1 ->
-					Repository.db?.estateDao()?.delete(it1)
-					updateViewEstateList()
-				}
-			}
+			updateEstateListFromDB()
 		}
 	}
 }

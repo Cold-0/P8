@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,9 +38,9 @@ class HomeActivity : ComponentActivity() {
 		setContent {
 			var openLeftDrawer by remember { mutableStateOf(true) }
 
-			val estateList by viewModel.estateList.observeAsState()
-			viewModel.updateViewEstateList()
-			val estateSelected by viewModel.selectedEstate.observeAsState()
+			val estateList by viewModel.rememberEstateList();
+			viewModel.updateEstateListFromDB()
+			val estateSelected by viewModel.rememberEstateSelected()
 
 			Log.e("", "onCreate: $estateSelected")
 
@@ -73,22 +72,22 @@ class HomeActivity : ComponentActivity() {
 					// When List is not Empty
 					// ----------------------------
 					else estateList?.let { estateListChecked ->
-						if (estateListChecked.find { it.uid == viewModel.selectedEstate.value?.first ?: -1 } == null) {
-							if (!viewModel.estateList.value.isNullOrEmpty())
-								viewModel.estateList.value?.first()?.let { viewModel.setSelectedEstate(it.uid) }
+						if (estateListChecked.find { it.uid == estateSelected?.first ?: -1 } == null) {
+							if (!estateList.isNullOrEmpty())
+								estateList!!.first().let { viewModel.setSelectedEstate(it.uid, it.timestamp) }
 						}
 						Row(Modifier.fillMaxSize()) {
 							AnimatedVisibility(visible = openLeftDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
 								EstateList(estateListChecked, viewModel)
 							}
-							estateListChecked.find { it.uid == viewModel.selectedEstate.value?.first ?: 0 }
+							estateListChecked.find { it.uid == estateSelected?.first ?: 0 }
 								?.let { EstateDetails(it) }
 						}
 					}
 				}
 
 				// ----------------------------
-				// Debug Build
+				// Debug Build Only
 				// ----------------------------
 				if (BuildConfig.DEBUG) {
 					HomeDebug(viewModel = viewModel)

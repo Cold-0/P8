@@ -27,7 +27,7 @@ fun EstateList(estateList: List<Estate>, viewModel: HomeViewModel) {
 			)
 		}) {
 		items(estateList) { estate ->
-			EstateListItem(estate, viewModel.selectedEstate.value?.first ?: 0 == estate.uid, viewModel = viewModel)
+			EstateListItem(estate, viewModel.getSelectedEstate().compareKeys(estate), viewModel = viewModel)
 		}
 	}
 }

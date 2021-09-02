@@ -1,5 +1,7 @@
 package com.cold0.realestatemanager.screens.editestate
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -44,12 +46,18 @@ class EditEstateActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContent {
-
-
 			var estate by remember { mutableStateOf(this.intent.extras?.getParcelable<Estate>("estate")!!, policy = neverEqualPolicy()) }
 			RealEstateManagerTheme {
 				TopBarReturn(this, "Edit Estate") {
-
+					//Simple FAB
+					FloatingActionButton(onClick = {
+						val resultIntent = Intent();
+						resultIntent.putExtra("estate", estate);
+						setResult(Activity.RESULT_OK, resultIntent);
+						finish()
+					}) {
+						Icon(Icons.Filled.Save,"Save current Estate")
+					}
 					Column(Modifier
 						.padding(16.dp)
 						.verticalScroll(rememberScrollState())) {
