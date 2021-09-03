@@ -49,7 +49,7 @@ fun EstateListItem(estate: Estate, isSelected: Boolean, viewModel: HomeViewModel
 	)
 	{
 		Image(
-			painter = rememberImagePainter(estate.pictures.first().placeHolder),
+			painter = rememberImagePainter(estate.pictures.first().onlineUrl),
 			contentDescription = estate.pictures.first().name,
 			modifier = Modifier.size(108.dp)
 		)

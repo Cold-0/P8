@@ -9,12 +9,14 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import coil.annotation.ExperimentalCoilApi
+import com.cold0.realestatemanager.model.Photo
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 
 @ExperimentalCoilApi
 class PhotoViewerActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		val photo = intent.extras?.getParcelable<Photo>("img")
 		setContent {
 			RealEstateManagerTheme {
 				Surface(color = Color.Black.copy(alpha = 0.7f), modifier = Modifier
@@ -22,7 +24,9 @@ class PhotoViewerActivity : ComponentActivity() {
                     .clickable {
                         finish()
                     }) {
-					ZoomableImage(intent.getStringExtra("img"))
+					photo?.let {
+						ZoomableImage(photo)
+					}
 				}
 			}
 		}

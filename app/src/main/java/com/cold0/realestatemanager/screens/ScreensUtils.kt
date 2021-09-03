@@ -11,6 +11,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.BuildConfig
+import com.cold0.realestatemanager.model.Photo
 import com.cold0.realestatemanager.screens.converter.ConverterActivity
 import com.cold0.realestatemanager.screens.photoviewer.PhotoViewerActivity
 import java.util.*
@@ -19,7 +20,7 @@ import java.util.*
 @ExperimentalCoilApi
 object ScreensUtils {
 	@ExperimentalCoilApi
-	fun openPhotoViewerActivity(context: Context, photo: String) {
+	fun openPhotoViewerActivity(context: Context, photo: Photo) {
 		val intent = Intent(context, PhotoViewerActivity::class.java).apply {
 			putExtra("img", photo)
 		}

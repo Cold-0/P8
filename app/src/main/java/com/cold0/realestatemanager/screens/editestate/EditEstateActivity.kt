@@ -1,10 +1,15 @@
 package com.cold0.realestatemanager.screens.editestate
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -35,6 +40,11 @@ import com.cold0.realestatemanager.screens.commons.TopBarReturn
 import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetailMinimap
 import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetailPhotoItem
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.random.Random.Default.nextInt
 
 
 @ExperimentalCoilApi
@@ -244,6 +254,7 @@ fun EditEstatePhotoList(estate: Estate, onEstateChange: (Estate) -> (Unit)) {
 	}
 }
 
+@SuppressLint("SimpleDateFormat")
 @ExperimentalCoilApi
 @Composable
 fun EditEstatePhotoGetter(onPhotoSelected: (Photo) -> (Unit)) {
@@ -265,10 +276,10 @@ fun EditEstatePhotoGetter(onPhotoSelected: (Photo) -> (Unit)) {
 	}
 	val launcherCamera = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) {
 		if (it != null) {
-
+			bitmap.value = it
 			openNameDialog = true
 		} else {
-
+			bitmap.value = null
 			openNameDialog = false
 		}
 	}
@@ -311,7 +322,25 @@ fun EditEstatePhotoGetter(onPhotoSelected: (Photo) -> (Unit)) {
 		confirmButton = {
 			Button(
 				onClick = {
-					imageUri?.let { uriNC -> onPhotoSelected(Photo(enteringName, "", uriNC.toString())) }
+					imageUri?.let {
+						if (Build.VERSION.SDK_INT < 28) {
+							bitmap.value = MediaStore.Images
+								.Media.getBitmap(context.contentResolver, it)
+						} else {
+							val source = ImageDecoder
+								.createSource(context.contentResolver, it)
+							bitmap.value = ImageDecoder.decodeBitmap(source)
+						}
+						imageUri = null
+					}
+
+					val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date()) + nextInt() % 9998 + ".jpg"
+					val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+					val copyDestination = File(storageDir, timeStamp)
+					val fOut = FileOutputStream(copyDestination);
+					bitmap.value?.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+
+					onPhotoSelected(Photo(enteringName, "", copyDestination.absolutePath))
 				}
 			) {
 				Text("Add Photo")

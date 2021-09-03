@@ -20,17 +20,18 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.cold0.realestatemanager.model.Photo
 import com.cold0.realestatemanager.screens.ScreensUtils
+import java.io.File
 
 
 @ExperimentalCoilApi
 @Composable
 fun EstateDetailPhotoItem(photo: Photo, content: @Composable () -> Unit = {}) {
-	val image = rememberImagePainter(if (photo.uri != null) photo.uri else photo.placeHolder)
+	val image = rememberImagePainter(if (photo.localUri != null) File(photo.localUri.toString()) else photo.onlineUrl)
 	val context = LocalContext.current
 	Card(elevation = 4.dp, modifier = Modifier
 		.padding(8.dp)
 		.clickable {
-			ScreensUtils.openPhotoViewerActivity(context, photo.placeHolder)
+			ScreensUtils.openPhotoViewerActivity(context, photo)
 		}
 	)
 	{

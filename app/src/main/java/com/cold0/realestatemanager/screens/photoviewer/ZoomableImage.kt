@@ -18,10 +18,12 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.cold0.realestatemanager.model.Photo
+import java.io.File
 
 @ExperimentalCoilApi
 @Composable
-fun ZoomableImage(url: String?) {
+fun ZoomableImage(photo: Photo) {
 	val scale = remember { mutableStateOf(1f) }
 	val rotationState = remember { mutableStateOf(1f) }
 	val offsetState = remember { mutableStateOf(Offset(0f, 0f)) }
@@ -47,7 +49,7 @@ fun ZoomableImage(url: String?) {
 					scaleY = maxOf(.5f, minOf(5f, scale.value)),
 					rotationZ = rotationState.value
 				),
-			painter = rememberImagePainter(url), contentDescription = ""
+			painter = rememberImagePainter(if (photo.localUri != null) File(photo.localUri.toString()) else photo.onlineUrl), contentDescription = ""
 		)
 	}
 }
