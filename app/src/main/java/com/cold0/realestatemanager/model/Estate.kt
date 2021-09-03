@@ -15,7 +15,7 @@ data class Estate(
 	var surface: Int = 0,
 	var numberRooms: Int = 0,
 	var description: String = "No Description",
-	var pictures: List<Photo> = listOf(Photo(name = "Facade", url = "https://picsum.photos/id/155/300/300")),
+	var pictures: List<Photo> = listOf(Photo(name = "Facade", placeHolder = "https://picsum.photos/id/155/300/300", null)),
 	var district: String = "No District",
 	var dateAdded: String = "",
 	var dateSold: String = "",
@@ -31,7 +31,7 @@ data class Estate(
 		return this.uid == estate.uid && this.timestamp == estate.timestamp
 	}
 
-	fun getKeys(): Pair<UUID, Date>{
+	fun getKeys(): Pair<UUID, Date> {
 		return Pair(uid, timestamp)
 	}
 }

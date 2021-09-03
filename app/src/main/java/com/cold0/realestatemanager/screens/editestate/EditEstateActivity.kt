@@ -3,11 +3,8 @@ package com.cold0.realestatemanager.screens.editestate
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -268,10 +265,10 @@ fun EditEstatePhotoGetter(onPhotoSelected: (Photo) -> (Unit)) {
 	}
 	val launcherCamera = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) {
 		if (it != null) {
-			bitmap.value = it
+
 			openNameDialog = true
 		} else {
-			bitmap.value = null
+
 			openNameDialog = false
 		}
 	}
@@ -314,18 +311,7 @@ fun EditEstatePhotoGetter(onPhotoSelected: (Photo) -> (Unit)) {
 		confirmButton = {
 			Button(
 				onClick = {
-					imageUri?.let {
-						if (Build.VERSION.SDK_INT < 28) {
-							bitmap.value = MediaStore.Images
-								.Media.getBitmap(context.contentResolver, it)
-						} else {
-							val source = ImageDecoder
-								.createSource(context.contentResolver, it)
-							bitmap.value = ImageDecoder.decodeBitmap(source)
-						}
-						imageUri = null
-					}
-					bitmap.value?.let { btm -> onPhotoSelected(Photo(enteringName, "", btm)) }
+					imageUri?.let { uriNC -> onPhotoSelected(Photo(enteringName, "", uriNC.toString())) }
 				}
 			) {
 				Text("Add Photo")
