@@ -2,8 +2,10 @@ package com.cold0.realestatemanager.screens.home.estatedetail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -18,20 +20,23 @@ import com.cold0.realestatemanager.screens.ScreensUtils
 @Composable
 fun EstateDetailMinimap(localisation: String) {
 	val context = LocalContext.current
-	Image(
-		rememberImagePainter(
-			data = ScreensUtils.formatApiRequestGeoapify(400, 400, localisation),
-			builder = {
-				placeholder(R.drawable.ic_launcher_background)
-				error(R.drawable.ic_launcher_foreground)
-			}
-		),
-		contentScale = ContentScale.Crop,
-		modifier = Modifier
-			.size(250.dp)
-			.clickable {
-				ScreensUtils.openPhotoViewerActivity(context, ScreensUtils.formatApiRequestGeoapify(1024, 1024, localisation))
-			},
-		contentDescription = stringResource(R.string.content_description_mini_map_preview),
-	)
+	Box() {
+		Image(
+			rememberImagePainter(
+				data = ScreensUtils.formatApiRequestGeoapify(400, 400, localisation),
+				builder = {
+					placeholder(R.drawable.ic_launcher_background)
+					error(R.drawable.ic_launcher_foreground)
+				}
+			),
+			contentScale = ContentScale.Crop,
+			modifier = Modifier
+				.size(250.dp)
+				.clickable {
+					ScreensUtils.openPhotoViewerActivity(context, ScreensUtils.formatApiRequestGeoapify(1024, 1024, localisation))
+				}
+				.align(Alignment.Center),
+			contentDescription = stringResource(R.string.content_description_mini_map_preview),
+		)
+	}
 }
