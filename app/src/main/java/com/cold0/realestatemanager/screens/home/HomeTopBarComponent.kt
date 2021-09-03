@@ -1,5 +1,8 @@
 package com.cold0.realestatemanager.screens.home
 
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,6 +20,8 @@ import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.ScreensUtils
+import com.cold0.realestatemanager.screens.ScreensUtils.registerForActivityResult
+import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
 
 @ExperimentalCoilApi
 @Composable
@@ -38,6 +43,14 @@ fun HomeTopAppBar(
 			},
 			actions = {
 				val context = LocalContext.current
+				val intent = Intent(context, EditEstateActivity::class.java)
+				val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult = { result ->
+					if (result.resultCode == Activity.RESULT_OK) {
+						result.data?.getParcelableExtra<Estate>("estateReturn")?.let {
+							viewModel.updateEstate(it)
+						}
+					}
+				})
 
 				// ----------------------------
 				// Add Button
@@ -53,20 +66,14 @@ fun HomeTopAppBar(
 				// ----------------------------
 				// Remove Button (Only show if Estate list isn't Empty)
 				// ----------------------------
-				var estateToEdit by remember { mutableStateOf<Estate?>(null) } // Needed because onClick can't be @Composable
+				//var estateToEdit by remember { mutableStateOf(false) } // Needed because onClick can't be @Composable
 				if (!listEstate.isNullOrEmpty())
 					IconButton(onClick = {
-						estateToEdit = viewModel.getSelectedEstate()
+						intent.putExtra("estate", viewModel.getSelectedEstate())
+						launcher.launch(intent)
 					}) {
 						Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.content_description_edit_current_selected_estate), tint = Color.White)
 					}
-
-				estateToEdit?.let {
-					ScreensUtils.OpenEditEstateActivity(context, estateToEdit!!) { estate ->
-						viewModel.updateEstate(estate)
-					}
-					estateToEdit = null
-				}
 
 				// ----------------------------
 				// More Vertical Button and Drop Down Menu (Only show if Estate list isn't Empty)
@@ -74,8 +81,6 @@ fun HomeTopAppBar(
 				var threeDotExpanded by remember { mutableStateOf(false) }
 
 				if (!listEstate.isNullOrEmpty()) {
-
-
 					IconButton(
 						onClick = {
 							threeDotExpanded = !threeDotExpanded

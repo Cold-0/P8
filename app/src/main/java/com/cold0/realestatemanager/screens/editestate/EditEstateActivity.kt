@@ -59,9 +59,9 @@ class EditEstateActivity : ComponentActivity() {
 								.align(Alignment.BottomEnd)
 								.padding(8.dp),
 							onClick = {
-								val resultIntent = Intent()
-								resultIntent.putExtra("estate", estate)
-								setResult(Activity.RESULT_OK, resultIntent)
+								val result = Intent().putExtra("estateReturn",
+									estate)
+								setResult(Activity.RESULT_OK, result)
 								finish()
 							}) {
 							Icon(Icons.Filled.Save, "Save current Estate", tint = Color.White)
