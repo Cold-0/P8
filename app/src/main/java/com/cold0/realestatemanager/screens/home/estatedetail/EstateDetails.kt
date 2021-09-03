@@ -31,7 +31,7 @@ fun EstateDetails(estate: Estate) {
 			style = MaterialTheme.typography.h5
 		)
 		LazyRow {
-			items(estate.pictures) { photo ->
+			items(estate.photos) { photo ->
 				EstateDetailPhotoItem(photo)
 			}
 		}

@@ -1,13 +1,12 @@
 package com.cold0.realestatemanager.screens.home.estatelist
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -20,6 +19,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.home.HomeViewModel
+import java.io.File
 import java.text.NumberFormat
 import java.util.*
 
@@ -48,11 +48,19 @@ fun EstateListItem(estate: Estate, isSelected: Boolean, viewModel: HomeViewModel
 			}
 	)
 	{
-		Image(
-			painter = rememberImagePainter(estate.pictures.first().onlineUrl),
-			contentDescription = estate.pictures.first().name,
-			modifier = Modifier.size(108.dp)
-		)
+		if (estate.photos.isNotEmpty()) {
+			val photo = estate.photos.first()
+			Image(
+				painter = rememberImagePainter(if (photo.localUri != null) File(photo.localUri.toString()) else photo.onlineUrl),
+				contentDescription = estate.photos.first().name,
+				modifier = Modifier.size(108.dp)
+			)
+		} else
+			Box(Modifier
+				.size(108.dp)
+				.border(BorderStroke(2.dp, Color.Black))) {
+				Text(text = "No Photo\nAvaiable", modifier = Modifier.align(Center))
+			}
 		Column(
 			Modifier
 				.padding(start = 8.dp)

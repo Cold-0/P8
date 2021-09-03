@@ -180,11 +180,11 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 @Composable
 fun EditEstatePhotoList(estate: Estate, onEstateChange: (Estate) -> (Unit)) {
 	LazyRow {
-		itemsIndexed(estate.pictures) { index, photo ->
+		itemsIndexed(estate.photos) { index, photo ->
 			Column {
 				Row(modifier = Modifier.padding(4.dp)) {
 					Button(shape = RoundedCornerShape(20.dp), onClick = {
-						estate.pictures -= photo
+						estate.photos -= photo
 						onEstateChange(estate)
 					}) {
 						Icon(imageVector = Icons.Filled.Delete,
@@ -222,7 +222,7 @@ fun EditEstatePhotoList(estate: Estate, onEstateChange: (Estate) -> (Unit)) {
 							confirmButton = {
 								Button(
 									onClick = {
-										val mList = estate.pictures.toMutableList()
+										val mList = estate.photos.toMutableList()
 										photo.name = newName
 										mList[index] = photo
 										onEstateChange(estate)
@@ -247,7 +247,7 @@ fun EditEstatePhotoList(estate: Estate, onEstateChange: (Estate) -> (Unit)) {
 		}
 		item {
 			EditEstatePhotoGetter(onPhotoSelected = { photo ->
-				estate.pictures += photo
+				estate.photos += photo
 				onEstateChange(estate)
 			})
 		}

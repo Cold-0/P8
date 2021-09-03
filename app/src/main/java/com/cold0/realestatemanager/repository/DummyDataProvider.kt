@@ -106,7 +106,7 @@ object DummyDataProvider {
 			dateAdded = randomDate(),
 			dateSold = randomDate(),
 			price = Random.nextInt(100000, 3500000),
-			pictures = Collections.unmodifiableList(list),
+			photos = Collections.unmodifiableList(list),
 			numberOfBathrooms = Random.nextInt(1, 4),
 			numberOfRooms = Random.nextInt(4, 10),
 			numberOfBedrooms = Random.nextInt(2, 5),
