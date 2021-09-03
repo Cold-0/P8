@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
@@ -39,7 +40,8 @@ fun EstateDetailPhotoItem(photo: Photo, content: @Composable () -> Unit = {}) {
 			Image(
 				image,
 				contentDescription = photo.name,
-				Modifier
+				contentScale = ContentScale.Crop,
+				modifier = Modifier
 					.size(108.dp)
 					.align(Alignment.Center)
 			)

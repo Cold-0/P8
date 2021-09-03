@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -53,13 +54,14 @@ fun EstateListItem(estate: Estate, isSelected: Boolean, viewModel: HomeViewModel
 			Image(
 				painter = rememberImagePainter(if (photo.localUri != null) File(photo.localUri.toString()) else photo.onlineUrl),
 				contentDescription = estate.photos.first().name,
-				modifier = Modifier.size(108.dp)
+				modifier = Modifier.size(108.dp),
+				contentScale = ContentScale.Crop
 			)
 		} else
 			Box(Modifier
 				.size(108.dp)
 				.border(BorderStroke(2.dp, Color.Black))) {
-				Text(text = "No Photo\nAvaiable", modifier = Modifier.align(Center))
+				Text(text = "No Photo\nAvailable", modifier = Modifier.align(Center))
 			}
 		Column(
 			Modifier
