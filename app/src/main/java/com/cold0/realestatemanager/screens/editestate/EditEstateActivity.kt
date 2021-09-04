@@ -160,8 +160,9 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 					.padding(8.dp), verticalArrangement = Arrangement.Top) {
 					EstateDetailMinimap(estate.location)
 				}
-			else
-				EstateDetailMinimap(estate.location)
+
 		}
+		if (small)
+			EstateDetailMinimap(estate.location)
 	}
 }
