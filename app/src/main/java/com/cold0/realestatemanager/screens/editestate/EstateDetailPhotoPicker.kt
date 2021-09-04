@@ -39,6 +39,7 @@ fun EditEstatePhotoPicker(onPhotoSelected: (Photo) -> (Unit)) {
 	var imageUri by remember { mutableStateOf<Uri?>(null) }
 	var bitmap by remember { mutableStateOf<Bitmap?>(null) }
 	var enteringName by remember { mutableStateOf("") }
+	var enteringDescription by remember { mutableStateOf("") }
 	var openNameDialog by remember { mutableStateOf(false) }
 
 	val launcherGallery = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -86,14 +87,21 @@ fun EditEstatePhotoPicker(onPhotoSelected: (Photo) -> (Unit)) {
 
 	if (openNameDialog) AlertDialog(
 		onDismissRequest = {},
-		title = { Text(text = "Set Photo name") },
 		text = {
-			TextField(
-				value = enteringName,
-				onValueChange = { enteringName = it },
-				label = { Text("Photo Name") },
-				modifier = Modifier.padding(8.dp)
-			)
+			Column() {
+				TextField(
+					value = enteringName,
+					onValueChange = { enteringName = it },
+					label = { Text("Photo Name") },
+					modifier = Modifier.padding(8.dp)
+				)
+				TextField(
+					value = enteringDescription,
+					onValueChange = { enteringDescription = it },
+					label = { Text("Photo Description") },
+					modifier = Modifier.padding(8.dp)
+				)
+			}
 		},
 		confirmButton = {
 			Button(
@@ -116,7 +124,7 @@ fun EditEstatePhotoPicker(onPhotoSelected: (Photo) -> (Unit)) {
 					val fOut = FileOutputStream(copyDestination);
 					bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
 
-					onPhotoSelected(Photo(enteringName, "", copyDestination.absolutePath))
+					onPhotoSelected(Photo(name = enteringName, description = enteringDescription, localUri = copyDestination.absolutePath))
 				}
 			) {
 				Text("Add Photo")

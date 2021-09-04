@@ -17,10 +17,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import com.cold0.realestatemanager.R
-import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.ComposeUtils
 import com.cold0.realestatemanager.ComposeUtils.registerForActivityResult
+import com.cold0.realestatemanager.R
+import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
 
 @ExperimentalCoilApi

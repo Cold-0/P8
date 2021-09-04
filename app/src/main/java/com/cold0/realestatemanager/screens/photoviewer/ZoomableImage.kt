@@ -25,7 +25,7 @@ import java.io.File
 @Composable
 fun ZoomableImage(photo: Photo) {
 	val scale = remember { mutableStateOf(1f) }
-	val rotationState = remember { mutableStateOf(1f) }
+	val rotationState = remember { mutableStateOf(0f) }
 	val offsetState = remember { mutableStateOf(Offset(0f, 0f)) }
 	Box(
 		modifier = Modifier
