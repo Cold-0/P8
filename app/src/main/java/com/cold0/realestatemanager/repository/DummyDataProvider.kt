@@ -3,7 +3,6 @@
 package com.cold0.realestatemanager.repository
 
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.model.EstateType
 import com.cold0.realestatemanager.model.Photo
 import java.util.*
 import kotlin.random.Random
@@ -11,15 +10,9 @@ import kotlin.random.Random
 
 object DummyDataProvider {
 
-//    private fun loadImageFromFile(path: String): Any{
-//        val bImage: BufferedImage = ImageIO.read(File("sample.jpg"))
-//        val bos = ByteArrayOutputStream()
-//        ImageIO.write(bImage, "jpg", bos)
-//        val data: ByteArray = bos.toByteArray()
-//    }
-
-
-
+	// ---------------------
+	// Random Model
+	// ---------------------
 	private fun randomLoremIpsum(): String {
 		return listOf(
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent pulvinar erat eget auctor ultricies. Vestibulum id purus iaculis, semper mauris id, mollis velit. Maecenas in tempor metus. Sed sed lectus tellus. Duis condimentum odio arcu, nec sodales nisl feugiat at. Nulla ut nisi eu lorem pulvinar efficitur. Nunc risus felis, fringilla et tempor is, convallis quis dolor. Mauris varius mattis imperdiet. Quisque ullamcorper erat ut dui tempus gravida. Maecenas laoreet et quam vel fringilla. Quisque sed libero varius, auctor augue non, viverra mi. Praesent cursus enim eu mauris suscipit ornare. In pulvinar nulla finibus ante ultrices, at rhoncus nulla tristique. Ut at sapien ac massa iaculis pharetra non quis metus. Morbi quis ullamcorper diam, sit amet blandit velit.",
@@ -39,16 +32,6 @@ object DummyDataProvider {
 			"276 Vine Ave.\nWhitestone, NY 11357",
 			"20 Lafayette Drive\nWest Chicago, IL 60185"
 		).random()
-	}
-
-
-	private fun randomPhotoUrl(): String {
-		return "https://picsum.photos/id/${Random.nextInt(150)}/400"
-	}
-
-	private fun randomEstateType(): EstateType {
-		val types = EstateType.values()
-		return types[Random.nextInt(1, types.size)]
 	}
 
 	private fun randomPhotoName(): String {
@@ -79,7 +62,7 @@ object DummyDataProvider {
 		return listOf("Manhattan", "Montauk", "Brooklyn", "Southampton", "Upper East Side", "Queens", "Staten Island", "Bronx", "New Jersey").random()
 	}
 
-	private fun randomAgentName(): String {
+	private fun randomName(): String {
 		return listOf("Bon", "Julia", "José", "Hamza", "Esteban", "Camille", "Marie", "Antoine").random()
 	}
 
@@ -87,42 +70,63 @@ object DummyDataProvider {
 		return "${Random.nextInt(1, 28).toString().padStart(2, '0')}/${Random.nextInt(1, 13).toString().padStart(2, '0')}/2021"
 	}
 
-	private fun randomEstateGenerator(): Estate {
-		val list = mutableListOf<Photo>()
-
-		repeat(Random.nextInt(1, 8))
-		{
-			list.add(Photo(randomPhotoName(), randomPhotoUrl()))
-		}
-
-		return Estate(
-			district = randomDistrict(),
-			surface = Random.nextInt(20, 250),
-			type = randomEstateType(),
-			description = randomLoremIpsum(),
-			address = randomAddress(),
-			location = randomLocation(),
-			agent = randomAgentName(),
-			dateAdded = randomDate(),
-			dateSold = randomDate(),
-			price = Random.nextInt(100000, 3500000),
-			photos = Collections.unmodifiableList(list),
-			numberOfBathrooms = Random.nextInt(1, 4),
-			numberOfRooms = Random.nextInt(4, 10),
-			numberOfBedrooms = Random.nextInt(2, 5),
-			interest = randomInterest()
-		)
-	}
-
 	private fun randomLocation(): String {
 		return "-74.00${Random.nextInt(0, 1000).toString().padStart(3, '0')},40.71${Random.nextInt(0, 1000).toString().padStart(3, '0')}"
 	}
 
+	private fun randomPhotoUrl(): String {
+		return "https://picsum.photos/id/${Random.nextInt(150)}/400"
+	}
+
+	private inline fun <reified E : Enum<E>> randomEnum(): E {
+		return enumValues<E>().random()
+	}
+
+	// ---------------------
+	// Random Model
+	// ---------------------
+	private fun randomPhoto(): Photo {
+		return Photo(name = randomPhotoName(), onlineUrl = randomPhotoUrl(), description = randomLoremIpsum())
+	}
+
+	private fun randomPhotoList(): List<Photo> {
+		val list = mutableListOf<Photo>()
+		repeat(Random.nextInt(0, 8))
+		{
+			list.add(randomPhoto())
+		}
+		return Collections.unmodifiableList(list)
+	}
+
+	private fun randomEstate(): Estate {
+		return Estate(
+			district = randomDistrict(),
+			surface = Random.nextInt(20, 250),
+			type = randomEnum(),
+			description = randomLoremIpsum(),
+			address = randomAddress(),
+			location = randomLocation(),
+			agent = randomName(),
+			dateAdded = randomDate(),
+			dateSold = randomDate(),
+			price = Random.nextInt(100000, 3500000),
+			photos = Collections.unmodifiableList(randomPhotoList()),
+			numberOfBathrooms = Random.nextInt(1, 4),
+			numberOfRooms = Random.nextInt(4, 10),
+			numberOfBedrooms = Random.nextInt(2, 5),
+			interest = randomInterest(),
+			status = randomEnum()
+		)
+	}
+
+	// ---------------------
+	// Public
+	// ---------------------
 	fun getRandomEstateList(): List<Estate> {
 		val list = mutableListOf<Estate>()
 		repeat(Random.nextInt(6, 12))
 		{
-			list.add(randomEstateGenerator())
+			list.add(randomEstate())
 		}
 		return Collections.unmodifiableList(list)
 	}

@@ -15,7 +15,7 @@ data class Estate(
 	var surface: Int = 0,
 	var numberRooms: Int = 0,
 	var description: String = "No Description",
-	var photos: List<Photo> = listOf(Photo(name = "Facade", onlineUrl = "https://picsum.photos/id/155/300/300", null)),
+	var photos: List<Photo> = listOf(Photo(name = "Facade", onlineUrl = "https://picsum.photos/id/155/300/300", localUri = null, description = "")),
 	var district: String = "No District",
 	var dateAdded: String = "",
 	var dateSold: String = "",

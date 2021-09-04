@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Entity
 data class Photo(
 	var name: String = "",
+	var description: String = "",
 	var onlineUrl: String = "",
-	var localUri: String? = null,
+	var localUri: String? = null, // If this is not null then it use this path to load image, else it use the onlineUrl
 ) : Parcelable
