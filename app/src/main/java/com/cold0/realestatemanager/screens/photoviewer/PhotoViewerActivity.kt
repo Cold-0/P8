@@ -11,6 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,21 +30,26 @@ class PhotoViewerActivity : ComponentActivity() {
 		val photo = intent.extras?.getParcelable<Photo>("img")
 		setContent {
 			RealEstateManagerTheme {
+				var numberOfClick by remember { mutableStateOf(0) }
 				Surface(color = Color.Black.copy(alpha = 0.7f), modifier = Modifier
 					.fillMaxSize()
 					.clickable {
-						finish()
+						numberOfClick += 1
+						if (numberOfClick >= 2)
+							finish()
 					}) {
 					if (photo != null) {
 						Box {
 							ZoomableImage(photo)
-							Surface(shape = RoundedCornerShape(8.dp), color = Color.Black.copy(alpha = 0.8f), modifier = Modifier
-								.align(Alignment.BottomCenter)
-								.padding(16.dp)) {
-								Text(photo.description, color = Color.White, modifier = Modifier
-									.padding(8.dp)
-									.fillMaxWidth())
-							}
+							if (numberOfClick == 0)
+								Surface(shape = RoundedCornerShape(8.dp), color = Color.Black.copy(alpha = 0.8f), modifier = Modifier
+									.align(Alignment.BottomCenter)
+									.padding(16.dp)) {
+									Text(photo.description, color = Color.White, modifier = Modifier
+										.padding(8.dp)
+										.fillMaxWidth()
+									)
+								}
 						}
 					} else
 						finish()
