@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cold0.realestatemanager.model.Estate
@@ -35,6 +36,11 @@ class HomeViewModel : ViewModel() {
 	@Composable
 	fun rememberEstateSelected(): State<Pair<UUID, Date>?> {
 		return estateSelected.observeAsState()
+	}
+
+	@Composable
+	fun ObserveEstateSelected(lifecycleOwner: LifecycleOwner, onUpdate: (Pair<UUID, Date>) -> (Unit)) {
+		estateSelected.observe(lifecycleOwner, onUpdate)
 	}
 
 	// ----------------------------
