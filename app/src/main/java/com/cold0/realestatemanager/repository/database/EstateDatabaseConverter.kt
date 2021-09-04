@@ -1,6 +1,7 @@
 package com.cold0.realestatemanager.repository.database
 
 import androidx.room.TypeConverter
+import com.cold0.realestatemanager.model.EstateStatus
 import com.cold0.realestatemanager.model.EstateType
 import com.cold0.realestatemanager.model.Photo
 import com.google.gson.Gson
@@ -12,6 +13,9 @@ class EstateDatabaseConverter {
 	// Gson serializer
 	private var gson: Gson = Gson()
 
+	// ----------------------
+	// Timestamp
+	// ----------------------
 	@TypeConverter
 	fun timestampFromDate(date: Date): Long {
 		return date.time
@@ -22,6 +26,9 @@ class EstateDatabaseConverter {
 		return Date(timestamp)
 	}
 
+	// ----------------------
+	// UUID
+	// ----------------------
 	@TypeConverter
 	fun fromUUID(uuid: UUID): String {
 		return uuid.toString()
@@ -32,14 +39,29 @@ class EstateDatabaseConverter {
 		return UUID.fromString(string)
 	}
 
+	// ----------------------
+	// EstateType
+	// ----------------------
 	@TypeConverter
 	fun toEstateType(value: Int) = enumValues<EstateType>()[value]
 
 	@TypeConverter
 	fun fromEstateType(value: EstateType) = value.ordinal
 
+	// ----------------------
+	// EstateStatus
+	// ----------------------
 	@TypeConverter
-	fun toPhoto(data: String?): List<Photo> {
+	fun toEstateStatus(value: Int) = enumValues<EstateStatus>()[value]
+
+	@TypeConverter
+	fun fromEstateStatus(value: EstateStatus) = value.ordinal
+
+	// ----------------------
+	// Photo List
+	// ----------------------
+	@TypeConverter
+	fun toPhotoList(data: String?): List<Photo> {
 		if (data == null) {
 			return Collections.emptyList()
 		}
@@ -48,7 +70,7 @@ class EstateDatabaseConverter {
 	}
 
 	@TypeConverter
-	fun fromPhoto(someObjects: List<Photo?>?): String {
+	fun fromPhotoList(someObjects: List<Photo?>?): String {
 		return gson.toJson(someObjects)
 	}
 }
