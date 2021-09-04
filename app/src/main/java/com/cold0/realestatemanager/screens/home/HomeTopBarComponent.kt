@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.screens.ScreensUtils
-import com.cold0.realestatemanager.screens.ScreensUtils.registerForActivityResult
+import com.cold0.realestatemanager.ComposeUtils
+import com.cold0.realestatemanager.ComposeUtils.registerForActivityResult
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
 
 @ExperimentalCoilApi
@@ -102,7 +102,7 @@ fun HomeTopAppBar(
 							Text("Delete Estate")
 						}
 						Divider()
-						DropdownMenuItem(onClick = { ScreensUtils.openConverterActivity(context) }) {
+						DropdownMenuItem(onClick = { ComposeUtils.openConverterActivity(context) }) {
 							Text("Converter Tool")
 						}
 					}

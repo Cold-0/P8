@@ -16,7 +16,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Photo
-import com.cold0.realestatemanager.screens.ScreensUtils
+import com.cold0.realestatemanager.ComposeUtils
 
 @ExperimentalCoilApi
 @Composable
@@ -25,7 +25,7 @@ fun EstateDetailMinimap(localisation: String) {
 	Box(modifier = Modifier.fillMaxSize()) {
 		Image(
 			rememberImagePainter(
-				data = ScreensUtils.formatApiRequestGeoapify(400, 400, localisation),
+				data = ComposeUtils.formatApiRequestGeoapify(400, 400, localisation),
 				builder = {
 					placeholder(R.drawable.ic_launcher_background)
 					error(R.drawable.ic_launcher_foreground)
@@ -35,7 +35,7 @@ fun EstateDetailMinimap(localisation: String) {
 			modifier = Modifier
 				.size(250.dp)
 				.clickable {
-					ScreensUtils.openPhotoViewerActivity(context, Photo(onlineUrl = ScreensUtils.formatApiRequestGeoapify(1024, 1024, localisation)))
+					ComposeUtils.openPhotoViewerActivity(context, Photo(onlineUrl = ComposeUtils.formatApiRequestGeoapify(1024, 1024, localisation)))
 				}
 				.align(Alignment.Center),
 			contentDescription = stringResource(R.string.content_description_mini_map_preview),

@@ -1,24 +1,25 @@
-package com.cold0.realestatemanager.screens
+package com.cold0.realestatemanager
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import coil.annotation.ExperimentalCoilApi
-import com.cold0.realestatemanager.BuildConfig
 import com.cold0.realestatemanager.model.Photo
 import com.cold0.realestatemanager.screens.converter.ConverterActivity
 import com.cold0.realestatemanager.screens.photoviewer.PhotoViewerActivity
 import java.util.*
 
-
 @ExperimentalCoilApi
-object ScreensUtils {
+object ComposeUtils {
 	@ExperimentalCoilApi
 	fun openPhotoViewerActivity(context: Context, photo: Photo) {
 		val intent = Intent(context, PhotoViewerActivity::class.java).apply {
@@ -71,6 +72,25 @@ object ScreensUtils {
 		return returnedLauncher
 	}
 
+	@Composable
+	fun InActivityDo(action: @Composable (ComponentActivity) -> (Unit)) {
+		fun Context.getActivity(): ComponentActivity? = when (this) {
+			is ComponentActivity -> this
+			is ContextWrapper -> baseContext.getActivity()
+			else -> null
+		}
+
+		val activity = LocalContext.current.getActivity()
+		activity?.let {
+			action(it)
+		}
+	}
+
+	@Composable
+	fun isScreenSmall(): Boolean {
+		val configuration = LocalConfiguration.current
+		return configuration.screenWidthDp <= 450
+	}
 
 	fun formatApiRequestGeoapify(
 		width: Int = 400,

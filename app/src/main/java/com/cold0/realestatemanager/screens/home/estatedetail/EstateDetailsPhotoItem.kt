@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.cold0.realestatemanager.model.Photo
-import com.cold0.realestatemanager.screens.ScreensUtils
+import com.cold0.realestatemanager.ComposeUtils
 import java.io.File
 
 
@@ -32,7 +32,7 @@ fun EstateDetailPhotoItem(photo: Photo, content: @Composable () -> Unit = {}) {
 	Card(elevation = 4.dp, modifier = Modifier
 		.padding(8.dp)
 		.clickable {
-			ScreensUtils.openPhotoViewerActivity(context, photo)
+			ComposeUtils.openPhotoViewerActivity(context, photo)
 		}
 	)
 	{

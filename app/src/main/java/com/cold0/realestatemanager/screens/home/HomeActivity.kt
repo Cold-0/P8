@@ -1,7 +1,6 @@
 package com.cold0.realestatemanager.screens.home
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -22,10 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.BuildConfig
+import com.cold0.realestatemanager.ComposeUtils.InActivityDo
+import com.cold0.realestatemanager.ComposeUtils.isScreenSmall
 import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetails
 import com.cold0.realestatemanager.screens.home.estatelist.EstateList
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
-
 
 @ExperimentalCoilApi
 @ExperimentalAnimationApi
@@ -37,13 +37,20 @@ class HomeActivity : ComponentActivity() {
 		viewModel.initDatabase(applicationContext)
 
 		setContent {
+			val smallScreen = isScreenSmall()
+
 			var openLeftDrawer by remember { mutableStateOf(true) }
 
 			val estateList by viewModel.rememberEstateList()
 			viewModel.updateEstateListFromDB()
 			val estateSelected by viewModel.rememberEstateSelected()
 
-			Log.e("", "onCreate: $estateSelected")
+			InActivityDo{
+				viewModel.ObserveEstateSelected(it) {
+					if (smallScreen)
+						openLeftDrawer = false
+				}
+			}
 
 			RealEstateManagerTheme {
 				HomeTopAppBar(
