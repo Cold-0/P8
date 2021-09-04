@@ -10,7 +10,7 @@ import java.util.*
 data class Estate(
 	val uid: UUID = UUID.randomUUID(),
 	val timestamp: Date = Date(),
-	var type: EstateType = EstateType.None,
+	var type: EstateType = EstateType.Flat,
 	var price: Int = 0,
 	var surface: Int = 0,
 	var numberRooms: Int = 0,
