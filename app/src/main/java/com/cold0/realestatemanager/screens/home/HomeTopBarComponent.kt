@@ -92,18 +92,10 @@ fun HomeTopAppBar(
 					DropdownMenu(
 						offset = DpOffset((-4).dp, 4.dp),
 						expanded = threeDotExpanded,
-						onDismissRequest = { threeDotExpanded = false }
+						onDismissRequest = { threeDotExpanded = false },
 					) {
-						DropdownMenuItem(onClick = {
-							viewModel.deleteEstate(viewModel.getSelectedEstate().getKeys())
-							if (listEstate.size > 1)
-								viewModel.setSelectedEstate(Pair(listEstate.first().uid, listEstate.first().timestamp))
-						}) {
-							Text("Delete Estate")
-						}
-						Divider()
 						DropdownMenuItem(onClick = { ComposeUtils.openConverterActivity(context) }) {
-							Text("Converter Tool")
+							Text("Tools")
 						}
 					}
 				}
