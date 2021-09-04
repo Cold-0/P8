@@ -57,6 +57,7 @@ fun EstateDetailPhotoItem(photo: Photo, content: @Composable () -> Unit = {}) {
 					modifier = Modifier
 						.align(Alignment.Center)
 						.padding(8.dp),
+					maxLines = 3
 				)
 			}
 			content()

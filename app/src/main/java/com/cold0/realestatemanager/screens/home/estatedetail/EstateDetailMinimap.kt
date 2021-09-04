@@ -3,6 +3,7 @@ package com.cold0.realestatemanager.screens.home.estatedetail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,7 +22,7 @@ import com.cold0.realestatemanager.screens.ScreensUtils
 @Composable
 fun EstateDetailMinimap(localisation: String) {
 	val context = LocalContext.current
-	Box {
+	Box(modifier = Modifier.fillMaxSize()) {
 		Image(
 			rememberImagePainter(
 				data = ScreensUtils.formatApiRequestGeoapify(400, 400, localisation),
