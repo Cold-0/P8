@@ -28,6 +28,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -83,6 +84,9 @@ class EditEstateActivity : ComponentActivity() {
 @ExperimentalCoilApi
 @Composable
 private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
+	val configuration = LocalConfiguration.current
+	val small = configuration.screenWidthDp <= 450
+
 	Column(Modifier
 		.padding(16.dp)
 		.verticalScroll(rememberScrollState())) {
@@ -167,11 +171,14 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 			// ----------------------------
 			// Minimap
 			// ----------------------------
-			Column(Modifier
-				.weight(1.0f)
-				.padding(8.dp), verticalArrangement = Arrangement.Top) {
+			if (!small)
+				Column(Modifier
+					.weight(1.0f)
+					.padding(8.dp), verticalArrangement = Arrangement.Top) {
+					EstateDetailMinimap(estate.location)
+				}
+			else
 				EstateDetailMinimap(estate.location)
-			}
 		}
 	}
 }
