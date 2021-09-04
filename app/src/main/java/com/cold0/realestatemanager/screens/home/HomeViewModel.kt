@@ -70,10 +70,9 @@ class HomeViewModel : ViewModel() {
 	// ----------------------------
 	fun updateEstateListFromDB() {
 		thread {
-			estateList.postValue(Repository.db?.estateDao()?.getAll())
+			estateList.postValue(Repository.db?.estateDao()?.getAll()?.sortedBy { it.status })
 		}
 	}
-
 
 	fun addEstate(estate: Estate) {
 		thread {

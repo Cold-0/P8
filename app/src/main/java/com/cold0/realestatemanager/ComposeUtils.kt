@@ -8,6 +8,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityOptionsCompat
@@ -106,4 +108,14 @@ object ComposeUtils {
 				"&marker=lonlat:$localisation;color:%23ff0000;size:medium" +
 				"&apiKey=$apiKey"
 	}
+
+	private val grayScaleMatrix = ColorMatrix(
+		floatArrayOf(
+			0.33f, 0.33f, 0.33f, 0f, 0f,
+			0.33f, 0.33f, 0.33f, 0f, 0f,
+			0.33f, 0.33f, 0.33f, 0f, 0f,
+			0f, 0f, 0f, 1f, 0f
+		)
+	)
+	val colorFilterGrayscale = ColorFilter.colorMatrix(grayScaleMatrix)
 }

@@ -5,7 +5,7 @@ package com.cold0.realestatemanager.repository
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.Photo
 import java.util.*
-import kotlin.random.Random
+import kotlin.random.Random.Default.nextInt
 
 
 object DummyDataProvider {
@@ -66,16 +66,20 @@ object DummyDataProvider {
 		return listOf("Bon", "Julia", "José", "Hamza", "Esteban", "Camille", "Marie", "Antoine").random()
 	}
 
-	private fun randomDate(): String {
-		return "${Random.nextInt(1, 28).toString().padStart(2, '0')}/${Random.nextInt(1, 13).toString().padStart(2, '0')}/2021"
+//	private fun randomDateString(): String {
+//		return "${nextInt(1, 28).toString().padStart(2, '0')}/${nextInt(1, 13).toString().padStart(2, '0')}/2021"
+//	}
+
+	private fun randomDate(): GregorianCalendar {
+		return GregorianCalendar(nextInt(2020, 2022), nextInt(0, 12), nextInt(0, 29))
 	}
 
 	private fun randomLocation(): String {
-		return "-74.00${Random.nextInt(0, 1000).toString().padStart(3, '0')},40.71${Random.nextInt(0, 1000).toString().padStart(3, '0')}"
+		return "-74.00${nextInt(0, 1000).toString().padStart(3, '0')},40.71${nextInt(0, 1000).toString().padStart(3, '0')}"
 	}
 
 	private fun randomPhotoUrl(): String {
-		return "https://picsum.photos/id/${Random.nextInt(150)}/400"
+		return "https://picsum.photos/id/${nextInt(150)}/400"
 	}
 
 	private inline fun <reified E : Enum<E>> randomEnum(): E {
@@ -91,7 +95,7 @@ object DummyDataProvider {
 
 	private fun randomPhotoList(): List<Photo> {
 		val list = mutableListOf<Photo>()
-		repeat(Random.nextInt(0, 8))
+		repeat(nextInt(0, 8))
 		{
 			list.add(randomPhoto())
 		}
@@ -101,7 +105,7 @@ object DummyDataProvider {
 	private fun randomEstate(): Estate {
 		return Estate(
 			district = randomDistrict(),
-			surface = Random.nextInt(20, 250),
+			surface = nextInt(20, 250),
 			type = randomEnum(),
 			description = randomLoremIpsum(),
 			address = randomAddress(),
@@ -109,11 +113,11 @@ object DummyDataProvider {
 			agent = randomName(),
 			dateAdded = randomDate(),
 			dateSold = randomDate(),
-			price = Random.nextInt(100000, 3500000),
+			price = nextInt(100000, 3500000),
 			photos = Collections.unmodifiableList(randomPhotoList()),
-			numberOfBathrooms = Random.nextInt(1, 4),
-			numberOfRooms = Random.nextInt(4, 10),
-			numberOfBedrooms = Random.nextInt(2, 5),
+			numberOfBathrooms = nextInt(1, 4),
+			numberOfRooms = nextInt(4, 10),
+			numberOfBedrooms = nextInt(2, 5),
 			interest = randomInterest(),
 			status = randomEnum()
 		)
@@ -124,7 +128,7 @@ object DummyDataProvider {
 	// ---------------------
 	fun getRandomEstateList(): List<Estate> {
 		val list = mutableListOf<Estate>()
-		repeat(Random.nextInt(6, 12))
+		repeat(nextInt(6, 12))
 		{
 			list.add(randomEstate())
 		}

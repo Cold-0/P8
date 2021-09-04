@@ -1,5 +1,6 @@
 package com.cold0.realestatemanager.screens.home.estatedetail
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -23,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
+import com.cold0.realestatemanager.model.EstateStatus
+import java.text.SimpleDateFormat
 
 @ExperimentalCoilApi
 @Composable
@@ -32,6 +35,36 @@ fun EstateDetails(estate: Estate) {
 	Column(Modifier
 		.padding(16.dp)
 		.verticalScroll(rememberScrollState())) {
+		// ----------------------------
+		// Info
+		// ----------------------------4
+		Row(modifier = Modifier.fillMaxSize()) {
+			// ----------------------------
+			// Column 1
+			// ----------------------------
+			@SuppressLint("SimpleDateFormat") val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+			Column(Modifier
+				.weight(1.0f)
+				.padding(8.dp)) {
+
+				EstateDetailInfoLabel(Icons.Default.Face, "Added", dateFormat.format(estate.dateAdded.time))
+			}
+			// ----------------------------
+			// Column 2
+			// ----------------------------
+			Column(Modifier
+				.weight(1.0f)
+				.padding(8.dp)) {
+				val stringToPrint = if (estate.status == EstateStatus.Available)
+					"Available"
+				else "Sold on " + estate.dateSold?.let { dateFormat.format(it.time) }
+				EstateDetailInfoLabel(Icons.Default.Face, "Status", stringToPrint)
+			}
+		}
+
+		// ----------------------------
+		// Media
+		// ----------------------------
 		Text(
 			text = stringResource(R.string.media),
 			style = MaterialTheme.typography.h5
@@ -59,10 +92,16 @@ fun EstateDetails(estate: Estate) {
 					}
 				}
 			}
+		// ----------------------------
+		// Description
+		// ----------------------------
 		Text(text = stringResource(R.string.description), style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp))
 		Text(text = estate.description, style = MaterialTheme.typography.body2, modifier = Modifier.padding(top = 16.dp))
 		Spacer(modifier = Modifier.height(32.dp))
 		Row(modifier = Modifier.fillMaxSize()) {
+			// ----------------------------
+			// Column 1
+			// ----------------------------
 			Column(Modifier
 				.weight(1.0f)
 				.padding(8.dp)) {
@@ -71,6 +110,9 @@ fun EstateDetails(estate: Estate) {
 				EstateDetailInfoLabel(Icons.Default.Info, stringResource(R.string.number_of_bathrooms), estate.numberOfBathrooms.toString())
 				EstateDetailInfoLabel(Icons.Default.AccountBox, stringResource(R.string.number_of_bedrooms), estate.numberOfBedrooms.toString())
 			}
+			// ----------------------------
+			// Column 2
+			// ----------------------------
 			Column(Modifier
 				.weight(1.0f)
 				.padding(8.dp)) {
@@ -79,7 +121,7 @@ fun EstateDetails(estate: Estate) {
 				EstateDetailInfoLabel(Icons.Default.ManageAccounts, stringResource(R.string.agent), estate.agent, leftSpacing = 24.dp)
 			}
 			// ----------------------------
-			// Minimap
+			// Column 3 - Minimap
 			// ----------------------------
 			if (!small) // If DPI width is big
 				Column(Modifier

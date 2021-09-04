@@ -1,6 +1,8 @@
 package com.cold0.realestatemanager.screens.home.estatelist
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -9,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -18,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.cold0.realestatemanager.ComposeUtils
 import com.cold0.realestatemanager.model.Estate
+import com.cold0.realestatemanager.model.EstateStatus
 import com.cold0.realestatemanager.screens.home.HomeViewModel
 import java.io.File
 import java.text.NumberFormat
@@ -49,20 +54,28 @@ fun EstateListItem(estate: Estate, isSelected: Boolean, viewModel: HomeViewModel
 			}
 	)
 	{
-		if (estate.photos.isNotEmpty()) {
-			val photo = estate.photos.first()
-			Image(
-				painter = rememberImagePainter(if (photo.localUri != null) File(photo.localUri.toString()) else photo.onlineUrl),
-				contentDescription = estate.photos.first().name,
-				modifier = Modifier.size(108.dp),
-				contentScale = ContentScale.Crop
-			)
-		} else
-			Box(Modifier
-				.size(108.dp)
-				.border(BorderStroke(2.dp, Color.Black))) {
+		Box(modifier = Modifier.size(108.dp)) {
+			if (estate.photos.isNotEmpty()) {
+				val photo = estate.photos.first()
+				Image(
+					painter = rememberImagePainter(if (photo.localUri != null) File(photo.localUri.toString()) else photo.onlineUrl),
+					contentDescription = estate.photos.first().name,
+					modifier = Modifier.fillMaxSize(),
+					contentScale = ContentScale.Crop,
+					colorFilter = if (estate.status == EstateStatus.Sold) ComposeUtils.colorFilterGrayscale else null
+				)
+			} else
 				Text(text = "No Photo\nAvailable", modifier = Modifier.align(Center))
-			}
+
+			if (estate.status == EstateStatus.Sold)
+				Text(modifier = Modifier
+					.align(Center)
+					.rotate(45f),
+					text = "Sold",
+					fontWeight = FontWeight.ExtraBold,
+					color = Color.Red,
+					fontSize = 38.sp)
+		}
 		Column(
 			Modifier
 				.padding(start = 8.dp)

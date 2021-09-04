@@ -14,7 +14,7 @@ class EstateDatabaseConverter {
 	private var gson: Gson = Gson()
 
 	// ----------------------
-	// Timestamp
+	// Timestamp (Date)
 	// ----------------------
 	@TypeConverter
 	fun timestampFromDate(date: Date): Long {
@@ -24,6 +24,22 @@ class EstateDatabaseConverter {
 	@TypeConverter
 	fun dateFromTimestamp(timestamp: Long): Date {
 		return Date(timestamp)
+	}
+
+	// ----------------------
+	// Date (Calendar)
+	// ----------------------
+	@TypeConverter
+	fun fromLong(value: Long): GregorianCalendar {
+		val cal = GregorianCalendar()
+		cal.time = Date(value)
+		return cal
+	}
+
+	@TypeConverter
+	fun toLong(calendar: GregorianCalendar): Long {
+		val cal: Calendar = calendar
+		return cal.time.time
 	}
 
 	// ----------------------

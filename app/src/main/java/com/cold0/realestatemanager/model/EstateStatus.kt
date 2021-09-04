@@ -5,7 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 enum class EstateStatus(val id: Int) : Parcelable {
-	None(0),
 	Available(1),
 	Sold(2)
 }
