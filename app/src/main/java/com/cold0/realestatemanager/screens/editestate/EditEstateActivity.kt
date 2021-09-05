@@ -17,11 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
+import com.cold0.realestatemanager.model.EstateType
+import com.cold0.realestatemanager.screens.commons.DropDownMenu
 import com.cold0.realestatemanager.screens.commons.TopBarReturn
 import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetailMinimap
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
@@ -75,14 +78,17 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 		// ----------------------------
 		Text(
 			text = stringResource(R.string.media),
-			style = MaterialTheme.typography.h5
+			style = MaterialTheme.typography.h5,
+			fontWeight = FontWeight.Bold
 		)
 		EditEstatePhotoList(estate, onEstateChange = { onEstateChange(it) })
-
+		DropDownMenu("Type", estate.type, EstateType.values().asList()) {
+			estate.type = it as EstateType
+		}
 		// ----------------------------
 		// Description
 		// ----------------------------
-		Text(text = stringResource(R.string.description), style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp))
+		Text(text = stringResource(R.string.description), style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp), fontWeight = FontWeight.Bold)
 		TextField(
 			value = estate.description,
 			onValueChange = { estate.description = it; onEstateChange(estate) },
