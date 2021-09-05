@@ -3,6 +3,7 @@ package com.cold0.realestatemanager.screens.home
 import android.app.Activity
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -23,6 +24,7 @@ import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
 
+@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @Composable
 fun HomeTopAppBar(
@@ -44,10 +46,18 @@ fun HomeTopAppBar(
 			actions = {
 				val context = LocalContext.current
 				val intent = Intent(context, EditEstateActivity::class.java)
-				val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult = { result ->
+				val launcherEdit = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult = { result ->
 					if (result.resultCode == Activity.RESULT_OK) {
 						result.data?.getParcelableExtra<Estate>("estateReturn")?.let {
 							viewModel.updateEstate(it)
+						}
+					}
+				})
+				val launcherAdd = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult = { result ->
+					if (result.resultCode == Activity.RESULT_OK) {
+						result.data?.getParcelableExtra<Estate>("estateReturn")?.let {
+							viewModel.addEstate(it)
+							viewModel.setSelectedEstate(it.getKeys())
 						}
 					}
 				})
@@ -57,20 +67,23 @@ fun HomeTopAppBar(
 				// ----------------------------
 				IconButton(
 					onClick = {
-						viewModel.addEstate(Estate())
+						intent.putExtra("estate", Estate())
+						launcherAdd.launch(intent)
+						//viewModel.addEstate(Estate())
+						//sendNotification(context, "Real Estate Manager", "Estate Succefully Added")
 					},
 				) {
 					Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
 				}
 
 				// ----------------------------
-				// Remove Button (Only show if Estate list isn't Empty)
+				// Edit Button (Only show if Estate list isn't Empty)
 				// ----------------------------
 				//var estateToEdit by remember { mutableStateOf(false) } // Needed because onClick can't be @Composable
 				if (!listEstate.isNullOrEmpty())
 					IconButton(onClick = {
 						intent.putExtra("estate", viewModel.getSelectedEstate())
-						launcher.launch(intent)
+						launcherEdit.launch(intent)
 					}) {
 						Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.content_description_edit_current_selected_estate), tint = Color.White)
 					}

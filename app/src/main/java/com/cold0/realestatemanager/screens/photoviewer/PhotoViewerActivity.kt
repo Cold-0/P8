@@ -31,17 +31,17 @@ class PhotoViewerActivity : ComponentActivity() {
 		setContent {
 			RealEstateManagerTheme {
 				var numberOfClick by remember { mutableStateOf(0) }
-				Surface(color = Color.Black.copy(alpha = 0.7f), modifier = Modifier
-					.fillMaxSize()
-					.clickable {
-						numberOfClick += 1
-						if (numberOfClick >= 2)
-							finish()
-					}) {
-					if (photo != null) {
+				if (photo != null) {
+					Surface(color = Color.Black.copy(alpha = 0.7f), modifier = Modifier
+						.fillMaxSize()
+						.clickable {
+							numberOfClick += 1
+							if (numberOfClick >= 2 || (photo.description.isBlank() && numberOfClick >= 1))
+								finish()
+						}) {
 						Box {
 							ZoomableImage(photo)
-							if (numberOfClick == 0)
+							if (numberOfClick == 0 && photo.description.isNotBlank())
 								Surface(shape = RoundedCornerShape(8.dp), color = Color.Black.copy(alpha = 0.8f), modifier = Modifier
 									.align(Alignment.BottomCenter)
 									.padding(16.dp)) {
@@ -51,9 +51,9 @@ class PhotoViewerActivity : ComponentActivity() {
 									)
 								}
 						}
-					} else
-						finish()
-				}
+					}
+				} else
+					finish()
 			}
 		}
 	}

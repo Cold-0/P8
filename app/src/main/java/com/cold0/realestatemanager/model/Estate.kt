@@ -18,7 +18,7 @@ data class Estate(
 	var photos: List<Photo> = listOf(Photo(name = "Facade", onlineUrl = "https://picsum.photos/id/155/300/300", localUri = null, description = "")),
 	var district: String = "No District",
 	var dateAdded: GregorianCalendar = GregorianCalendar(),
-	var dateSold: GregorianCalendar? = null,
+	var dateSold: GregorianCalendar = GregorianCalendar(),
 	var agent: String = "No one assigned",
 	var numberOfRooms: Int = 0,
 	var numberOfBathrooms: Int = 0,
