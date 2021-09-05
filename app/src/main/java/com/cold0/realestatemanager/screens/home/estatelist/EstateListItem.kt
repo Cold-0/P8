@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +20,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.ColorUtils
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.cold0.realestatemanager.ComposeUtils
@@ -64,8 +66,12 @@ fun EstateListItem(estate: Estate, isSelected: Boolean, viewModel: HomeViewModel
 					contentScale = ContentScale.Crop,
 					colorFilter = if (estate.status == EstateStatus.Sold) ComposeUtils.colorFilterGrayscale else null
 				)
-			} else
+			} else {
+				Surface(modifier = Modifier
+					.align(Center)
+					.fillMaxSize()) {}
 				Text(text = "No Photo\nAvailable", modifier = Modifier.align(Center))
+			}
 
 			if (estate.status == EstateStatus.Sold)
 				Text(modifier = Modifier
@@ -73,7 +79,7 @@ fun EstateListItem(estate: Estate, isSelected: Boolean, viewModel: HomeViewModel
 					.rotate(45f),
 					text = "Sold",
 					fontWeight = FontWeight.ExtraBold,
-					color = Color.Red,
+					color = Color(ColorUtils.HSLToColor(floatArrayOf(0.0f, 0.75f, 0.5f))),
 					fontSize = 38.sp)
 		}
 		Column(
