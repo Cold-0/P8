@@ -50,19 +50,19 @@ class HomeViewModel : ViewModel() {
 		estateSelected.postValue(pair)
 	}
 
-	fun setSelectedEstate(uuid: UUID, timestamp: Date) {
-		estateSelected.postValue(Pair(uuid, timestamp))
-	}
-
-	fun setSelectedEstate(estate: Estate) {
-		estateSelected.postValue(Pair(estate.uid, estate.timestamp))
-	}
-
 	fun getSelectedEstate(): Estate {
 		return estateList.value?.find {
 			it.uid == estateSelected.value?.first ?: false
 					&& it.timestamp == estateSelected.value?.second ?: false
-		} ?: Estate()
+		} ?: getFirstEstate()
+	}
+
+	private fun getFirstEstate(): Estate {
+		estateList.value?.first()?.let {
+			setSelectedEstate(it.getKeys())
+			return it
+		}
+		return Estate()
 	}
 
 	// ----------------------------
@@ -77,7 +77,7 @@ class HomeViewModel : ViewModel() {
 	fun addEstate(estate: Estate) {
 		thread {
 			Repository.db?.estateDao()?.insert(estate)
-			setSelectedEstate(estate.uid, estate.timestamp)
+			setSelectedEstate(estate.getKeys())
 			updateEstateListFromDB()
 		}
 	}
@@ -100,13 +100,6 @@ class HomeViewModel : ViewModel() {
 	// ----------------------------
 	// Delete
 	// ----------------------------
-	fun deleteEstate(index: UUID, timestamp: Date) {
-		thread {
-			Repository.db?.estateDao()?.deleteByUIDAndTimestamp(index, timestamp)
-			updateEstateListFromDB()
-		}
-	}
-
 	fun deleteEstate(keys: Pair<UUID, Date>) {
 		thread {
 			Repository.db?.estateDao()?.deleteByUIDAndTimestamp(keys.first, keys.second)

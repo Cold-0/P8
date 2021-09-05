@@ -21,11 +21,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.BuildConfig
-import com.cold0.realestatemanager.ComposeUtils.InActivityDo
+import com.cold0.realestatemanager.ComposeUtils.RunWithLifecycleOwner
 import com.cold0.realestatemanager.ComposeUtils.isScreenSmall
 import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetails
 import com.cold0.realestatemanager.screens.home.estatelist.EstateList
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
+import java.util.*
 
 @ExperimentalCoilApi
 @ExperimentalAnimationApi
@@ -45,7 +46,7 @@ class HomeActivity : ComponentActivity() {
 			viewModel.updateEstateListFromDB()
 			val estateSelected by viewModel.rememberEstateSelected()
 
-			InActivityDo{
+			RunWithLifecycleOwner {
 				viewModel.ObserveEstateSelected(it) {
 					if (smallScreen)
 						openLeftDrawer = false
@@ -79,17 +80,15 @@ class HomeActivity : ComponentActivity() {
 					// ----------------------------
 					// When List is not Empty
 					// ----------------------------
-					else estateList?.let { estateListChecked ->
-						if (estateListChecked.find { it.uid == estateSelected?.first ?: -1 } == null) {
-							if (!estateList.isNullOrEmpty())
-								estateList!!.first().let { viewModel.setSelectedEstate(it.uid, it.timestamp) }
-						}
-						Row(Modifier.fillMaxSize()) {
-							AnimatedVisibility(visible = openLeftDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
-								EstateList(estateListChecked, viewModel)
+					else {
+						estateList?.let { estateListChecked ->
+							Row(Modifier.fillMaxSize()) {
+								val pair = estateSelected?:Pair(UUID.randomUUID(), Date())
+								AnimatedVisibility(visible = openLeftDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
+									EstateList(estateListChecked, pair, viewModel)
+								}
+								EstateDetails(viewModel.getSelectedEstate())
 							}
-							estateListChecked.find { it.uid == estateSelected?.first ?: 0 }
-								?.let { EstateDetails(it) }
 						}
 					}
 				}

@@ -11,10 +11,11 @@ import androidx.compose.ui.graphics.Color
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.home.HomeViewModel
+import java.util.*
 
 @ExperimentalCoilApi
 @Composable
-fun EstateList(estateList: List<Estate>, viewModel: HomeViewModel) {
+fun EstateList(estateList: List<Estate>, estateSelected: Pair<UUID, Date>, viewModel: HomeViewModel) {
 	LazyColumn(modifier = Modifier
 		.fillMaxHeight()
 		.drawBehind {
@@ -28,7 +29,7 @@ fun EstateList(estateList: List<Estate>, viewModel: HomeViewModel) {
 			)
 		}) {
 		items(estateList) { estate ->
-			EstateListItem(estate, viewModel.getSelectedEstate().compareKeys(estate), viewModel = viewModel)
+			EstateListItem(estate, estate.compareKeys(estateSelected), viewModel = viewModel)
 		}
 	}
 }
