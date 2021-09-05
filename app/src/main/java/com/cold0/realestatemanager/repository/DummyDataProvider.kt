@@ -95,7 +95,7 @@ object DummyDataProvider {
 
 	private fun randomPhotoList(): List<Photo> {
 		val list = mutableListOf<Photo>()
-		repeat(nextInt(0, 8))
+		repeat(nextInt(0, 10))
 		{
 			list.add(randomPhoto())
 		}
@@ -128,7 +128,7 @@ object DummyDataProvider {
 	// ---------------------
 	fun getRandomEstateList(): List<Estate> {
 		val list = mutableListOf<Estate>()
-		repeat(nextInt(6, 12))
+		repeat(nextInt(10, 24))
 		{
 			list.add(randomEstate())
 		}
