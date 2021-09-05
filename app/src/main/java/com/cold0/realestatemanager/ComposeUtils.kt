@@ -1,9 +1,14 @@
 package com.cold0.realestatemanager
 
+import android.R
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
-import androidx.activity.ComponentActivity
+import android.media.RingtoneManager
+import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContract
@@ -13,15 +18,22 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.model.Photo
 import com.cold0.realestatemanager.screens.converter.ConverterActivity
 import com.cold0.realestatemanager.screens.photoviewer.PhotoViewerActivity
 import java.util.*
 
+
 @ExperimentalCoilApi
 object ComposeUtils {
+
+	// --------------------------------------
+	// Easy Activity Open
+	// --------------------------------------
 	@ExperimentalCoilApi
 	fun openPhotoViewerActivity(context: Context, photo: Photo) {
 		val intent = Intent(context, PhotoViewerActivity::class.java).apply {
@@ -74,10 +86,13 @@ object ComposeUtils {
 		return returnedLauncher
 	}
 
+	// ----------------------------
+	// Do action if context is Activity
+	// ----------------------------
 	@Composable
-	fun InActivityDo(action: @Composable (ComponentActivity) -> (Unit)) {
-		fun Context.getActivity(): ComponentActivity? = when (this) {
-			is ComponentActivity -> this
+	fun RunWithLifecycleOwner(action: @Composable (LifecycleOwner) -> (Unit)) {
+		fun Context.getActivity(): LifecycleOwner? = when (this) {
+			is LifecycleOwner -> this
 			is ContextWrapper -> baseContext.getActivity()
 			else -> null
 		}
@@ -109,6 +124,29 @@ object ComposeUtils {
 				"&apiKey=$apiKey"
 	}
 
+	fun sendNotification(context: Context, title: String?, message: String?, intent: Intent?, reqCode: Int) {
+		val pendingIntent = PendingIntent.getActivity(context, reqCode, intent, PendingIntent.FLAG_ONE_SHOT)
+		val CHANNEL_ID = "ESTATE_ADDED" //
+		val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, CHANNEL_ID)
+			.setSmallIcon(R.drawable.ic_menu_add)
+			.setContentTitle(title)
+			.setContentText(message)
+			.setAutoCancel(true)
+			.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+			.setContentIntent(pendingIntent)
+		val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			val name: CharSequence = "Estate Added"
+			val importance = NotificationManager.IMPORTANCE_HIGH
+			val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
+			notificationManager.createNotificationChannel(mChannel)
+		}
+		notificationManager.notify(reqCode, notificationBuilder.build()) 
+	}
+
+	// ------------------------
+	// Grayscale ColorFilter
+	// ------------------------
 	private val grayScaleMatrix = ColorMatrix(
 		floatArrayOf(
 			0.33f, 0.33f, 0.33f, 0f, 0f,
