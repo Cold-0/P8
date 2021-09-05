@@ -124,10 +124,13 @@ object ComposeUtils {
 				"&apiKey=$apiKey"
 	}
 
+	// ----------------------------
+	// Notification Helper
+	// ----------------------------
 	fun sendNotification(context: Context, title: String?, message: String?, intent: Intent?, reqCode: Int) {
 		val pendingIntent = PendingIntent.getActivity(context, reqCode, intent, PendingIntent.FLAG_ONE_SHOT)
-		val CHANNEL_ID = "ESTATE_ADDED" //
-		val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, CHANNEL_ID)
+		val channelId = "ESTATE_ADDED"
+		val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, channelId)
 			.setSmallIcon(R.drawable.ic_menu_add)
 			.setContentTitle(title)
 			.setContentText(message)
@@ -138,10 +141,10 @@ object ComposeUtils {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 			val name: CharSequence = "Estate Added"
 			val importance = NotificationManager.IMPORTANCE_HIGH
-			val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
+			val mChannel = NotificationChannel(channelId, name, importance)
 			notificationManager.createNotificationChannel(mChannel)
 		}
-		notificationManager.notify(reqCode, notificationBuilder.build()) 
+		notificationManager.notify(reqCode, notificationBuilder.build())
 	}
 
 	// ------------------------

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.ComposeUtils
 import com.cold0.realestatemanager.ComposeUtils.registerForActivityResult
+import com.cold0.realestatemanager.ComposeUtils.sendNotification
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
@@ -46,6 +47,10 @@ fun HomeTopAppBar(
 			actions = {
 				val context = LocalContext.current
 				val intent = Intent(context, EditEstateActivity::class.java)
+
+				// ----------------------------
+				// Launcher for Edit Menu
+				// ----------------------------
 				val launcherEdit = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult = { result ->
 					if (result.resultCode == Activity.RESULT_OK) {
 						result.data?.getParcelableExtra<Estate>("estateReturn")?.let {
@@ -53,11 +58,15 @@ fun HomeTopAppBar(
 						}
 					}
 				})
+				// ----------------------------
+				// Launcher for Add Menu
+				// ----------------------------
 				val launcherAdd = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult = { result ->
 					if (result.resultCode == Activity.RESULT_OK) {
 						result.data?.getParcelableExtra<Estate>("estateReturn")?.let {
 							viewModel.addEstate(it)
 							viewModel.setSelectedEstate(it.getKeys())
+							sendNotification(context, "Real Estate Manager", "Succefully added new Estate", Intent(context, HomeActivity::class.java), 10001)
 						}
 					}
 				})
@@ -69,8 +78,6 @@ fun HomeTopAppBar(
 					onClick = {
 						intent.putExtra("estate", Estate())
 						launcherAdd.launch(intent)
-						//viewModel.addEstate(Estate())
-						//sendNotification(context, "Real Estate Manager", "Estate Succefully Added")
 					},
 				) {
 					Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
