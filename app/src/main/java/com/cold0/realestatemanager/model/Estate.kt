@@ -28,8 +28,12 @@ data class Estate(
 	var interest: String = "Nothing",
 	var status: EstateStatus = EstateStatus.Available,
 ) : Parcelable {
+	fun compareKeys(pair: Pair<UUID, Date>): Boolean {
+		return this.uid == pair.first && this.timestamp == pair.second
+	}
+
 	fun compareKeys(estate: Estate): Boolean {
-		return this.uid == estate.uid && this.timestamp == estate.timestamp
+		return compareKeys(estate.getKeys())
 	}
 
 	fun getKeys(): Pair<UUID, Date> {
