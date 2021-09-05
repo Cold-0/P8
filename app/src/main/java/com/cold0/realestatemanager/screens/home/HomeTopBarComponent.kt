@@ -4,7 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -12,6 +15,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,6 +28,8 @@ import com.cold0.realestatemanager.ComposeUtils.registerForActivityResult
 import com.cold0.realestatemanager.ComposeUtils.sendNotification
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
+import com.cold0.realestatemanager.model.EstateStatus
+import com.cold0.realestatemanager.screens.commons.DatePicker
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
 
 @ExperimentalAnimationApi
@@ -86,7 +93,6 @@ fun HomeTopAppBar(
 				// ----------------------------
 				// Edit Button (Only show if Estate list isn't Empty)
 				// ----------------------------
-				//var estateToEdit by remember { mutableStateOf(false) } // Needed because onClick can't be @Composable
 				if (!listEstate.isNullOrEmpty())
 					IconButton(onClick = {
 						intent.putExtra("estate", viewModel.getSelectedEstate())
@@ -109,11 +115,61 @@ fun HomeTopAppBar(
 						Icon(imageVector = Icons.Filled.MoreVert, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
 					}
 
+					var openDialog by remember { mutableStateOf(false) }
+					val estate = viewModel.getSelectedEstate()
+					var buttonDateText by remember { mutableStateOf("Pick a date") }
+
+					if (openDialog) {
+						AlertDialog(
+							modifier = Modifier.padding(8.dp),
+							onDismissRequest = {},
+							title = { Text("Sold Date") },
+							text = {
+								var showDatePicker by remember { mutableStateOf(false) }
+								Box(modifier = Modifier.fillMaxWidth()) {
+									DatePicker(showDatePicker) {
+										estate.dateSold = it
+										buttonDateText = ComposeUtils.dateToString(it)
+									}
+									Button(
+										modifier = Modifier.align(Alignment.Center),
+										onClick = {
+											showDatePicker = true
+										}
+									) {
+										Text(buttonDateText)
+									}
+								}
+							},
+							confirmButton = {
+								Button(onClick = {
+									openDialog = false
+									estate.status = EstateStatus.Sold
+									viewModel.updateEstate(estate)
+									buttonDateText = "Pick a date"
+								}) {
+									Text("Ok")
+								}
+							},
+							dismissButton = {
+								Button(onClick = { openDialog = false }) {
+									Text("Cancel")
+								}
+							}
+						)
+					}
+
 					DropdownMenu(
 						offset = DpOffset((-4).dp, 4.dp),
 						expanded = threeDotExpanded,
 						onDismissRequest = { threeDotExpanded = false },
 					) {
+						if (estate.status == EstateStatus.Available) {
+							DropdownMenuItem(onClick = { openDialog = true }) {
+								Text("Mark as sold")
+							}
+							Divider()
+						}
 						DropdownMenuItem(onClick = { ComposeUtils.openConverterActivity(context) }) {
 							Text("Tools")
 						}

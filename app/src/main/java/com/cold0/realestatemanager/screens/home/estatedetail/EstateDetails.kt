@@ -1,6 +1,5 @@
 package com.cold0.realestatemanager.screens.home.estatedetail
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -22,10 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
+import com.cold0.realestatemanager.ComposeUtils.dateToString
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateStatus
-import java.text.SimpleDateFormat
 
 @ExperimentalCoilApi
 @Composable
@@ -42,12 +41,11 @@ fun EstateDetails(estate: Estate) {
 			// ----------------------------
 			// Column 1
 			// ----------------------------
-			@SuppressLint("SimpleDateFormat") val dateFormat = SimpleDateFormat("dd/MM/yyyy")
 			Column(Modifier
 				.weight(1.0f)
 				.padding(8.dp)) {
 
-				EstateDetailInfoLabel(Icons.Default.Face, "Added", dateFormat.format(estate.timestamp))
+				EstateDetailInfoLabel(Icons.Default.Face, "Added", dateToString(estate.timestamp))
 			}
 			// ----------------------------
 			// Column 2
@@ -57,7 +55,7 @@ fun EstateDetails(estate: Estate) {
 				.padding(8.dp)) {
 				val stringToPrint = if (estate.status == EstateStatus.Available)
 					"Available"
-				else "Sold on " + estate.dateSold?.let { dateFormat.format(it.time) }
+				else "Sold on " + dateToString(estate.dateSold)
 				EstateDetailInfoLabel(Icons.Default.Face, "Status", stringToPrint)
 			}
 		}

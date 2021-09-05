@@ -70,8 +70,8 @@ object DummyDataProvider {
 //		return "${nextInt(1, 28).toString().padStart(2, '0')}/${nextInt(1, 13).toString().padStart(2, '0')}/2021"
 //	}
 
-	private fun randomDate(): GregorianCalendar {
-		return GregorianCalendar(nextInt(2020, 2022), nextInt(0, 12), nextInt(0, 29))
+	private fun randomDate(): Date {
+		return GregorianCalendar(nextInt(2020, 2022), nextInt(0, 12), nextInt(0, 29)).time
 	}
 
 	private fun randomLocation(): String {
@@ -79,7 +79,7 @@ object DummyDataProvider {
 	}
 
 	private fun randomPhotoUrl(): String {
-		return "https://picsum.photos/id/${nextInt(150)}/400"
+		return "https://picsum.photos/id/${nextInt(50)}/400"
 	}
 
 	private inline fun <reified E : Enum<E>> randomEnum(): E {
@@ -104,7 +104,7 @@ object DummyDataProvider {
 
 	private fun randomEstate(): Estate {
 		return Estate(
-			timestamp = randomDate().time,
+			timestamp = randomDate(),
 			district = randomDistrict(),
 			surface = nextInt(20, 250),
 			type = randomEnum(),

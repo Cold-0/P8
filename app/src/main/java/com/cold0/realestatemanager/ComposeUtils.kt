@@ -1,6 +1,7 @@
 package com.cold0.realestatemanager
 
 import android.R
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -25,6 +26,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.model.Photo
 import com.cold0.realestatemanager.screens.converter.ConverterActivity
 import com.cold0.realestatemanager.screens.photoviewer.PhotoViewerActivity
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -84,6 +86,11 @@ object ComposeUtils {
 			}
 		}
 		return returnedLauncher
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	fun dateToString(date: Date): String {
+		return SimpleDateFormat("dd/MM/yyyy").format(date)
 	}
 
 	// ----------------------------
