@@ -65,7 +65,8 @@ fun EstateDetails(estate: Estate) {
 		// ----------------------------
 		Text(
 			text = stringResource(R.string.media),
-			style = MaterialTheme.typography.h5
+			style = MaterialTheme.typography.h5,
+			fontWeight = FontWeight.Bold
 		)
 		if (estate.photos.isNotEmpty())
 			LazyRow {
@@ -93,7 +94,8 @@ fun EstateDetails(estate: Estate) {
 		// ----------------------------
 		// Description
 		// ----------------------------
-		Text(text = stringResource(R.string.description), style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp))
+		Text(text = stringResource(R.string.description), style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp),
+			fontWeight = FontWeight.Bold)
 		Text(text = estate.description, style = MaterialTheme.typography.body2, modifier = Modifier.padding(top = 16.dp))
 		Spacer(modifier = Modifier.height(32.dp))
 		Row(modifier = Modifier.fillMaxSize()) {
