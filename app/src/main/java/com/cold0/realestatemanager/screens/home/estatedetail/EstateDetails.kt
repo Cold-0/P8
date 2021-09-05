@@ -47,7 +47,7 @@ fun EstateDetails(estate: Estate) {
 				.weight(1.0f)
 				.padding(8.dp)) {
 
-				EstateDetailInfoLabel(Icons.Default.Face, "Added", dateFormat.format(estate.dateAdded.time))
+				EstateDetailInfoLabel(Icons.Default.Face, "Added", dateFormat.format(estate.timestamp))
 			}
 			// ----------------------------
 			// Column 2

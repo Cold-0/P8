@@ -86,7 +86,7 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 		TextField(
 			value = estate.description,
 			onValueChange = { estate.description = it; onEstateChange(estate) },
-			modifier = Modifier.padding(top = 16.dp)
+			modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
 		)
 		Spacer(modifier = Modifier.height(32.dp))
 		Row(modifier = Modifier.fillMaxSize()) {
