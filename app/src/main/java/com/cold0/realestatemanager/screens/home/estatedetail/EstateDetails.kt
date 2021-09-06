@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import com.cold0.realestatemanager.ComposeUtils.dateToString
+import com.cold0.realestatemanager.ComposeUtils.estateFormat
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateStatus
@@ -44,8 +44,7 @@ fun EstateDetails(estate: Estate) {
 			Column(Modifier
 				.weight(1.0f)
 				.padding(8.dp)) {
-
-				EstateDetailInfoLabel(Icons.Default.Face, "Added", dateToString(estate.timestamp))
+				OutlinedText(value = estate.timestamp.estateFormat(), modifier = Modifier.fillMaxWidth(), title = "Added")
 			}
 			// ----------------------------
 			// Column 2
@@ -55,8 +54,8 @@ fun EstateDetails(estate: Estate) {
 				.padding(8.dp)) {
 				val stringToPrint = if (estate.status == EstateStatus.Available)
 					"Available"
-				else "Sold on " + dateToString(estate.dateSold)
-				EstateDetailInfoLabel(Icons.Default.Face, "Status", stringToPrint)
+				else "Sold on " + estate.dateSold.estateFormat()
+				OutlinedText(stringToPrint, Modifier.fillMaxWidth(), title = "Status")
 			}
 		}
 
@@ -105,10 +104,10 @@ fun EstateDetails(estate: Estate) {
 			Column(Modifier
 				.weight(1.0f)
 				.padding(8.dp)) {
-				EstateDetailInfoLabel(Icons.Default.Face, stringResource(R.string.surface), estate.surface.toString())
-				EstateDetailInfoLabel(Icons.Default.Person, stringResource(R.string.number_of_rooms), estate.numberOfRooms.toString())
-				EstateDetailInfoLabel(Icons.Default.Info, stringResource(R.string.number_of_bathrooms), estate.numberOfBathrooms.toString())
-				EstateDetailInfoLabel(Icons.Default.AccountBox, stringResource(R.string.number_of_bedrooms), estate.numberOfBedrooms.toString())
+				OutlinedText(estate.surface.toString(), leadingIcon = Icons.Default.Face, title = stringResource(R.string.surface))
+				OutlinedText(estate.numberOfRooms.toString(), leadingIcon = Icons.Default.Person, title = stringResource(R.string.number_of_rooms))
+				OutlinedText(estate.numberOfBathrooms.toString(), leadingIcon = Icons.Default.Info, title = stringResource(R.string.number_of_bathrooms))
+				OutlinedText(estate.numberOfBedrooms.toString(), leadingIcon = Icons.Default.AccountBox, title = stringResource(R.string.number_of_bedrooms))
 			}
 			// ----------------------------
 			// Column 2
@@ -116,9 +115,9 @@ fun EstateDetails(estate: Estate) {
 			Column(Modifier
 				.weight(1.0f)
 				.padding(8.dp)) {
-				EstateDetailInfoLabel(Icons.Default.Place, stringResource(R.string.location), estate.address)
-				EstateDetailInfoLabel(Icons.Default.Info, stringResource(R.string.point_of_interest), estate.interest)
-				EstateDetailInfoLabel(Icons.Default.ManageAccounts, stringResource(R.string.agent), estate.agent)
+				OutlinedText(estate.address, leadingIcon = Icons.Default.Place, title = stringResource(R.string.location))
+				OutlinedText(estate.interest, leadingIcon = Icons.Default.Info, title = stringResource(R.string.point_of_interest))
+				OutlinedText(estate.agent, leadingIcon = Icons.Default.ManageAccounts, title = stringResource(R.string.agent))
 			}
 			// ----------------------------
 			// Column 3 - Minimap

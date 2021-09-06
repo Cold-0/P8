@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -24,14 +25,16 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.ComposeUtils
+import com.cold0.realestatemanager.ComposeUtils.estateFormat
 import com.cold0.realestatemanager.ComposeUtils.registerForActivityResult
 import com.cold0.realestatemanager.ComposeUtils.sendNotification
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateStatus
-import com.cold0.realestatemanager.screens.commons.DatePicker
+import com.cold0.realestatemanager.screens.commons.OutlinedDatePickerButton
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalCoilApi
 @Composable
@@ -125,19 +128,10 @@ fun HomeTopAppBar(
 							onDismissRequest = {},
 							title = { Text("Sold Date") },
 							text = {
-								var showDatePicker by remember { mutableStateOf(false) }
 								Box(modifier = Modifier.fillMaxWidth()) {
-									DatePicker(showDatePicker) {
+									OutlinedDatePickerButton(Modifier.align(Alignment.Center)) {
 										estate.dateSold = it
-										buttonDateText = ComposeUtils.dateToString(it)
-									}
-									Button(
-										modifier = Modifier.align(Alignment.Center),
-										onClick = {
-											showDatePicker = true
-										}
-									) {
-										Text(buttonDateText)
+										buttonDateText = it.estateFormat()
 									}
 								}
 							},

@@ -86,7 +86,7 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 			fontWeight = FontWeight.Bold
 		)
 		EditEstatePhotoList(estate, onEstateChange = { onEstateChange(it) })
-		DropDownField("Type", estate.type, EstateType.values().asList(), Modifier.fillMaxWidth(0.5f)) {
+		DropDownField("Type", estate.type, EstateType.values().asList()) {
 			estate.type = it as EstateType
 		}
 		// ----------------------------
@@ -108,33 +108,36 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 			Column(Modifier
 				.weight(1.0f)
 				.padding(8.dp)) {
-				EditEstateField(Icons.Default.Face, stringResource(R.string.surface), estate.surface.toString(), keyboardType = KeyboardType.Number) {
+				OutlinedTextFieldLazy(leadingIcon = Icons.Default.Face,
+					title = stringResource(R.string.surface),
+					value = estate.surface.toString(),
+					keyboardType = KeyboardType.Number) {
 					val new = it.toIntOrNull()
 					if (new != null)
 						estate.surface = new
 					onEstateChange(estate)
 				}
-				EditEstateField(Icons.Default.Person,
-					stringResource(R.string.number_of_rooms),
-					estate.numberOfRooms.toString(),
+				OutlinedTextFieldLazy(leadingIcon = Icons.Default.Person,
+					title = stringResource(R.string.number_of_rooms),
+					value = estate.numberOfRooms.toString(),
 					keyboardType = KeyboardType.Number) {
 					val new = it.toIntOrNull()
 					if (new != null)
 						estate.numberOfRooms = new
 					onEstateChange(estate)
 				}
-				EditEstateField(Icons.Default.Info,
-					stringResource(R.string.number_of_bathrooms),
-					estate.numberOfBathrooms.toString(),
+				OutlinedTextFieldLazy(leadingIcon = Icons.Default.Info,
+					title = stringResource(R.string.number_of_bathrooms),
+					value = estate.numberOfBathrooms.toString(),
 					keyboardType = KeyboardType.Number) {
 					val new = it.toIntOrNull()
 					if (new != null)
 						estate.numberOfBathrooms = new
 					onEstateChange(estate)
 				}
-				EditEstateField(Icons.Default.AccountBox,
-					stringResource(R.string.number_of_bedrooms),
-					estate.numberOfBedrooms.toString(),
+				OutlinedTextFieldLazy(leadingIcon = Icons.Default.AccountBox,
+					title = stringResource(R.string.number_of_bedrooms),
+					value = estate.numberOfBedrooms.toString(),
 					keyboardType = KeyboardType.Number) {
 					val new = it.toIntOrNull()
 					if (new != null)
@@ -149,15 +152,15 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 			Column(Modifier
 				.weight(1.0f)
 				.padding(8.dp)) {
-				EditEstateField(Icons.Default.LocationOn, stringResource(R.string.location), estate.address) {
+				OutlinedTextFieldLazy(leadingIcon = Icons.Default.LocationOn, title = stringResource(R.string.location), value = estate.address) {
 					estate.address = it
 					onEstateChange(estate)
 				}
-				EditEstateField(Icons.Default.Info, stringResource(R.string.point_of_interest), estate.interest) {
+				OutlinedTextFieldLazy(leadingIcon = Icons.Default.Info, title = stringResource(R.string.point_of_interest), value = estate.interest) {
 					estate.interest = it
 					onEstateChange(estate)
 				}
-				EditEstateField(Icons.Default.ManageAccounts, stringResource(R.string.agent), estate.agent) {
+				OutlinedTextFieldLazy(leadingIcon = Icons.Default.ManageAccounts, title = stringResource(R.string.agent), value = estate.agent) {
 					estate.agent = it
 					onEstateChange(estate)
 				}

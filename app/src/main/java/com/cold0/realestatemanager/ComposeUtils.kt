@@ -1,6 +1,6 @@
 package com.cold0.realestatemanager
 
-import android.R
+
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -89,8 +89,8 @@ object ComposeUtils {
 	}
 
 	@SuppressLint("SimpleDateFormat")
-	fun dateToString(date: Date): String {
-		return SimpleDateFormat("dd/MM/yyyy").format(date)
+	fun Date.estateFormat(): String {
+		return SimpleDateFormat("dd/MM/yyyy").format(this)
 	}
 
 	// ----------------------------
@@ -134,11 +134,12 @@ object ComposeUtils {
 	// ----------------------------
 	// Notification Helper
 	// ----------------------------
+	@SuppressLint("UnspecifiedImmutableFlag")
 	fun sendNotification(context: Context, title: String?, message: String?, intent: Intent?, reqCode: Int) {
 		val pendingIntent = PendingIntent.getActivity(context, reqCode, intent, PendingIntent.FLAG_ONE_SHOT)
 		val channelId = "ESTATE_ADDED"
 		val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, channelId)
-			.setSmallIcon(R.drawable.ic_menu_add)
+			.setSmallIcon(R.drawable.ic_launcher_background)
 			.setContentTitle(title)
 			.setContentText(message)
 			.setAutoCancel(true)
