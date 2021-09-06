@@ -9,18 +9,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 
 @ExperimentalAnimationApi
 @ExperimentalCoilApi
 @Composable
-fun EtateListFilter() {
+fun EtateListFilter(top: Dp) {
 	Column(Modifier
+		.padding(top = top, start = 8.dp, end = 8.dp, bottom = 8.dp)
 		.fillMaxHeight()
-		.padding(8.dp)
 		.fillMaxWidth()
-		.verticalScroll(rememberScrollState())) {
+		.verticalScroll(rememberScrollState())
+	) {
 		Text("Surface", fontWeight = FontWeight.Bold, modifier = Modifier.padding(8.dp))
 		Row() {
 			OutlinedTextField(value = "", onValueChange = {}, modifier = Modifier
