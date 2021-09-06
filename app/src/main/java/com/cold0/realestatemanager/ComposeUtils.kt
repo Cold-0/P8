@@ -104,16 +104,16 @@ object ComposeUtils {
 			else -> null
 		}
 
-		val activity = LocalContext.current.getActivity()
-		activity?.let {
+		val lifecycleOwner = LocalContext.current.getActivity()
+		lifecycleOwner?.let {
 			action(it)
 		}
 	}
 
 	@Composable
-	fun isScreenSmall(): Boolean {
+	fun getScreenInfo(): Pair<Boolean, Int> {
 		val configuration = LocalConfiguration.current
-		return configuration.screenWidthDp <= 450
+		return Pair(configuration.screenWidthDp <= 450, configuration.screenWidthDp)
 	}
 
 	fun formatApiRequestGeoapify(

@@ -2,8 +2,8 @@ package com.cold0.realestatemanager.screens.converter
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -13,10 +13,11 @@ import com.cold0.realestatemanager.Utils
 
 @Composable
 fun ConverterFields() {
+
 	var euro by remember { mutableStateOf("") }
 	var dollar by remember { mutableStateOf("") }
 
-	TextField(
+	OutlinedTextField(
 		value = euro,
 		onValueChange = {
 			euro = it
@@ -37,7 +38,7 @@ fun ConverterFields() {
 			}
 			.padding(8.dp)
 	)
-	TextField(
+	OutlinedTextField(
 		value = dollar,
 		onValueChange = {
 			dollar = it

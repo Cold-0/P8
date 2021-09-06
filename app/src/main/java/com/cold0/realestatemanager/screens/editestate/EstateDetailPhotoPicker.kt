@@ -89,13 +89,13 @@ fun EditEstatePhotoPicker(onPhotoSelected: (Photo) -> (Unit)) {
 		onDismissRequest = {},
 		text = {
 			Column() {
-				TextField(
+				OutlinedTextField(
 					value = enteringName,
 					onValueChange = { enteringName = it },
 					label = { Text("Photo Name") },
 					modifier = Modifier.padding(8.dp)
 				)
-				TextField(
+				OutlinedTextField(
 					value = enteringDescription,
 					onValueChange = { enteringDescription = it },
 					label = { Text("Photo Description") },

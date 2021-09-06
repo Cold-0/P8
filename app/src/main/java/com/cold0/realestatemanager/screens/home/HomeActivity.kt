@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.BuildConfig
 import com.cold0.realestatemanager.ComposeUtils.RunWithLifecycleOwner
-import com.cold0.realestatemanager.ComposeUtils.isScreenSmall
+import com.cold0.realestatemanager.ComposeUtils.getScreenInfo
 import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetails
 import com.cold0.realestatemanager.screens.home.estatelist.EstateList
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
@@ -38,7 +38,7 @@ class HomeActivity : ComponentActivity() {
 		viewModel.initDatabase(applicationContext)
 
 		setContent {
-			val smallScreen = isScreenSmall()
+			val (small) = getScreenInfo()
 
 			var openLeftDrawer by remember { mutableStateOf(true) }
 
@@ -48,7 +48,7 @@ class HomeActivity : ComponentActivity() {
 
 			RunWithLifecycleOwner {
 				viewModel.ObserveEstateSelected(it) {
-					if (smallScreen)
+					if (small)
 						openLeftDrawer = false
 				}
 			}
@@ -83,7 +83,7 @@ class HomeActivity : ComponentActivity() {
 					else {
 						estateList?.let { estateListChecked ->
 							Row(Modifier.fillMaxSize()) {
-								val pair = estateSelected?:Pair(UUID.randomUUID(), Date())
+								val pair = estateSelected ?: Pair(UUID.randomUUID(), Date())
 								AnimatedVisibility(visible = openLeftDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
 									EstateList(estateListChecked, pair, viewModel)
 								}

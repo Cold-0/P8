@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -24,14 +25,16 @@ import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateType
-import com.cold0.realestatemanager.screens.commons.DropDownMenu
+import com.cold0.realestatemanager.screens.commons.DropDownField
 import com.cold0.realestatemanager.screens.commons.TopBarReturn
 import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetailMinimap
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 
 
+@ExperimentalComposeUiApi
 @ExperimentalCoilApi
 class EditEstateActivity : ComponentActivity() {
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContent {
@@ -63,6 +66,7 @@ class EditEstateActivity : ComponentActivity() {
 	}
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalCoilApi
 @Composable
 private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
@@ -82,14 +86,14 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 			fontWeight = FontWeight.Bold
 		)
 		EditEstatePhotoList(estate, onEstateChange = { onEstateChange(it) })
-		DropDownMenu("Type", estate.type, EstateType.values().asList()) {
+		DropDownField("Type", estate.type, EstateType.values().asList(), Modifier.fillMaxWidth(0.5f)) {
 			estate.type = it as EstateType
 		}
 		// ----------------------------
 		// Description
 		// ----------------------------
-		Text(text = stringResource(R.string.description), style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp), fontWeight = FontWeight.Bold)
-		TextField(
+		OutlinedTextField(
+			label = { Text(stringResource(R.string.description)) },
 			value = estate.description,
 			onValueChange = { estate.description = it; onEstateChange(estate) },
 			modifier = Modifier

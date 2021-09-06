@@ -45,10 +45,10 @@ fun EditEstatePhotoList(estate: Estate, onEstateChange: (Estate) -> (Unit)) {
 						var newName by remember { mutableStateOf("") }
 						AlertDialog(
 							onDismissRequest = { openRenamePhotoDialog = false },
-							title = { Text(text = "Dialog Title") },
+							title = { Text(modifier = Modifier.padding(8.dp), text = "Rename Photo") },
 							text = {
 								Spacer(modifier = Modifier.height(64.dp))
-								TextField(
+								OutlinedTextField(
 									value = newName,
 									onValueChange = {
 										newName = it

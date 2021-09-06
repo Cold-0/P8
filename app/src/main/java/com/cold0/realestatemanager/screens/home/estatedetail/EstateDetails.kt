@@ -116,9 +116,9 @@ fun EstateDetails(estate: Estate) {
 			Column(Modifier
 				.weight(1.0f)
 				.padding(8.dp)) {
-				EstateDetailInfoLabel(Icons.Default.Place, stringResource(R.string.location), estate.address, leftSpacing = 24.dp)
-				EstateDetailInfoLabel(Icons.Default.Info, stringResource(R.string.point_of_interest), estate.interest, leftSpacing = 24.dp)
-				EstateDetailInfoLabel(Icons.Default.ManageAccounts, stringResource(R.string.agent), estate.agent, leftSpacing = 24.dp)
+				EstateDetailInfoLabel(Icons.Default.Place, stringResource(R.string.location), estate.address)
+				EstateDetailInfoLabel(Icons.Default.Info, stringResource(R.string.point_of_interest), estate.interest)
+				EstateDetailInfoLabel(Icons.Default.ManageAccounts, stringResource(R.string.agent), estate.agent)
 			}
 			// ----------------------------
 			// Column 3 - Minimap

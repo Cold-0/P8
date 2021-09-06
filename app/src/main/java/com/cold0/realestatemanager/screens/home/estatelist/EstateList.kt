@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.ComposeUtils
@@ -28,10 +27,9 @@ import java.util.*
 @ExperimentalCoilApi
 @Composable
 fun EstateList(estateList: List<Estate>, estateSelected: Pair<UUID, Date>, viewModel: HomeViewModel) {
-	val configuration = LocalConfiguration.current
-	val small = ComposeUtils.isScreenSmall()
+	val (small, width) = ComposeUtils.getScreenInfo()
 
-	Column(Modifier.width(if (small) configuration.screenWidthDp.dp else 250.dp)) {
+	Column(Modifier.width(if (small) width.dp else 250.dp)) {
 		var filterDialogOpenned by remember { mutableStateOf(false) }
 
 		Button(
