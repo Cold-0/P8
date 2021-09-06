@@ -16,7 +16,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,11 +34,9 @@ import java.util.*
 @ExperimentalCoilApi
 @Composable
 fun EstateListItem(estate: Estate, isSelected: Boolean, viewModel: HomeViewModel) {
-	val configuration = LocalConfiguration.current
-	val small = configuration.screenWidthDp <= 450
 	Row(
 		modifier = Modifier
-			.width(if (small) configuration.screenWidthDp.dp else 250.dp)
+			.fillMaxWidth()
 			.background(if (isSelected) MaterialTheme.colors.secondary else MaterialTheme.colors.background)
 			.drawBehind {
 				val strokeWidth = 1 * density
