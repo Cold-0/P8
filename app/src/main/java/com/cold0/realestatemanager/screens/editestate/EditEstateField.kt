@@ -30,8 +30,10 @@ fun EditEstateField(
 	Row {
 		TextField(value = value, keyboardOptions = KeyboardOptions(keyboardType = keyboardType), onValueChange = {
 			text = it
-			onValueChanged(it)
-		}, modifier = Modifier.padding(8.dp).fillMaxWidth())
+			onValueChanged(text)
+		}, modifier = Modifier
+			.padding(8.dp)
+			.fillMaxWidth())
 	}
 	Spacer(Modifier.height(bottomSpacing))
 }
