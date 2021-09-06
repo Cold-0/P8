@@ -2,14 +2,9 @@ package com.cold0.realestatemanager
 
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
-import android.media.RingtoneManager
-import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContract
@@ -19,7 +14,6 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import coil.annotation.ExperimentalCoilApi
@@ -129,30 +123,6 @@ object ComposeUtils {
 				"&zoom=16.4226&pitch=44" +
 				"&marker=lonlat:$localisation;color:%23ff0000;size:medium" +
 				"&apiKey=$apiKey"
-	}
-
-	// ----------------------------
-	// Notification Helper
-	// ----------------------------
-	@SuppressLint("UnspecifiedImmutableFlag")
-	fun sendNotification(context: Context, title: String?, message: String?, intent: Intent?, reqCode: Int) {
-		val pendingIntent = PendingIntent.getActivity(context, reqCode, intent, PendingIntent.FLAG_ONE_SHOT)
-		val channelId = "ESTATE_ADDED"
-		val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, channelId)
-			.setSmallIcon(R.drawable.ic_launcher_background)
-			.setContentTitle(title)
-			.setContentText(message)
-			.setAutoCancel(true)
-			.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-			.setContentIntent(pendingIntent)
-		val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			val name: CharSequence = "Estate Added"
-			val importance = NotificationManager.IMPORTANCE_HIGH
-			val mChannel = NotificationChannel(channelId, name, importance)
-			notificationManager.createNotificationChannel(mChannel)
-		}
-		notificationManager.notify(reqCode, notificationBuilder.build())
 	}
 
 	// ------------------------
