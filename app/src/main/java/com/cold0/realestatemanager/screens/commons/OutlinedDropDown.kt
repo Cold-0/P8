@@ -24,7 +24,12 @@ import androidx.compose.ui.unit.toSize
 
 @ExperimentalComposeUiApi
 @Composable
-fun <E : Enum<E>> DropDownField(title: String, currentSelected: Enum<E>, list: List<Enum<E>>, modifier: Modifier = Modifier, onValueSelected: (Enum<E>) -> (Unit)) {
+inline fun <reified E : Enum<E>> OutlinedDropDown(
+	title: String,
+	currentSelected: Enum<E>,
+	modifier: Modifier = Modifier,
+	crossinline onValueSelected: (E) -> (Unit),
+) {
 	var expanded by remember { mutableStateOf(false) }
 	var selectedText by remember { mutableStateOf(currentSelected.toString()) }
 	var textfieldSize by remember { mutableStateOf(Size.Zero) }
@@ -68,7 +73,7 @@ fun <E : Enum<E>> DropDownField(title: String, currentSelected: Enum<E>, list: L
 			onDismissRequest = { expanded = false },
 			modifier = Modifier.width(with(LocalDensity.current) { textfieldSize.width.toDp() })
 		) {
-			list.forEach { enumValue ->
+			enumValues<E>().asList().forEach { enumValue ->
 				DropdownMenuItem(onClick = {
 					selectedText = enumValue.toString()
 					onValueSelected(enumValue)

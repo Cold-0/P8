@@ -44,7 +44,7 @@ public class Utils {
 	 * Check that you have internet access
 	 * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
 	 */
-	public boolean isInternetAvailable() {
+	public static boolean isInternetAvailable() {
 		InetAddress address = null;
 		try {
 			address = InetAddress.getByName("www.google.com");

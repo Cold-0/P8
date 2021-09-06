@@ -4,30 +4,37 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.ColorUtils
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.BuildConfig
 import com.cold0.realestatemanager.ComposeUtils.RunWithLifecycleOwner
 import com.cold0.realestatemanager.ComposeUtils.getScreenInfo
+import com.cold0.realestatemanager.network.NetworkStatus
+import com.cold0.realestatemanager.network.NetworkStatusTracker
+import com.cold0.realestatemanager.network.NetworkStatusViewModel
 import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetails
 import com.cold0.realestatemanager.screens.home.estatelist.EstateList
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 
+@ExperimentalComposeUiApi
+@ExperimentalCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalAnimationApi
 class HomeActivity : ComponentActivity() {
@@ -37,6 +44,18 @@ class HomeActivity : ComponentActivity() {
 		val viewModel: HomeViewModel by viewModels()
 		viewModel.initDatabase(applicationContext)
 
+		val networkViewModel: NetworkStatusViewModel by lazy {
+			ViewModelProvider(
+				this,
+				object : ViewModelProvider.Factory {
+					override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+						val networkStatusTracker = NetworkStatusTracker(this@HomeActivity)
+						return NetworkStatusViewModel(networkStatusTracker) as T
+					}
+				},
+			).get(NetworkStatusViewModel::class.java)
+		}
+
 		setContent {
 			val (small) = getScreenInfo()
 
@@ -45,6 +64,8 @@ class HomeActivity : ComponentActivity() {
 			val estateList by viewModel.rememberEstateList()
 			viewModel.updateEstateListFromDB()
 			val estateSelected by viewModel.rememberEstateSelected()
+
+			val networkStatusState = networkViewModel.networkState.observeAsState()
 
 			RunWithLifecycleOwner {
 				viewModel.ObserveEstateSelected(it) {
@@ -87,7 +108,30 @@ class HomeActivity : ComponentActivity() {
 								AnimatedVisibility(visible = openLeftDrawer, enter = expandHorizontally(), exit = shrinkHorizontally()) {
 									EstateList(estateListChecked, pair, viewModel)
 								}
-								EstateDetails(viewModel.getSelectedEstate())
+								Column()
+								{
+									AnimatedVisibility(
+										visible = networkStatusState.value == NetworkStatus.Unavailable,
+										enter = expandVertically(),
+										exit = shrinkVertically()
+									) {
+										Box()
+										{
+											Surface(color = Color(ColorUtils.HSLToColor(floatArrayOf(0.0f, 0.75f, 0.5f)))) {
+												Text(text = "No Internet Connection, Viewing Local Copy",
+													color = Color.White,
+													textAlign = TextAlign.Center,
+													modifier = Modifier
+														.align(Alignment.Center)
+														.fillMaxWidth()
+														.padding(4.dp)
+
+												)
+											}
+										}
+									}
+									EstateDetails(viewModel.getSelectedEstate())
+								}
 							}
 						}
 					}

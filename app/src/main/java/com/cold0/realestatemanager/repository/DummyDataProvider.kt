@@ -115,9 +115,9 @@ object DummyDataProvider {
 			dateSold = randomDate(),
 			price = nextInt(100000, 3500000),
 			photos = Collections.unmodifiableList(randomPhotoList()),
-			numberOfBathrooms = nextInt(1, 4),
-			numberOfRooms = nextInt(4, 10),
-			numberOfBedrooms = nextInt(2, 5),
+			bathrooms = nextInt(1, 4),
+			rooms = nextInt(4, 10),
+			bedrooms = nextInt(2, 5),
 			interest = randomInterest(),
 			status = randomEnum()
 		)

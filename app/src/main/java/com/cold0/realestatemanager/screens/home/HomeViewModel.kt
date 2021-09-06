@@ -43,6 +43,8 @@ class HomeViewModel : ViewModel() {
 		estateSelected.observe(lifecycleOwner, onUpdate)
 	}
 
+	private val filterSet: MutableLiveData<Triple<Boolean, Estate, Estate>> = MutableLiveData()
+
 	// ----------------------------
 	// Set/Get Selected Estate
 	// ----------------------------

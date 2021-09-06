@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -32,17 +31,18 @@ fun EstateDetails(estate: Estate) {
 	val configuration = LocalConfiguration.current
 	val small = configuration.screenWidthDp <= 450
 	Column(Modifier
-		.padding(16.dp)
+		.padding(16.dp, 0.dp)
 		.verticalScroll(rememberScrollState())) {
 		// ----------------------------
 		// Info
-		// ----------------------------4
+		// ----------------------------
 		Row(modifier = Modifier.fillMaxSize()) {
 			// ----------------------------
 			// Column 1
 			// ----------------------------
 			Column(Modifier
 				.weight(1.0f)
+				.fillMaxWidth()
 				.padding(8.dp)) {
 				OutlinedText(value = estate.timestamp.estateFormat(), modifier = Modifier.fillMaxWidth(), title = "Added")
 			}
@@ -51,6 +51,7 @@ fun EstateDetails(estate: Estate) {
 			// ----------------------------
 			Column(Modifier
 				.weight(1.0f)
+				.fillMaxWidth()
 				.padding(8.dp)) {
 				val stringToPrint = if (estate.status == EstateStatus.Available)
 					"Available"
@@ -62,11 +63,6 @@ fun EstateDetails(estate: Estate) {
 		// ----------------------------
 		// Media
 		// ----------------------------
-		Text(
-			text = stringResource(R.string.media),
-			style = MaterialTheme.typography.h5,
-			fontWeight = FontWeight.Bold
-		)
 		if (estate.photos.isNotEmpty())
 			LazyRow {
 				items(estate.photos) { photo ->
@@ -93,10 +89,7 @@ fun EstateDetails(estate: Estate) {
 		// ----------------------------
 		// Description
 		// ----------------------------
-		Text(text = stringResource(R.string.description), style = MaterialTheme.typography.h5, modifier = Modifier.padding(top = 16.dp),
-			fontWeight = FontWeight.Bold)
-		Text(text = estate.description, style = MaterialTheme.typography.body2, modifier = Modifier.padding(top = 16.dp))
-		Spacer(modifier = Modifier.height(32.dp))
+		OutlinedText(estate.description, title = stringResource(R.string.description))
 		Row(modifier = Modifier.fillMaxSize()) {
 			// ----------------------------
 			// Column 1
@@ -105,9 +98,9 @@ fun EstateDetails(estate: Estate) {
 				.weight(1.0f)
 				.padding(8.dp)) {
 				OutlinedText(estate.surface.toString(), leadingIcon = Icons.Default.Face, title = stringResource(R.string.surface))
-				OutlinedText(estate.numberOfRooms.toString(), leadingIcon = Icons.Default.Person, title = stringResource(R.string.number_of_rooms))
-				OutlinedText(estate.numberOfBathrooms.toString(), leadingIcon = Icons.Default.Info, title = stringResource(R.string.number_of_bathrooms))
-				OutlinedText(estate.numberOfBedrooms.toString(), leadingIcon = Icons.Default.AccountBox, title = stringResource(R.string.number_of_bedrooms))
+				OutlinedText(estate.rooms.toString(), leadingIcon = Icons.Default.Person, title = stringResource(R.string.rooms))
+				OutlinedText(estate.bathrooms.toString(), leadingIcon = Icons.Default.Info, title = stringResource(R.string.bathrooms))
+				OutlinedText(estate.bedrooms.toString(), leadingIcon = Icons.Default.AccountBox, title = stringResource(R.string.bedrooms))
 			}
 			// ----------------------------
 			// Column 2

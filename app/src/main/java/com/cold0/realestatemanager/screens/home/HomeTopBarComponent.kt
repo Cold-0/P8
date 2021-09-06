@@ -27,7 +27,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.ComposeUtils
 import com.cold0.realestatemanager.ComposeUtils.estateFormat
 import com.cold0.realestatemanager.ComposeUtils.registerForActivityResult
-import com.cold0.realestatemanager.ComposeUtils.sendNotification
+import com.cold0.realestatemanager.notifications.NotificationHelper
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateStatus
@@ -76,7 +76,13 @@ fun HomeTopAppBar(
 						result.data?.getParcelableExtra<Estate>("estateReturn")?.let {
 							viewModel.addEstate(it)
 							viewModel.setSelectedEstate(it.getKeys())
-							sendNotification(context, "Real Estate Manager", "Succefully added new Estate", Intent(context, HomeActivity::class.java), 10001)
+							NotificationHelper.sendSimpleNotification(
+								context = context,
+								title = "Real Estate Manager",
+								message = "Succefully added new Estate",
+								intent = Intent(context, HomeActivity::class.java),
+								reqCode = 10001
+							)
 						}
 					}
 				})

@@ -13,6 +13,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -28,6 +29,7 @@ import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.home.HomeViewModel
 import java.util.*
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalCoilApi
 @Composable
@@ -100,7 +102,7 @@ fun EstateList(estateList: List<Estate>, estateSelected: Pair<UUID, Date>, viewM
 					textfieldSize = coordinates.size.toSize()
 				}
 		) {
-			Text("Filter")
+			Text(if (filterDialogOpenned) "Hide Filters" else "Show Filters")
 		}
 	}
 }

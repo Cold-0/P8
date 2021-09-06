@@ -24,8 +24,7 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.model.EstateType
-import com.cold0.realestatemanager.screens.commons.DropDownField
+import com.cold0.realestatemanager.screens.commons.OutlinedDropDown
 import com.cold0.realestatemanager.screens.commons.TopBarReturn
 import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetailMinimap
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
@@ -86,8 +85,8 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 			fontWeight = FontWeight.Bold
 		)
 		EditEstatePhotoList(estate, onEstateChange = { onEstateChange(it) })
-		DropDownField("Type", estate.type, EstateType.values().asList()) {
-			estate.type = it as EstateType
+		OutlinedDropDown("Type", estate.type) {
+			estate.type = it
 		}
 		// ----------------------------
 		// Description
@@ -118,30 +117,30 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 					onEstateChange(estate)
 				}
 				OutlinedTextFieldLazy(leadingIcon = Icons.Default.Person,
-					title = stringResource(R.string.number_of_rooms),
-					value = estate.numberOfRooms.toString(),
+					title = stringResource(R.string.rooms),
+					value = estate.rooms.toString(),
 					keyboardType = KeyboardType.Number) {
 					val new = it.toIntOrNull()
 					if (new != null)
-						estate.numberOfRooms = new
+						estate.rooms = new
 					onEstateChange(estate)
 				}
 				OutlinedTextFieldLazy(leadingIcon = Icons.Default.Info,
-					title = stringResource(R.string.number_of_bathrooms),
-					value = estate.numberOfBathrooms.toString(),
+					title = stringResource(R.string.bathrooms),
+					value = estate.bathrooms.toString(),
 					keyboardType = KeyboardType.Number) {
 					val new = it.toIntOrNull()
 					if (new != null)
-						estate.numberOfBathrooms = new
+						estate.bathrooms = new
 					onEstateChange(estate)
 				}
 				OutlinedTextFieldLazy(leadingIcon = Icons.Default.AccountBox,
-					title = stringResource(R.string.number_of_bedrooms),
-					value = estate.numberOfBedrooms.toString(),
+					title = stringResource(R.string.bedrooms),
+					value = estate.bedrooms.toString(),
 					keyboardType = KeyboardType.Number) {
 					val new = it.toIntOrNull()
 					if (new != null)
-						estate.numberOfBedrooms = new
+						estate.bedrooms = new
 					onEstateChange(estate)
 				}
 			}
