@@ -47,7 +47,7 @@ fun HomeTopAppBar(
 	Column {
 		TopAppBar(
 			elevation = 4.dp,
-			title = { Text("Real Estate Manager") },
+			title = { Text("Home") },
 			navigationIcon = {
 				if (!listEstate.isNullOrEmpty())
 					IconButton(onClick = { toggleDrawer() }) {
