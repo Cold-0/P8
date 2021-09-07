@@ -45,16 +45,15 @@ class HomeViewModel : ViewModel() {
 		estateSelected.observe(lifecycleOwner, onUpdate)
 	}
 
-	private val filterSetting = MutableLiveData(FilterSetting.Disabled)
-
-	@Composable
-	fun rememberFilterSetting(): State<FilterSetting?> {
-		return filterSetting.observeAsState()
-	}
+	val filterSetting = MutableLiveData(FilterSetting.Disabled)
 
 	fun setFilterSetting(fs: FilterSetting) {
 		filterSetting.postValue(fs)
 		updateEstateListFromDB()
+	}
+
+	fun getFilterSetting(): FilterSetting {
+		return filterSetting.value ?: FilterSetting(from = Estate(), to = Estate())
 	}
 
 	// ----------------------------
@@ -91,10 +90,20 @@ class HomeViewModel : ViewModel() {
 				}
 			}
 			prop.stringProps != null -> {
+				val value = prop.stringProps?.get(estate)
+				val valueFrom = prop.stringProps?.get(from)
 
+				if (value != null && valueFrom != null) {
+					return value.contains(valueFrom, ignoreCase = true)
+				}
 			}
 			prop.dateProps != null -> {
-
+				val value = prop.dateProps?.get(estate)
+				val valueFrom = prop.dateProps?.get(from)
+				val valueTo = prop.dateProps?.get(to)
+				if (value != null && valueFrom != null && valueTo != null) {
+					return (value.after(valueFrom) && value.before(valueTo))
+				}
 			}
 		}
 		return false

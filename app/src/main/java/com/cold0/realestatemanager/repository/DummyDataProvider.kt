@@ -106,18 +106,18 @@ object DummyDataProvider {
 		return Estate(
 			added = randomDate(),
 			district = randomDistrict(),
-			surface = nextInt(20, 250),
+			surface = nextInt(25, 1000),
 			type = randomEnum(),
 			description = randomLoremIpsum(),
 			address = randomAddress(),
 			location = randomLocation(),
 			agent = randomName(),
 			sold = randomDate(),
-			price = nextInt(100000, 3500000),
+			price = nextInt(100000, 5500000),
 			photos = Collections.unmodifiableList(randomPhotoList()),
 			bathrooms = nextInt(1, 4),
-			rooms = nextInt(4, 10),
-			bedrooms = nextInt(2, 5),
+			rooms = nextInt(2, 10),
+			bedrooms = nextInt(1, 5),
 			interest = randomInterest(),
 			status = randomEnum()
 		)
@@ -128,7 +128,7 @@ object DummyDataProvider {
 	// ---------------------
 	fun getRandomEstateList(): List<Estate> {
 		val list = mutableListOf<Estate>()
-		repeat(nextInt(10, 24))
+		repeat(350)
 		{
 			list.add(randomEstate())
 		}

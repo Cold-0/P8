@@ -25,23 +25,20 @@ import com.cold0.realestatemanager.screens.home.HomeViewModel
 @ExperimentalAnimationApi
 @ExperimentalCoilApi
 @Composable
-fun EtateListFilter(top: Dp, viewmodel: HomeViewModel) {
+fun EtateListFilter(top: Dp, viewmodel: HomeViewModel, closeFilter: () -> (Unit)) {
 	Column(Modifier
 		.padding(top = top, start = 8.dp, end = 8.dp, bottom = 8.dp)
 		.fillMaxHeight()
 		.fillMaxWidth()
 		.verticalScroll(rememberScrollState())
 	) {
-
-		val filterSettings = viewmodel.rememberFilterSetting()
-
 		var estateFrom by remember {
-			mutableStateOf(Estate(agent = "", surface = 50, rooms = 0, bedrooms = 0, bathrooms = 1, price = 0),
+			mutableStateOf(viewmodel.getFilterSetting().from,
 				policy = neverEqualPolicy())
 		}
 
 		var estateTo by remember {
-			mutableStateOf(Estate(agent = "", surface = 250, rooms = 7, bedrooms = 2, bathrooms = 5, price = 200000),
+			mutableStateOf(viewmodel.getFilterSetting().to,
 				policy = neverEqualPolicy())
 		}
 
@@ -63,8 +60,8 @@ fun EtateListFilter(top: Dp, viewmodel: HomeViewModel) {
 			))
 		}
 
-		var checkboxType by remember { mutableStateOf(false) }
-		var checkboxStatus by remember { mutableStateOf(false) }
+		var checkboxType by remember { mutableStateOf(viewmodel.getFilterSetting().type) }
+		var checkboxStatus by remember { mutableStateOf(viewmodel.getFilterSetting().status) }
 
 		Row(Modifier.fillMaxWidth())
 		{
@@ -83,6 +80,8 @@ fun EtateListFilter(top: Dp, viewmodel: HomeViewModel) {
 				checkboxStatus = false
 
 				viewmodel.setFilterSetting(FilterSetting.Disabled)
+
+				closeFilter()
 			},
 				Modifier
 					.weight(1.0f)) {
@@ -98,6 +97,7 @@ fun EtateListFilter(top: Dp, viewmodel: HomeViewModel) {
 					status = checkboxStatus,
 					mapOfProps = mapOfProps
 				))
+				closeFilter()
 			},
 				Modifier
 					.weight(1.0f)) {

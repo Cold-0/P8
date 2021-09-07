@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -28,6 +29,7 @@ import com.cold0.realestatemanager.network.NetworkStatus
 import com.cold0.realestatemanager.network.NetworkStatusTracker
 import com.cold0.realestatemanager.network.NetworkStatusViewModel
 import com.cold0.realestatemanager.screens.home.detail.EstateDetails
+import com.cold0.realestatemanager.screens.home.filter.FilterSetting
 import com.cold0.realestatemanager.screens.home.list.EstateList
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -92,10 +94,13 @@ class HomeActivity : ComponentActivity() {
 							horizontalAlignment = Alignment.CenterHorizontally
 						) {
 							Text(
-								text = "There is no Estate, press the + button in the top right to add new Estate and start editing it",
+								text = "Filter Showed no Result",
 								style = MaterialTheme.typography.h6.copy(color = Color.LightGray),
 								modifier = Modifier.padding(64.dp)
 							)
+							Button({ viewModel.setFilterSetting(FilterSetting.Disabled) }) {
+								Text("Reset Filter")
+							}
 						}
 					}
 					// ----------------------------
