@@ -8,6 +8,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -18,6 +19,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.ComposeUtils.estateFormat
 import java.util.*
@@ -79,6 +81,7 @@ fun OutlinedDatePickerButton(
 		val interactionSource = remember { MutableInteractionSource() }
 		OutlinedTextField(
 			label = labelLambda,
+			textStyle = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
 			value = selectedDate.estateFormat(),
 			onValueChange = { },
 			readOnly = true,

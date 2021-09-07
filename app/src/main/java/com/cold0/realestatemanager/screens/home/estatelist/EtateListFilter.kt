@@ -79,7 +79,7 @@ fun EtateListFilter(top: Dp) {
 		// -------------------
 		mapOfDateProps.keys.forEach { field ->
 			var checkbox by remember { mutableStateOf(false) }
-			Row() {
+			Row(Modifier.padding(top = 8.dp)) {
 				Checkbox(checked = checkbox, onCheckedChange = { checkbox = it; mapOfDateProps[field] = checkbox; mapOfDateProps = mapOfDateProps })
 				Text(field.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
 					fontWeight = FontWeight.Bold,
@@ -94,7 +94,7 @@ fun EtateListFilter(top: Dp) {
 		// -------------------
 		mapOfIntProps.keys.forEach { field ->
 			var checkbox by remember { mutableStateOf(false) }
-			Row() {
+			Row(Modifier.padding(top = 8.dp)) {
 				Checkbox(checked = checkbox, onCheckedChange = { checkbox = it; mapOfIntProps[field] = checkbox; mapOfIntProps = mapOfIntProps })
 				Text(field.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
 					fontWeight = FontWeight.Bold,
@@ -109,7 +109,7 @@ fun EtateListFilter(top: Dp) {
 		// -------------------
 		mapOfStringProps.keys.forEach { field ->
 			var checkbox by remember { mutableStateOf(false) }
-			Row() {
+			Row(Modifier.padding(top = 8.dp)) {
 				Checkbox(checked = checkbox, onCheckedChange = { checkbox = it; mapOfStringProps[field] = checkbox; mapOfStringProps = mapOfStringProps })
 				Text(field.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
 					fontWeight = FontWeight.Bold,

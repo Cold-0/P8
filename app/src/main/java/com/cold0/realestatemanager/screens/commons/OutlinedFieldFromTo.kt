@@ -40,7 +40,7 @@ inline fun <T, reified V> OutlinedFieldFromTo(
 				)
 
 				Spacer(Modifier
-					.width(8.dp))
+					.width(0.dp))
 
 				OutlinedDatePickerButton(
 					title = "To",
