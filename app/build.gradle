@@ -92,5 +92,6 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.0.2"
     // Room
     androidTestImplementation "androidx.room:room-testing:2.3.0"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.21"
 }
 

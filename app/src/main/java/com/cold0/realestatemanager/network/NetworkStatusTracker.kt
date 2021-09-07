@@ -5,7 +5,6 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import com.cold0.realestatemanager.Utils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -25,8 +24,7 @@ class NetworkStatusTracker(context: Context) {
 			}
 
 			override fun onAvailable(network: Network) {
-				if (Utils.isInternetAvailable())
-					trySend(NetworkStatus.Available)
+				trySend(NetworkStatus.Available)
 			}
 
 			override fun onLost(network: Network) {

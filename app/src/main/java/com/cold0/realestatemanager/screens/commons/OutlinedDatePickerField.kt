@@ -58,16 +58,19 @@ fun OutlinedDatePickerButton(
 		mMonth = now.get(Calendar.MONTH)
 		mDay = now.get(Calendar.DAY_OF_MONTH)
 		now.time = Date()
-		DatePickerDialog(
+		val dialog = DatePickerDialog(
 			context,
 			{ _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
 				val cal = Calendar.getInstance()
 				cal.set(year, month, dayOfMonth)
 				onValueChange(cal.time)
-				showDialog = !showDialog
+				showDialog = false
 				selectedDate = cal.time
 			}, mYear, mMonth, mDay
-		).show()
+		)
+		dialog.setOnDismissListener { showDialog = false }
+		dialog.setOnCancelListener { showDialog = false }
+		dialog.show()
 	}
 
 	Box(modifier)

@@ -8,8 +8,8 @@ import java.util.*
 @Parcelize
 @Entity(primaryKeys = ["uid", "timestamp"])
 data class Estate(
-	val uid: UUID = UUID.randomUUID(),
-	val timestamp: Date = Date(),
+	var uid: UUID = UUID.randomUUID(),
+	var timestamp: Date = Date(),
 	var type: EstateType = EstateType.Flat,
 	var price: Int = 0,
 	var surface: Int = 0,
