@@ -98,7 +98,7 @@ class HomeActivity : ComponentActivity() {
 								style = MaterialTheme.typography.h6.copy(color = Color.LightGray),
 								modifier = Modifier.padding(64.dp)
 							)
-							Button({ viewModel.setFilterSetting(FilterSetting.Disabled) }) {
+							Button({ viewModel.setFilterSetting(FilterSetting.Default) }) {
 								Text("Reset Filter")
 							}
 						}

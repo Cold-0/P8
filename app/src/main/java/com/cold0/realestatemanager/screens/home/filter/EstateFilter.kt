@@ -15,7 +15,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.commons.OutlinedDropDown
 import com.cold0.realestatemanager.screens.commons.OutlinedFieldFromTo
 import com.cold0.realestatemanager.screens.home.HomeViewModel
@@ -25,7 +24,7 @@ import com.cold0.realestatemanager.screens.home.HomeViewModel
 @ExperimentalAnimationApi
 @ExperimentalCoilApi
 @Composable
-fun EtateListFilter(top: Dp, viewmodel: HomeViewModel, closeFilter: () -> (Unit)) {
+fun EtateListFilter(top: Dp, viewmodel: HomeViewModel, closeFilterView: () -> (Unit)) {
 	Column(Modifier
 		.padding(top = top, start = 8.dp, end = 8.dp, bottom = 8.dp)
 		.fillMaxHeight()
@@ -43,45 +42,35 @@ fun EtateListFilter(top: Dp, viewmodel: HomeViewModel, closeFilter: () -> (Unit)
 		}
 
 		var mapOfProps by remember {
-			mutableStateOf(mutableMapOf(
-				PropertyContainer(stringProps = Estate::agent) to false,
-				PropertyContainer(dateProps = Estate::added) to false,
-				PropertyContainer(dateProps = Estate::sold) to false,
-				PropertyContainer(intProps = Estate::price) to false,
-				PropertyContainer(intProps = Estate::surface) to false,
-				PropertyContainer(intProps = Estate::rooms) to false,
-				PropertyContainer(intProps = Estate::bathrooms) to false,
-				PropertyContainer(intProps = Estate::bedrooms) to false,
-				PropertyContainer(intProps = Estate::surface) to false,
-				PropertyContainer(stringProps = Estate::interest) to false,
-				PropertyContainer(stringProps = Estate::description) to false,
-				PropertyContainer(stringProps = Estate::agent) to false,
-				PropertyContainer(stringProps = Estate::address) to false,
-			))
+			mutableStateOf(viewmodel.getFilterSetting().mapOfProps,
+				policy = neverEqualPolicy())
 		}
 
-		var checkboxType by remember { mutableStateOf(viewmodel.getFilterSetting().type) }
-		var checkboxStatus by remember { mutableStateOf(viewmodel.getFilterSetting().status) }
+		var checkboxType by remember {
+			mutableStateOf(viewmodel.getFilterSetting().type,
+				policy = neverEqualPolicy())
+		}
+		var checkboxStatus by remember {
+			mutableStateOf(viewmodel.getFilterSetting().status,
+				policy = neverEqualPolicy())
+		}
 
 		Row(Modifier.fillMaxWidth())
 		{
 			Button(onClick = {
 				// Reset map
-				mapOfProps.keys.forEach {
-					mapOfProps[it] = false
-				}
+				mapOfProps = FilterSetting.Default.mapOfProps
 
 				// Reset Estates
-				estateTo = Estate(agent = "", surface = 50, rooms = 0, bedrooms = 0, bathrooms = 1, price = 0)
-				estateFrom = Estate(agent = "", surface = 250, rooms = 7, bedrooms = 2, bathrooms = 5, price = 200000)
+				estateTo = FilterSetting.Default.to
+				estateFrom = FilterSetting.Default.from
 
 				// Reset Enum Checkbox
-				checkboxType = false
-				checkboxStatus = false
+				checkboxType = FilterSetting.Default.type
+				checkboxStatus = FilterSetting.Default.status
 
-				viewmodel.setFilterSetting(FilterSetting.Disabled)
-
-				closeFilter()
+				viewmodel.setFilterSetting(FilterSetting.Default)
+				closeFilterView()
 			},
 				Modifier
 					.weight(1.0f)) {
@@ -97,7 +86,7 @@ fun EtateListFilter(top: Dp, viewmodel: HomeViewModel, closeFilter: () -> (Unit)
 					status = checkboxStatus,
 					mapOfProps = mapOfProps
 				))
-				closeFilter()
+				closeFilterView()
 			},
 				Modifier
 					.weight(1.0f)) {
@@ -133,9 +122,8 @@ fun EtateListFilter(top: Dp, viewmodel: HomeViewModel, closeFilter: () -> (Unit)
 		// Props Spawn
 		// -------------------
 		mapOfProps.keys.forEach { field ->
-			var checkbox by remember { mutableStateOf(false) }
 			Row(Modifier.padding(top = 8.dp)) {
-				Checkbox(checked = checkbox, onCheckedChange = { checkbox = it; mapOfProps[field] = checkbox; mapOfProps = mapOfProps })
+				Checkbox(checked = mapOfProps[field] ?: false, onCheckedChange = { mapOfProps[field] = it; mapOfProps = mapOfProps })
 				Text(
 					text = field.getName(),
 					fontWeight = FontWeight.Bold,
