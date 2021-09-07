@@ -4,6 +4,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -15,9 +16,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.model.EstateStatus
-import com.cold0.realestatemanager.model.EstateType
-import com.cold0.realestatemanager.model.Photo
 import com.cold0.realestatemanager.screens.commons.OutlinedDropDown
 import com.cold0.realestatemanager.screens.commons.OutlinedFieldFromTo
 import java.util.*
@@ -63,6 +61,21 @@ fun EtateListFilter(top: Dp) {
 				Estate::added to false,
 				Estate::sold to false,
 			))
+		}
+
+		Row(Modifier.fillMaxWidth())
+		{
+			Button(onClick = { /*TODO*/ },
+				Modifier
+					.weight(1.0f)) {
+				Text("Reset")
+			}
+			Spacer(Modifier.width(8.dp))
+			Button(onClick = { /*TODO*/ },
+				Modifier
+					.weight(1.0f)) {
+				Text("Apply")
+			}
 		}
 
 		var checkboxType by remember { mutableStateOf(false) }
