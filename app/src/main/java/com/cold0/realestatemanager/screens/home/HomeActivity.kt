@@ -27,8 +27,8 @@ import com.cold0.realestatemanager.ComposeUtils.getScreenInfo
 import com.cold0.realestatemanager.network.NetworkStatus
 import com.cold0.realestatemanager.network.NetworkStatusTracker
 import com.cold0.realestatemanager.network.NetworkStatusViewModel
-import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetails
-import com.cold0.realestatemanager.screens.home.estatelist.EstateList
+import com.cold0.realestatemanager.screens.home.detail.EstateDetails
+import com.cold0.realestatemanager.screens.home.list.EstateList
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
@@ -75,7 +75,7 @@ class HomeActivity : ComponentActivity() {
 			}
 
 			RealEstateManagerTheme {
-				HomeTopAppBar(
+				HomeTopBar(
 					viewModel = viewModel,
 					listEstate = estateList,
 					toggleDrawer = {

@@ -27,10 +27,10 @@ import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.ComposeUtils
 import com.cold0.realestatemanager.ComposeUtils.estateFormat
 import com.cold0.realestatemanager.ComposeUtils.registerForActivityResult
-import com.cold0.realestatemanager.notifications.NotificationHelper
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateStatus
+import com.cold0.realestatemanager.notifications.NotificationHelper
 import com.cold0.realestatemanager.screens.commons.OutlinedDatePickerButton
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
 
@@ -38,7 +38,7 @@ import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
 @ExperimentalAnimationApi
 @ExperimentalCoilApi
 @Composable
-fun HomeTopAppBar(
+fun HomeTopBar(
 	viewModel: HomeViewModel,
 	listEstate: List<Estate>?,
 	toggleDrawer: () -> Unit,
@@ -136,7 +136,7 @@ fun HomeTopAppBar(
 							text = {
 								Box(modifier = Modifier.fillMaxWidth()) {
 									OutlinedDatePickerButton(Modifier.align(Alignment.Center)) {
-										estate.dateSold = it
+										estate.sold = it
 										buttonDateText = it.estateFormat()
 									}
 								}
@@ -170,8 +170,11 @@ fun HomeTopAppBar(
 							}
 							Divider()
 						}
+						DropdownMenuItem(onClick = { ComposeUtils.openSimulatorActivity(context) }) {
+							Text("Simulator")
+						}
 						DropdownMenuItem(onClick = { ComposeUtils.openConverterActivity(context) }) {
-							Text("Tools")
+							Text("Converter")
 						}
 					}
 				}

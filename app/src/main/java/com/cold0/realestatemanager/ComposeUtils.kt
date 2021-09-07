@@ -20,6 +20,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.model.Photo
 import com.cold0.realestatemanager.screens.converter.ConverterActivity
 import com.cold0.realestatemanager.screens.photoviewer.PhotoViewerActivity
+import com.cold0.realestatemanager.screens.simulator.SimulatorActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,6 +41,13 @@ object ComposeUtils {
 
 	fun openConverterActivity(context: Context) {
 		val intent = Intent(context, ConverterActivity::class.java).apply {
+			//putExtra("img", photo)
+		}
+		ContextCompat.startActivity(context, intent, null)
+	}
+
+	fun openSimulatorActivity(context: Context) {
+		val intent = Intent(context, SimulatorActivity::class.java).apply {
 			//putExtra("img", photo)
 		}
 		ContextCompat.startActivity(context, intent, null)

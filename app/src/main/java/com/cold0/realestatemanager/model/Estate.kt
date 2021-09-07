@@ -6,17 +6,17 @@ import kotlinx.parcelize.Parcelize
 import java.util.*
 
 @Parcelize
-@Entity(primaryKeys = ["uid", "timestamp"])
+@Entity(primaryKeys = ["uid", "added"])
 data class Estate(
 	var uid: UUID = UUID.randomUUID(),
-	var timestamp: Date = Date(),
+	var added: Date = Date(),
 	var type: EstateType = EstateType.Flat,
 	var price: Int = 0,
 	var surface: Int = 0,
 	var description: String = "No Description",
 	var photos: List<Photo> = listOf(Photo(name = "Facade", onlineUrl = "https://picsum.photos/id/155/300/300", localUri = null, description = "")),
 	var district: String = "No District",
-	var dateSold: Date = Date(),
+	var sold: Date = Date(),
 	var agent: String = "No one assigned",
 	var rooms: Int = 0,
 	var bathrooms: Int = 0,
@@ -27,10 +27,10 @@ data class Estate(
 	var status: EstateStatus = EstateStatus.Available,
 ) : Parcelable {
 	fun compareKeys(pair: Pair<UUID, Date>): Boolean {
-		return this.uid == pair.first && this.timestamp == pair.second
+		return this.uid == pair.first && this.added == pair.second
 	}
 
 	fun getKeys(): Pair<UUID, Date> {
-		return Pair(uid, timestamp)
+		return Pair(uid, added)
 	}
 }

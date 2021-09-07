@@ -55,7 +55,7 @@ class HomeViewModel : ViewModel() {
 	fun getSelectedEstate(): Estate {
 		return estateList.value?.find {
 			it.uid == estateSelected.value?.first ?: false
-					&& it.timestamp == estateSelected.value?.second ?: false
+					&& it.added == estateSelected.value?.second ?: false
 		} ?: getFirstEstate()
 	}
 

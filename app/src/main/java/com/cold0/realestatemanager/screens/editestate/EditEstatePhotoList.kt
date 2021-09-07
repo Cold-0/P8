@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetailPhotoItem
+import com.cold0.realestatemanager.screens.home.detail.EstateDetailPhotoItem
 
 @ExperimentalCoilApi
 @Composable

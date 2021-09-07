@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.screens.home.estatelist
+package com.cold0.realestatemanager.screens.home.list
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
@@ -58,8 +58,8 @@ fun EtateListFilter(top: Dp) {
 		var mapOfDateProps by remember {
 			@Suppress("UNCHECKED_CAST")
 			mutableStateOf(mutableMapOf(
-				Estate::timestamp as KMutableProperty1<Estate, Date> to false,
-				Estate::dateSold as KMutableProperty1<Estate, Date> to false,
+				Estate::added to false,
+				Estate::sold to false,
 			))
 		}
 

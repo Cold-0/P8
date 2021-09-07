@@ -1,16 +1,13 @@
 package com.cold0.realestatemanager.screens.editestate
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun OutlinedTextFieldLazy(
@@ -23,8 +20,6 @@ fun OutlinedTextFieldLazy(
 	keyboardType: KeyboardType = KeyboardType.Text,
 	onValueChange: (String) -> (Unit),
 ) {
-	var text by remember { mutableStateOf(value) }
-
 	val leadingIconLambda: @Composable (() -> Unit)? =
 		if (leadingIcon != null) {
 			{ Image(leadingIcon, leadingIcon.name) }
@@ -50,10 +45,7 @@ fun OutlinedTextFieldLazy(
 		placeholder = placeholderLambda,
 		keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
 		onValueChange = {
-			text = it
-			onValueChange(text)
+			onValueChange(it)
 		},
-		modifier = modifier
-			.padding(8.dp)
-			.fillMaxWidth())
+		modifier = modifier)
 }

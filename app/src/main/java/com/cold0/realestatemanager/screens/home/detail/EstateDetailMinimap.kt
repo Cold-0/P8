@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.screens.home.estatedetail
+package com.cold0.realestatemanager.screens.home.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

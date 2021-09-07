@@ -26,7 +26,7 @@ import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.commons.OutlinedDropDown
 import com.cold0.realestatemanager.screens.commons.TopBarReturn
-import com.cold0.realestatemanager.screens.home.estatedetail.EstateDetailMinimap
+import com.cold0.realestatemanager.screens.home.detail.EstateDetailMinimap
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
 
 

@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.screens.home.estatedetail
+package com.cold0.realestatemanager.screens.home.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -44,7 +44,7 @@ fun EstateDetails(estate: Estate) {
 				.weight(1.0f)
 				.fillMaxWidth()
 				.padding(8.dp)) {
-				OutlinedText(value = estate.timestamp.estateFormat(), modifier = Modifier.fillMaxWidth(), title = "Added")
+				OutlinedText(value = estate.added.estateFormat(), modifier = Modifier.fillMaxWidth(), title = "Added")
 			}
 			// ----------------------------
 			// Column 2
@@ -55,7 +55,7 @@ fun EstateDetails(estate: Estate) {
 				.padding(8.dp)) {
 				val stringToPrint = if (estate.status == EstateStatus.Available)
 					"Available"
-				else "Sold on " + estate.dateSold.estateFormat()
+				else "Sold on " + estate.sold.estateFormat()
 				OutlinedText(stringToPrint, Modifier.fillMaxWidth(), title = "Status")
 			}
 		}

@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.screens.home.estatelist
+package com.cold0.realestatemanager.screens.home.list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

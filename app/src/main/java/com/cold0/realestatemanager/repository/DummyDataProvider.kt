@@ -104,7 +104,7 @@ object DummyDataProvider {
 
 	private fun randomEstate(): Estate {
 		return Estate(
-			timestamp = randomDate(),
+			added = randomDate(),
 			district = randomDistrict(),
 			surface = nextInt(20, 250),
 			type = randomEnum(),
@@ -112,7 +112,7 @@ object DummyDataProvider {
 			address = randomAddress(),
 			location = randomLocation(),
 			agent = randomName(),
-			dateSold = randomDate(),
+			sold = randomDate(),
 			price = nextInt(100000, 3500000),
 			photos = Collections.unmodifiableList(randomPhotoList()),
 			bathrooms = nextInt(1, 4),

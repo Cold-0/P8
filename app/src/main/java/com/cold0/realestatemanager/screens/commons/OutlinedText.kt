@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.screens.home.estatedetail
+package com.cold0.realestatemanager.screens.home.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
@@ -26,7 +26,7 @@ fun OutlinedText(value: String, modifier: Modifier = Modifier, leadingIcon: Imag
 
 	OutlinedTextField(
 		label = labelLambda,
-		modifier = modifier.padding(8.dp),
+		modifier = modifier,
 		leadingIcon = leadingIconLambda,
 		trailingIcon = trailingIconLambda,
 		value = value,

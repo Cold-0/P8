@@ -24,6 +24,10 @@
             android:exported="true"
             android:label="@string/title_activity_converter" />
         <activity
+            android:name="com.cold0.realestatemanager.screens.simulator.SimulatorActivity"
+            android:exported="true"
+            android:label="@string/title_activity_simulator" />
+        <activity
             android:name="com.cold0.realestatemanager.screens.editestate.EditEstateActivity"
             android:exported="true"
             android:label="@string/title_activity_editestate" />

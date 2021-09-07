@@ -18,7 +18,7 @@ interface EstateDao {
 	@Query("DELETE FROM estate WHERE uid = :uid")
 	fun deleteByUID(uid: UUID)
 
-	@Query("DELETE FROM estate WHERE uid = :uid AND timestamp = :timestamp")
+	@Query("DELETE FROM estate WHERE uid = :uid AND added = :timestamp")
 	fun deleteByUIDAndTimestamp(uid: UUID, timestamp: Date)
 
 	@Query("DELETE FROM estate")
