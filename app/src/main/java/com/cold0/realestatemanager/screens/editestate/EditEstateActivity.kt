@@ -85,7 +85,7 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 			fontWeight = FontWeight.Bold
 		)
 		EditEstatePhotoList(estate, onEstateChange = { onEstateChange(it) })
-		OutlinedDropDown("Type", estate.type) {
+		OutlinedDropDown(label = "Type", currentSelected = estate.type) {
 			estate.type = it
 		}
 		// ----------------------------

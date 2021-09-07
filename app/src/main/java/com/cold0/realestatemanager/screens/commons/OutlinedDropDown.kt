@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.toSize
 @ExperimentalComposeUiApi
 @Composable
 inline fun <reified E : Enum<E>> OutlinedDropDown(
-	title: String,
 	currentSelected: Enum<E>,
 	modifier: Modifier = Modifier,
+	label: String? = null,
 	crossinline onValueSelected: (E) -> (Unit),
 ) {
 	var expanded by remember { mutableStateOf(false) }
@@ -42,8 +42,13 @@ inline fun <reified E : Enum<E>> OutlinedDropDown(
 			val (focusRequester) = FocusRequester.createRefs()
 			val interactionSource = remember { MutableInteractionSource() }
 
+			val labelLambda: @Composable (() -> Unit)? =
+				if (label != null) {
+					{ Text(label) }
+				} else null
+
 			OutlinedTextField(
-				label = { Text(title) },
+				label = labelLambda,
 				value = selectedText,
 				onValueChange = { },
 				readOnly = true, trailingIcon = { Image(icon, icon.name) },

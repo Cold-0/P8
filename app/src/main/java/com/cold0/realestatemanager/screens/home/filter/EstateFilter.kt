@@ -18,14 +18,14 @@ import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.commons.OutlinedDropDown
 import com.cold0.realestatemanager.screens.commons.OutlinedFieldFromTo
-import java.util.*
+import com.cold0.realestatemanager.screens.home.HomeViewModel
 
 @Suppress("SelfAssignment")
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalCoilApi
 @Composable
-fun EtateListFilter(top: Dp) {
+fun EtateListFilter(top: Dp, viewmodel: HomeViewModel) {
 	Column(Modifier
 		.padding(top = top, start = 8.dp, end = 8.dp, bottom = 8.dp)
 		.fillMaxHeight()
@@ -33,52 +33,78 @@ fun EtateListFilter(top: Dp) {
 		.verticalScroll(rememberScrollState())
 	) {
 
-		var estateFrom by remember { mutableStateOf(Estate(agent = "", surface = 50, rooms = 0, bedrooms = 0, bathrooms = 1), policy = neverEqualPolicy()) }
-		var estateTo by remember { mutableStateOf(Estate(agent = "", surface = 250, rooms = 7, bedrooms = 2, bathrooms = 5), policy = neverEqualPolicy()) }
+		val filterSettings = viewmodel.rememberFilterSetting()
 
-		var mapOfIntProps by remember {
-			@Suppress("UNCHECKED_CAST")
+		var estateFrom by remember {
+			mutableStateOf(Estate(agent = "", surface = 50, rooms = 0, bedrooms = 0, bathrooms = 1, price = 0),
+				policy = neverEqualPolicy())
+		}
+
+		var estateTo by remember {
+			mutableStateOf(Estate(agent = "", surface = 250, rooms = 7, bedrooms = 2, bathrooms = 5, price = 200000),
+				policy = neverEqualPolicy())
+		}
+
+		var mapOfProps by remember {
 			mutableStateOf(mutableMapOf(
-				Estate::price to false,
-				Estate::surface to false,
-				Estate::rooms to false,
-				Estate::bathrooms to false,
-				Estate::bedrooms to false,
-				Estate::surface to false,
+				PropertyContainer(stringProps = Estate::agent) to false,
+				PropertyContainer(dateProps = Estate::added) to false,
+				PropertyContainer(dateProps = Estate::sold) to false,
+				PropertyContainer(intProps = Estate::price) to false,
+				PropertyContainer(intProps = Estate::surface) to false,
+				PropertyContainer(intProps = Estate::rooms) to false,
+				PropertyContainer(intProps = Estate::bathrooms) to false,
+				PropertyContainer(intProps = Estate::bedrooms) to false,
+				PropertyContainer(intProps = Estate::surface) to false,
+				PropertyContainer(stringProps = Estate::interest) to false,
+				PropertyContainer(stringProps = Estate::description) to false,
+				PropertyContainer(stringProps = Estate::agent) to false,
+				PropertyContainer(stringProps = Estate::address) to false,
 			))
 		}
 
-		var mapOfStringProps by remember {
-			@Suppress("UNCHECKED_CAST")
-			mutableStateOf(mutableMapOf(
-				Estate::agent to false
-			))
-		}
-
-		var mapOfDateProps by remember {
-			@Suppress("UNCHECKED_CAST")
-			mutableStateOf(mutableMapOf(
-				Estate::added to false,
-				Estate::sold to false,
-			))
-		}
+		var checkboxType by remember { mutableStateOf(false) }
+		var checkboxStatus by remember { mutableStateOf(false) }
 
 		Row(Modifier.fillMaxWidth())
 		{
-			Button(onClick = { /*TODO*/ },
+			Button(onClick = {
+				// Reset map
+				mapOfProps.keys.forEach {
+					mapOfProps[it] = false
+				}
+
+				// Reset Estates
+				estateTo = Estate(agent = "", surface = 50, rooms = 0, bedrooms = 0, bathrooms = 1, price = 0)
+				estateFrom = Estate(agent = "", surface = 250, rooms = 7, bedrooms = 2, bathrooms = 5, price = 200000)
+
+				// Reset Enum Checkbox
+				checkboxType = false
+				checkboxStatus = false
+
+				viewmodel.setFilterSetting(FilterSetting.Disabled)
+			},
 				Modifier
 					.weight(1.0f)) {
 				Text("Reset")
 			}
 			Spacer(Modifier.width(8.dp))
-			Button(onClick = { /*TODO*/ },
+			Button(onClick = {
+				viewmodel.setFilterSetting(FilterSetting(
+					to = estateTo,
+					from = estateFrom,
+					enabled = true,
+					type = checkboxType,
+					status = checkboxStatus,
+					mapOfProps = mapOfProps
+				))
+			},
 				Modifier
 					.weight(1.0f)) {
 				Text("Apply")
 			}
 		}
 
-		var checkboxType by remember { mutableStateOf(false) }
 		Row(Modifier.padding(top = 8.dp)) {
 			Checkbox(checked = checkboxType, onCheckedChange = { checkboxType = it })
 			Text(text = "Type",
@@ -86,11 +112,11 @@ fun EtateListFilter(top: Dp) {
 				color = Color(0xffa0a0a0),
 				modifier = Modifier.padding(start = 8.dp))
 		}
-		OutlinedDropDown(title = "Type", currentSelected = estateFrom.type, onValueSelected = {
+		OutlinedDropDown(currentSelected = estateFrom.type, onValueSelected = {
 			estateFrom.type = it
 			estateFrom = estateFrom
 		})
-		var checkboxStatus by remember { mutableStateOf(false) }
+
 		Row(Modifier.padding(top = 8.dp)) {
 			Checkbox(checked = checkboxStatus, onCheckedChange = { checkboxStatus = it })
 			Text(text = "Status",
@@ -98,73 +124,26 @@ fun EtateListFilter(top: Dp) {
 				color = Color(0xffa0a0a0),
 				modifier = Modifier.padding(start = 8.dp))
 		}
-		OutlinedDropDown(title = "Status", currentSelected = estateFrom.status, onValueSelected = {
+		OutlinedDropDown(label = "Status", currentSelected = estateFrom.status, onValueSelected = {
 			estateFrom.status = it
 			estateFrom = estateFrom
 		})
 
 		// -------------------
-		// DATEFIELD
+		// Props Spawn
 		// -------------------
-		mapOfDateProps.keys.forEach { field ->
+		mapOfProps.keys.forEach { field ->
 			var checkbox by remember { mutableStateOf(false) }
 			Row(Modifier.padding(top = 8.dp)) {
-				Checkbox(checked = checkbox, onCheckedChange = { checkbox = it; mapOfDateProps[field] = checkbox; mapOfDateProps = mapOfDateProps })
-				Text(field.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
+				Checkbox(checked = checkbox, onCheckedChange = { checkbox = it; mapOfProps[field] = checkbox; mapOfProps = mapOfProps })
+				Text(
+					text = field.getName(),
 					fontWeight = FontWeight.Bold,
 					color = Color(0xffa0a0a0),
-					modifier = Modifier.padding(start = 8.dp))
+					modifier = Modifier.padding(start = 8.dp)
+				)
 			}
-			OutlinedFieldFromTo(prop = field, from = estateFrom, to = estateTo, onValuesChanged = { from, to -> estateFrom = from; estateTo = to })
+			OutlinedFieldFromTo(propsContainer = field, from = estateFrom, to = estateTo, onValuesChanged = { from, to -> estateFrom = from; estateTo = to })
 		}
-
-		// -------------------
-		// INTFIELD
-		// -------------------
-		mapOfIntProps.keys.forEach { field ->
-			var checkbox by remember { mutableStateOf(false) }
-			Row(Modifier.padding(top = 8.dp)) {
-				Checkbox(checked = checkbox, onCheckedChange = { checkbox = it; mapOfIntProps[field] = checkbox; mapOfIntProps = mapOfIntProps })
-				Text(field.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
-					fontWeight = FontWeight.Bold,
-					color = Color(0xffa0a0a0),
-					modifier = Modifier.padding(start = 8.dp))
-			}
-			OutlinedFieldFromTo(prop = field, from = estateFrom, to = estateTo, onValuesChanged = { from, to -> estateFrom = from; estateTo = to })
-		}
-
-		// -------------------
-		// STRING FIELDS
-		// -------------------
-		mapOfStringProps.keys.forEach { field ->
-			var checkbox by remember { mutableStateOf(false) }
-			Row(Modifier.padding(top = 8.dp)) {
-				Checkbox(checked = checkbox, onCheckedChange = { checkbox = it; mapOfStringProps[field] = checkbox; mapOfStringProps = mapOfStringProps })
-				Text(field.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
-					fontWeight = FontWeight.Bold,
-					color = Color(0xffa0a0a0),
-					modifier = Modifier.padding(start = 8.dp))
-			}
-			OutlinedFieldFromTo(prop = field, from = estateFrom, to = estateTo, onValuesChanged = { from, to -> estateFrom = from; estateTo = to })
-		}
-
-
-//		OutlinedFieldFromTo(
-//			title = "Rooms",
-//			prop = Estate::rooms,
-//			estateFrom = estateFrom,
-//			estateTo = estateTo,
-//			onValueFromChanged = { estateFrom = it },
-//			onValueToChanged = { estateTo = it }
-//		)
-//
-//		OutlinedFieldFromTo(
-//			title = "Rooms",
-//			prop = Estate::rooms,
-//			estateFrom = estateFrom,
-//			estateTo = estateTo,
-//			onValueFromChanged = { estateFrom = it },
-//			onValueToChanged = { estateTo = it }
-//		)
 	}
 }

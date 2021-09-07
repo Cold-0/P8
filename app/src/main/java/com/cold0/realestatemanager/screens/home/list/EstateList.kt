@@ -54,9 +54,8 @@ fun EstateList(estateList: List<Estate>, estateSelected: Pair<UUID, Date>, viewM
 					easing = FastOutSlowInEasing
 				)
 			)
-		)
-		{
-			EtateListFilter(with(LocalDensity.current) { textfieldSize.height.toDp() } + 16.dp)
+		) {
+			EtateListFilter(with(LocalDensity.current) { textfieldSize.height.toDp() } + 16.dp, viewmodel = viewModel)
 		}
 		AnimatedVisibility(
 			visible = !filterDialogOpenned,
