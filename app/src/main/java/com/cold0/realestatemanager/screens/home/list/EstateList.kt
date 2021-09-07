@@ -27,6 +27,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.ComposeUtils
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.home.HomeViewModel
+import com.cold0.realestatemanager.screens.home.filter.EtateListFilter
 import java.util.*
 
 @ExperimentalComposeUiApi

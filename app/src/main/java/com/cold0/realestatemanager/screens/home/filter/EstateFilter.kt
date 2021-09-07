@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.screens.home.list
+package com.cold0.realestatemanager.screens.home.filter
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
@@ -15,10 +15,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.model.Estate
+import com.cold0.realestatemanager.model.EstateStatus
+import com.cold0.realestatemanager.model.EstateType
+import com.cold0.realestatemanager.model.Photo
 import com.cold0.realestatemanager.screens.commons.OutlinedDropDown
 import com.cold0.realestatemanager.screens.commons.OutlinedFieldFromTo
 import java.util.*
-import kotlin.reflect.KMutableProperty1
 
 @Suppress("SelfAssignment")
 @ExperimentalComposeUiApi
@@ -38,7 +40,8 @@ fun EtateListFilter(top: Dp) {
 
 		var mapOfIntProps by remember {
 			@Suppress("UNCHECKED_CAST")
-			mutableStateOf(mutableMapOf<KMutableProperty1<Estate, Int>, Boolean>(
+			mutableStateOf(mutableMapOf(
+				Estate::price to false,
 				Estate::surface to false,
 				Estate::rooms to false,
 				Estate::bathrooms to false,
@@ -54,7 +57,6 @@ fun EtateListFilter(top: Dp) {
 			))
 		}
 
-
 		var mapOfDateProps by remember {
 			@Suppress("UNCHECKED_CAST")
 			mutableStateOf(mutableMapOf(
@@ -63,16 +65,30 @@ fun EtateListFilter(top: Dp) {
 			))
 		}
 
+		var checkboxType by remember { mutableStateOf(false) }
+		Row(Modifier.padding(top = 8.dp)) {
+			Checkbox(checked = checkboxType, onCheckedChange = { checkboxType = it })
+			Text(text = "Type",
+				fontWeight = FontWeight.Bold,
+				color = Color(0xffa0a0a0),
+				modifier = Modifier.padding(start = 8.dp))
+		}
 		OutlinedDropDown(title = "Type", currentSelected = estateFrom.type, onValueSelected = {
 			estateFrom.type = it
 			estateFrom = estateFrom
 		})
-
+		var checkboxStatus by remember { mutableStateOf(false) }
+		Row(Modifier.padding(top = 8.dp)) {
+			Checkbox(checked = checkboxStatus, onCheckedChange = { checkboxStatus = it })
+			Text(text = "Status",
+				fontWeight = FontWeight.Bold,
+				color = Color(0xffa0a0a0),
+				modifier = Modifier.padding(start = 8.dp))
+		}
 		OutlinedDropDown(title = "Status", currentSelected = estateFrom.status, onValueSelected = {
 			estateFrom.status = it
 			estateFrom = estateFrom
 		})
-
 
 		// -------------------
 		// DATEFIELD
