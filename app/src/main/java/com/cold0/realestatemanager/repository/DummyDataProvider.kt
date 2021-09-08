@@ -25,12 +25,16 @@ object DummyDataProvider {
 
 	private fun randomAddress(): String {
 		return listOf(
-			"8739 S. Newcastle Drive\nEvans, GA 30809",
-			"897 East Buckingham Dr.\nSpring Valley, NY 10977",
-			"9357 Birchwood St.\nDerry, NH 03038",
-			"873 E. Glen Ridge St.\nHillsboro, OR 97124",
-			"276 Vine Ave.\nWhitestone, NY 11357",
-			"20 Lafayette Drive\nWest Chicago, IL 60185"
+			"1 Whitehall St, New York, NY 10004, United States",
+			"38 Pearl St, New York, NY 10004, USA",
+			"63 Pearl St, New York, NY 10004, United States",
+			"60 Broad St, New York, NY 10004, United States",
+			"85 Broad St, New York, NY 10004, United States",
+			"45 Stone St, New York, NY 10004, United States",
+			"17 State St 16 floor, New York, NY 10004, United States",
+			"1 Pearl St, New York, NY 10004, USA",
+			"2 Moore St, New York, NY 10004, USA",
+			"2 Broadway, New York, NY 10004, United States"
 		).random()
 	}
 
@@ -74,8 +78,8 @@ object DummyDataProvider {
 		return GregorianCalendar(nextInt(2020, 2022), nextInt(0, 12), nextInt(0, 29)).time
 	}
 
-	private fun randomLocation(): String {
-		return "-74.00${nextInt(0, 1000).toString().padStart(3, '0')},40.71${nextInt(0, 1000).toString().padStart(3, '0')}"
+	private fun randomLocation(): Pair<Double, Double> {
+		return Pair(40.592620 + nextInt(0, 1000) / 6, -73.988640 + nextInt(0, 1000) / 6.0)
 	}
 
 	private fun randomPhotoUrl(): String {
@@ -102,6 +106,7 @@ object DummyDataProvider {
 		return Collections.unmodifiableList(list)
 	}
 
+	val loc = randomLocation()
 	private fun randomEstate(): Estate {
 		return Estate(
 			added = randomDate(),
@@ -110,7 +115,8 @@ object DummyDataProvider {
 			type = randomEnum(),
 			description = randomLoremIpsum(),
 			address = randomAddress(),
-			location = randomLocation(),
+			latitude = loc.first,
+			longitude = loc.second,
 			agent = randomName(),
 			sold = randomDate(),
 			price = nextInt(100000, 5500000),

@@ -55,6 +55,7 @@ fun EditEstatePhotoList(estate: Estate, onEstateChange: (Estate) -> (Unit)) {
 									},
 									label = { Text("Photo Name") },
 									modifier = Modifier
+										.fillMaxWidth()
 										.padding(8.dp)
 								)
 							},

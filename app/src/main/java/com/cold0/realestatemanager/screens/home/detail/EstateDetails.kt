@@ -24,6 +24,7 @@ import com.cold0.realestatemanager.ComposeUtils.estateFormat
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateStatus
+import com.google.android.libraries.maps.model.LatLng
 
 @ExperimentalCoilApi
 @Composable
@@ -89,7 +90,7 @@ fun EstateDetails(estate: Estate) {
 		// ----------------------------
 		// Description
 		// ----------------------------
-		OutlinedText(estate.description, title = stringResource(R.string.description))
+		OutlinedText(estate.description, title = stringResource(R.string.description), modifier = Modifier.fillMaxWidth())
 		Row(modifier = Modifier.fillMaxSize()) {
 			// ----------------------------
 			// Column 1
@@ -120,10 +121,10 @@ fun EstateDetails(estate: Estate) {
 					.weight(1.0f)
 					.padding(8.dp)
 					.fillMaxHeight()) {
-					EstateDetailMinimap(estate.location)
+					EstateDetailMinimap(LatLng(estate.latitude, estate.longitude))
 				}
 		}
 		if (small) // If DPI width is small
-			EstateDetailMinimap(estate.location)
+			EstateDetailMinimap(LatLng(estate.latitude, estate.longitude))
 	}
 }

@@ -14,18 +14,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.cold0.realestatemanager.ComposeUtils
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Photo
-import com.cold0.realestatemanager.ComposeUtils
+import com.google.android.libraries.maps.model.LatLng
 
 @ExperimentalCoilApi
 @Composable
-fun EstateDetailMinimap(localisation: String) {
+fun EstateDetailMinimap(localisation: LatLng) {
 	val context = LocalContext.current
 	Box(modifier = Modifier.fillMaxSize()) {
 		Image(
 			rememberImagePainter(
-				data = ComposeUtils.formatApiRequestGeoapify(400, 400, localisation),
+				data = ComposeUtils.formatApiRequestGeoapify(400, 400, "${localisation.latitude},${localisation.longitude}"),
 				builder = {
 					placeholder(R.drawable.ic_launcher_background)
 					error(R.drawable.ic_launcher_foreground)
@@ -35,7 +36,8 @@ fun EstateDetailMinimap(localisation: String) {
 			modifier = Modifier
 				.size(250.dp)
 				.clickable {
-					ComposeUtils.openPhotoViewerActivity(context, Photo(onlineUrl = ComposeUtils.formatApiRequestGeoapify(1024, 1024, localisation)))
+					ComposeUtils.openPhotoViewerActivity(context,
+						Photo(onlineUrl = ComposeUtils.formatApiRequestGeoapify(1024, 1024, "${localisation.latitude},${localisation.longitude}")))
 				}
 				.align(Alignment.Center),
 			contentDescription = stringResource(R.string.content_description_mini_map_preview),

@@ -28,6 +28,7 @@ import com.cold0.realestatemanager.screens.commons.OutlinedDropDown
 import com.cold0.realestatemanager.screens.commons.TopBarReturn
 import com.cold0.realestatemanager.screens.home.detail.EstateDetailMinimap
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
+import com.google.android.libraries.maps.model.LatLng
 
 
 @ExperimentalComposeUiApi
@@ -36,10 +37,11 @@ class EditEstateActivity : ComponentActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		val title = this.intent.extras?.getString("title") ?: "Estate Edit"
 		setContent {
 			var estate by remember { mutableStateOf(this.intent.extras?.getParcelable<Estate>("estate")!!, policy = neverEqualPolicy()) }
 			RealEstateManagerTheme {
-				TopBarReturn(this, "Edit Estate") {
+				TopBarReturn(this, title) {
 					Box {
 						EditEstateMain(estate, onEstateChange = { estate = it })
 
@@ -95,6 +97,14 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 			label = { Text(stringResource(R.string.description)) },
 			value = estate.description,
 			onValueChange = { estate.description = it; onEstateChange(estate) },
+			modifier = Modifier
+				.padding(top = 16.dp)
+				.fillMaxWidth()
+		)
+		OutlinedTextField(
+			label = { Text(stringResource(R.string.district)) },
+			value = estate.district,
+			onValueChange = { estate.district = it; onEstateChange(estate) },
 			modifier = Modifier
 				.padding(top = 16.dp)
 				.fillMaxWidth()
@@ -172,11 +182,10 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 				Column(Modifier
 					.weight(1.0f)
 					.padding(8.dp), verticalArrangement = Arrangement.Top) {
-					EstateDetailMinimap(estate.location)
+					EstateDetailMinimap(LatLng(estate.latitude, estate.longitude))
 				}
-
 		}
 		if (small)
-			EstateDetailMinimap(estate.location)
+			EstateDetailMinimap(LatLng(estate.latitude, estate.longitude))
 	}
 }

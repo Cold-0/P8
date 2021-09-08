@@ -20,6 +20,8 @@ data class FilterSetting(
 			status = false,
 			mapOfProps = mutableMapOf(
 				PropertyContainer(stringProps = Estate::agent) to false,
+				PropertyContainer(stringProps = Estate::district) to false,
+				PropertyContainer(stringProps = Estate::address) to false,
 				PropertyContainer(dateProps = Estate::added) to false,
 				PropertyContainer(dateProps = Estate::sold) to false,
 				PropertyContainer(intProps = Estate::price) to false,
@@ -30,7 +32,6 @@ data class FilterSetting(
 				PropertyContainer(intProps = Estate::surface) to false,
 				PropertyContainer(stringProps = Estate::interest) to false,
 				PropertyContainer(stringProps = Estate::description) to false,
-				PropertyContainer(stringProps = Estate::address) to false,
 			)
 		)
 	}

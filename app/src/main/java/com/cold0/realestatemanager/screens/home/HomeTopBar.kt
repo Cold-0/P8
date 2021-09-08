@@ -10,10 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -25,7 +22,6 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.ComposeUtils
-import com.cold0.realestatemanager.ComposeUtils.estateFormat
 import com.cold0.realestatemanager.ComposeUtils.registerForActivityResult
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
@@ -33,7 +29,9 @@ import com.cold0.realestatemanager.model.EstateStatus
 import com.cold0.realestatemanager.notifications.NotificationHelper
 import com.cold0.realestatemanager.screens.commons.OutlinedDatePickerButton
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalCoilApi
@@ -42,6 +40,7 @@ fun HomeTopBar(
 	viewModel: HomeViewModel,
 	listEstate: List<Estate>?,
 	toggleDrawer: () -> Unit,
+	toggleMap: () -> Unit,
 	content: @Composable () -> Unit,
 ) {
 	Column {
@@ -93,6 +92,7 @@ fun HomeTopBar(
 				IconButton(
 					onClick = {
 						intent.putExtra("estate", Estate())
+						intent.putExtra("title", "Add Estate")
 						launcherAdd.launch(intent)
 					},
 				) {
@@ -105,10 +105,22 @@ fun HomeTopBar(
 				if (!listEstate.isNullOrEmpty())
 					IconButton(onClick = {
 						intent.putExtra("estate", viewModel.getSelectedEstate())
+						intent.putExtra("title", "Edit Estate")
 						launcherEdit.launch(intent)
 					}) {
 						Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.content_description_edit_current_selected_estate), tint = Color.White)
 					}
+
+				// ----------------------------
+				// MAP
+				// ----------------------------
+				IconButton(
+					onClick = {
+						toggleMap()
+					},
+				) {
+					Icon(imageVector = Icons.Filled.LocationOn, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
+				}
 
 				// ----------------------------
 				// More Vertical Button and Drop Down Menu (Only show if Estate list isn't Empty)
@@ -126,8 +138,6 @@ fun HomeTopBar(
 
 					var openDialog by remember { mutableStateOf(false) }
 					val estate = viewModel.getSelectedEstate()
-					var buttonDateText by remember { mutableStateOf("Pick a date") }
-
 					if (openDialog) {
 						AlertDialog(
 							modifier = Modifier.padding(8.dp),
@@ -137,7 +147,6 @@ fun HomeTopBar(
 								Box(modifier = Modifier.fillMaxWidth()) {
 									OutlinedDatePickerButton(Modifier.align(Alignment.Center)) {
 										estate.sold = it
-										buttonDateText = it.estateFormat()
 									}
 								}
 							},
@@ -146,7 +155,6 @@ fun HomeTopBar(
 									openDialog = false
 									estate.status = EstateStatus.Sold
 									viewModel.updateEstate(estate)
-									buttonDateText = "Pick a date"
 								}) {
 									Text("Ok")
 								}

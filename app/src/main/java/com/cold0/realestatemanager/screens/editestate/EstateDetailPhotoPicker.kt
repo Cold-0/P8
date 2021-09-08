@@ -10,10 +10,7 @@ import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddAPhoto
@@ -93,13 +90,17 @@ fun EditEstatePhotoPicker(onPhotoSelected: (Photo) -> (Unit)) {
 					value = enteringName,
 					onValueChange = { enteringName = it },
 					label = { Text("Photo Name") },
-					modifier = Modifier.padding(8.dp)
+					modifier = Modifier
+						.fillMaxWidth()
+						.padding(8.dp)
 				)
 				OutlinedTextField(
 					value = enteringDescription,
 					onValueChange = { enteringDescription = it },
 					label = { Text("Photo Description") },
-					modifier = Modifier.padding(8.dp)
+					modifier = Modifier
+						.fillMaxWidth()
+						.padding(8.dp)
 				)
 			}
 		},
