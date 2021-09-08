@@ -69,7 +69,7 @@ fun EstateMap(list: List<Estate>, modifier: Modifier = Modifier, setSelectedEsta
 
 				val cameraPosition = CameraPosition.Builder()
 					.target(LatLng(loc.latitude, loc.longitude))
-					.zoom(13.0f)
+					.zoom(17.0f)
 					.build()
 
 				googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))

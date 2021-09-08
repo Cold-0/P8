@@ -28,8 +28,8 @@ data class Estate(
 	var bathrooms: Int = 0,
 	var bedrooms: Int = 0,
 	var address: String = "",
-	var latitude: Double = 40.592620,
-	var longitude: Double = -73.988640,
+	var latitude: Double = 48.8584,
+	var longitude: Double = 2.2945,
 	var interest: String = "",
 	var status: EstateStatus = EstateStatus.Available,
 ) : Parcelable {

@@ -30,8 +30,10 @@ import com.cold0.realestatemanager.notifications.NotificationHelper
 import com.cold0.realestatemanager.screens.commons.OutlinedDatePickerButton
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@DelicateCoroutinesApi
 @ExperimentalPermissionsApi
 @ExperimentalCoroutinesApi
 @ExperimentalComposeUiApi

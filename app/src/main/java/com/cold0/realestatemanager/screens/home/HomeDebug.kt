@@ -34,10 +34,17 @@ fun HomeDebug(viewModel: HomeViewModel) {
 				DropdownMenuItem(
 					onClick = {
 						viewModel.deleteAllEstate()
-						viewModel.addEstate(EstateDummyData.getRandomEstateList())
+						viewModel.addEstates(EstateDummyData.getRandomEstateList())
 					})
 				{
 					Text("Delete all list and add new Dummies")
+				}
+				DropdownMenuItem(
+					onClick = {
+						viewModel.deleteAllEstate()
+					})
+				{
+					Text("Delete all")
 				}
 			}
 		}

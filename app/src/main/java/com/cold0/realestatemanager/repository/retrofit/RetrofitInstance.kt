@@ -12,7 +12,7 @@ object RetrofitInstance {
 			.baseUrl(BASE_URL)
 			.build()
 	}
-	val movieService: GeocoderService by lazy {
+	val geocoderService: GeocoderService by lazy {
 		retrofit.create(GeocoderService::class.java)
 	}
 }
