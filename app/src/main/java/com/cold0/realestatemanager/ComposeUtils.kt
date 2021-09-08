@@ -27,6 +27,7 @@ import java.util.*
 
 @ExperimentalCoilApi
 object ComposeUtils {
+	fun Double.format(digits: Int) = "%.${digits}f".format(this)
 
 	// --------------------------------------
 	// Easy Activity Open

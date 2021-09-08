@@ -30,9 +30,11 @@ import com.cold0.realestatemanager.screens.home.filter.FilterSetting
 import com.cold0.realestatemanager.screens.home.list.EstateList
 import com.cold0.realestatemanager.screens.home.maps.EstateMap
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 
+@ExperimentalPermissionsApi
 @ExperimentalComposeUiApi
 @ExperimentalCoroutinesApi
 @ExperimentalCoilApi
@@ -52,7 +54,7 @@ class HomeActivity : ComponentActivity() {
 				object : ViewModelProvider.Factory {
 					override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 						val networkStatusTracker = NetworkStatusTracker(this@HomeActivity)
-						return NetworkStatusViewModel(networkStatusTracker) as T
+						@Suppress("UNCHECKED_CAST") return NetworkStatusViewModel(networkStatusTracker) as T
 					}
 				}
 			).get(NetworkStatusViewModel::class.java)
@@ -86,7 +88,12 @@ class HomeActivity : ComponentActivity() {
 						// Show Map
 						// ----------------------------
 						openMap -> {
-							estateList?.let { EstateMap(it) }
+							estateList?.let {
+								EstateMap(list = it, setSelectedEstate = { it1 ->
+									viewModel.setSelectedEstate(it1.getKeys())
+									openMap = !openMap
+								})
+							}
 						}
 
 						// ----------------------------

@@ -29,8 +29,10 @@ import com.cold0.realestatemanager.model.EstateStatus
 import com.cold0.realestatemanager.notifications.NotificationHelper
 import com.cold0.realestatemanager.screens.commons.OutlinedDatePickerButton
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalPermissionsApi
 @ExperimentalCoroutinesApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi

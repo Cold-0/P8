@@ -5,6 +5,7 @@ package com.cold0.realestatemanager.repository
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.Photo
 import java.util.*
+import kotlin.random.Random.Default.nextDouble
 import kotlin.random.Random.Default.nextInt
 
 
@@ -70,16 +71,12 @@ object DummyDataProvider {
 		return listOf("Bon", "Julia", "José", "Hamza", "Esteban", "Camille", "Marie", "Antoine").random()
 	}
 
-//	private fun randomDateString(): String {
-//		return "${nextInt(1, 28).toString().padStart(2, '0')}/${nextInt(1, 13).toString().padStart(2, '0')}/2021"
-//	}
-
 	private fun randomDate(): Date {
 		return GregorianCalendar(nextInt(2020, 2022), nextInt(0, 12), nextInt(0, 29)).time
 	}
 
 	private fun randomLocation(): Pair<Double, Double> {
-		return Pair(40.592620 + nextInt(0, 1000) / 6, -73.988640 + nextInt(0, 1000) / 6.0)
+		return Pair(nextDouble(-90.0, 90.0), nextDouble(-180.0, 180.0))
 	}
 
 	private fun randomPhotoUrl(): String {
@@ -106,8 +103,8 @@ object DummyDataProvider {
 		return Collections.unmodifiableList(list)
 	}
 
-	val loc = randomLocation()
 	private fun randomEstate(): Estate {
+		val loc = randomLocation()
 		return Estate(
 			added = randomDate(),
 			district = randomDistrict(),
