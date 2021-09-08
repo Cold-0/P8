@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.repository.EstateDummyData
+import com.cold0.realestatemanager.repository.dummy.EstateDummyData
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

@@ -1,6 +1,7 @@
 package com.cold0.realestatemanager.screens.home.filter
 
 import com.cold0.realestatemanager.model.Estate
+import com.cold0.realestatemanager.screens.commons.PropertyContainer
 
 
 data class FilterSetting(

@@ -4,7 +4,7 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.repository.EstateDummyData
+import com.cold0.realestatemanager.repository.dummy.EstateDummyData
 import com.cold0.realestatemanager.repository.database.EstateDatabase
 import junit.framework.Assert.*
 import org.junit.After

@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.cold0.realestatemanager.R
-import com.cold0.realestatemanager.repository.EstateDummyData
+import com.cold0.realestatemanager.repository.dummy.EstateDummyData
 
 @Composable
 fun HomeDebug(viewModel: HomeViewModel) {

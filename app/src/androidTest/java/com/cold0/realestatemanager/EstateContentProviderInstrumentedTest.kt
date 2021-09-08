@@ -15,11 +15,11 @@ import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.random.Random.Default.nextLong
 
 @RunWith(AndroidJUnit4::class)
 class EstateContentProviderInstrumentedTest {
 	companion object {
-		private const val uid: Long = 105
 		private const val description: String = "Lorem Ipsum Blabla"
 		private const val latitude: Double = 5.0
 		private const val type: Int = 1
@@ -28,7 +28,7 @@ class EstateContentProviderInstrumentedTest {
 
 	private var mContentResolver: ContentResolver? = null
 
-	private fun makeEstate(): ContentValues? {
+	private fun makeEstate(uid: Long): ContentValues? {
 		val values = ContentValues()
 		values.put("description", description)
 		values.put("surface", surface)
@@ -49,7 +49,7 @@ class EstateContentProviderInstrumentedTest {
 
 	@Test
 	fun tryGetNonExistingItem() {
-		val cursor: Cursor? = mContentResolver!!.query(ContentUris.withAppendedId(EstateContentProvider.URI_ITEM, Companion.uid), null, null, null, null)
+		val cursor: Cursor? = mContentResolver!!.query(ContentUris.withAppendedId(EstateContentProvider.URI_ITEM, 5556000), null, null, null, null)
 		assertThat(cursor, notNullValue())
 		assertThat(cursor?.count, `is`(0))
 		cursor?.close()
@@ -57,10 +57,12 @@ class EstateContentProviderInstrumentedTest {
 
 	@Test
 	fun insertEstateAndTest() {
+		val uid: Long = nextLong()
 		// Insert Estate
-		mContentResolver!!.insert(EstateContentProvider.URI_ITEM, makeEstate())
+		mContentResolver!!.insert(EstateContentProvider.URI_ITEM, makeEstate(uid))
 		// TEST
-		val cursor: Cursor? = mContentResolver!!.query(ContentUris.withAppendedId(EstateContentProvider.URI_ITEM, Companion.uid), null, null, null, null)
+
+		val cursor: Cursor? = mContentResolver!!.query(ContentUris.withAppendedId(EstateContentProvider.URI_ITEM, uid), null, null, null, null)
 		assertThat(cursor, notNullValue())
 		if (cursor != null) {
 			assertThat(cursor.count, `is`(1))
@@ -71,6 +73,4 @@ class EstateContentProviderInstrumentedTest {
 			assertThat(cursor.getInt(cursor.getColumnIndexOrThrow("type")), `is`(type))
 		}
 	}
-
-
 }

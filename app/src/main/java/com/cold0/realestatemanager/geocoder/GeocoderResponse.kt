@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.api.geocoder
+package com.cold0.realestatemanager.geocoder
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

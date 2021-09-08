@@ -1,5 +1,6 @@
 package com.cold0.realestatemanager.repository.retrofit
 
+import com.cold0.realestatemanager.repository.retrofit.services.GeocoderService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

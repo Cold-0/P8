@@ -1,11 +1,10 @@
 @file:Suppress("SpellCheckingInspection")
 
-package com.cold0.realestatemanager.repository
+package com.cold0.realestatemanager.repository.dummy
 
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.Photo
 import java.util.*
-import kotlin.random.Random.Default.nextDouble
 import kotlin.random.Random.Default.nextInt
 
 
@@ -24,18 +23,18 @@ object EstateDummyData {
 		).random().substring(0, nextInt(20, 250))
 	}
 
-	private fun randomAddress(): String {
+	private fun randomAddress(): Triple<String, Double, Double> {
 		return listOf(
-			"1 Whitehall St, New York, NY 10004, United States",
-			"38 Pearl St, New York, NY 10004, USA",
-			"63 Pearl St, New York, NY 10004, United States",
-			"60 Broad St, New York, NY 10004, United States",
-			"85 Broad St, New York, NY 10004, United States",
-			"45 Stone St, New York, NY 10004, United States",
-			"17 State St 16 floor, New York, NY 10004, United States",
-			"1 Pearl St, New York, NY 10004, USA",
-			"2 Moore St, New York, NY 10004, USA",
-			"2 Broadway, New York, NY 10004, United States"
+			Triple("1 Whitehall St, New York, NY 10004, United States", 40.703780, -74.012720),
+			Triple("38 Pearl St, New York, NY 10004, USA", 40.703400, -74.011650),
+			Triple("63 Pearl St, New York, NY 10004, United States", 40.703740, -74.010700),
+			Triple("60 Broad St, New York, NY 10004, United States", 40.705330, -74.012000),
+			Triple("85 Broad St, New York, NY 10004, United States", 40.704201, -74.011017),
+			Triple("45 Stone St, New York, NY 10004, United States", 40.7043974, 74.0126032),
+			Triple("17 State St 16 floor, New York, NY 10004, United States", 40.7027842, -74.0162479),
+			Triple("1 Pearl St, New York, NY 10004, USA", 40.7033931, -74.0161949),
+			Triple("2 Moore St, New York, NY 10004, USA", 40.7029918, -74.014545),
+			Triple("2 Broadway, New York, NY 10004, United States", 40.7044122, -74.0150368)
 		).random()
 	}
 
@@ -75,10 +74,6 @@ object EstateDummyData {
 		return GregorianCalendar(nextInt(2020, 2022), nextInt(0, 12), nextInt(0, 29)).time
 	}
 
-	private fun randomLocation(): Pair<Double, Double> {
-		return Pair(nextDouble(-90.0, 90.0), nextDouble(-180.0, 180.0))
-	}
-
 	private fun randomPhotoUrl(): String {
 		return "https://picsum.photos/id/${nextInt(50)}/400"
 	}
@@ -104,16 +99,16 @@ object EstateDummyData {
 	}
 
 	fun randomEstate(): Estate {
-		val loc = randomLocation()
+		val loc = randomAddress()
 		return Estate(
 			added = randomDate(),
 			district = randomDistrict(),
 			surface = nextInt(25, 1000),
 			type = randomEnum(),
 			description = randomLoremIpsum(),
-			address = randomAddress(),
-			latitude = loc.first,
-			longitude = loc.second,
+			address = loc.first,
+			latitude = loc.second,
+			longitude = loc.third,
 			agent = randomName(),
 			sold = randomDate(),
 			price = nextInt(100000, 5500000),

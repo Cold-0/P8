@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModel
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.repository.EstateRepository
 import com.cold0.realestatemanager.repository.database.EstateDatabase
+import com.cold0.realestatemanager.screens.commons.PropertyContainer
 import com.cold0.realestatemanager.screens.home.filter.FilterSetting
-import com.cold0.realestatemanager.screens.home.filter.PropertyContainer
 import kotlin.concurrent.thread
 
 class HomeViewModel : ViewModel() {

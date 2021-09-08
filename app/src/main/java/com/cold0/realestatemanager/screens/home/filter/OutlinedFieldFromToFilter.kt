@@ -13,7 +13,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.screens.home.filter.PropertyContainer
 
 @ExperimentalCoilApi
 @ExperimentalComposeUiApi

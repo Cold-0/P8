@@ -1,4 +1,4 @@
-package com.cold0.realestatemanager.screens.home.filter
+package com.cold0.realestatemanager.screens.commons
 
 import com.cold0.realestatemanager.model.Estate
 import java.util.*
