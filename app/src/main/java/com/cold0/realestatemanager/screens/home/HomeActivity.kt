@@ -79,6 +79,7 @@ class HomeActivity : ComponentActivity() {
 					toggleDrawer = {
 						openLeftDrawer = !openLeftDrawer
 					},
+					mapOpen = openMap,
 					toggleMap = {
 						openMap = !openMap
 					},

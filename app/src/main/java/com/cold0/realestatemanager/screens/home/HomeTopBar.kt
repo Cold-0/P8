@@ -41,6 +41,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun HomeTopBar(
 	viewModel: HomeViewModel,
 	listEstate: List<Estate>?,
+	mapOpen: Boolean,
 	toggleDrawer: () -> Unit,
 	toggleMap: () -> Unit,
 	content: @Composable () -> Unit,
@@ -48,12 +49,18 @@ fun HomeTopBar(
 	Column {
 		TopAppBar(
 			elevation = 4.dp,
-			title = { Text("Home") },
+			title = { Text(if (!mapOpen) "Home" else "Map") },
 			navigationIcon = {
-				if (!listEstate.isNullOrEmpty())
-					IconButton(onClick = { toggleDrawer() }) {
-						Icon(Icons.Filled.Menu, contentDescription = stringResource(R.string.content_description_open_left_list), tint = Color.White)
+				if (!mapOpen) {
+					if (!listEstate.isNullOrEmpty())
+						IconButton(onClick = { toggleDrawer() }) {
+							Icon(Icons.Filled.Menu, contentDescription = stringResource(R.string.content_description_open_left_list), tint = Color.White)
+						}
+				} else {
+					IconButton(onClick = { toggleMap() }) {
+						Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.content_description_open_left_list), tint = Color.White)
 					}
+				}
 			},
 			actions = {
 				val context = LocalContext.current
@@ -91,20 +98,21 @@ fun HomeTopBar(
 				// ----------------------------
 				// Add Button
 				// ----------------------------
-				IconButton(
-					onClick = {
-						intent.putExtra("estate", Estate())
-						intent.putExtra("title", "Add Estate")
-						launcherAdd.launch(intent)
-					},
-				) {
-					Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
-				}
+				if (!mapOpen)
+					IconButton(
+						onClick = {
+							intent.putExtra("estate", Estate())
+							intent.putExtra("title", "Add Estate")
+							launcherAdd.launch(intent)
+						},
+					) {
+						Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
+					}
 
 				// ----------------------------
 				// Edit Button (Only show if Estate list isn't Empty)
 				// ----------------------------
-				if (!listEstate.isNullOrEmpty())
+				if (!listEstate.isNullOrEmpty() && !mapOpen)
 					IconButton(onClick = {
 						intent.putExtra("estate", viewModel.getSelectedEstate())
 						intent.putExtra("title", "Edit Estate")
@@ -116,20 +124,21 @@ fun HomeTopBar(
 				// ----------------------------
 				// MAP
 				// ----------------------------
-				IconButton(
-					onClick = {
-						toggleMap()
-					},
-				) {
-					Icon(imageVector = Icons.Filled.LocationOn, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
-				}
+				if (!mapOpen)
+					IconButton(
+						onClick = {
+							toggleMap()
+						},
+					) {
+						Icon(imageVector = Icons.Filled.LocationOn, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
+					}
 
 				// ----------------------------
 				// More Vertical Button and Drop Down Menu (Only show if Estate list isn't Empty)
 				// ----------------------------
 				var threeDotExpanded by remember { mutableStateOf(false) }
 
-				if (!listEstate.isNullOrEmpty()) {
+				if (!listEstate.isNullOrEmpty() && !mapOpen) {
 					IconButton(
 						onClick = {
 							threeDotExpanded = !threeDotExpanded
