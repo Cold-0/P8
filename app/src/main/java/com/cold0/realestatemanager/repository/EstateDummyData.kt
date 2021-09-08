@@ -9,7 +9,7 @@ import kotlin.random.Random.Default.nextDouble
 import kotlin.random.Random.Default.nextInt
 
 
-object DummyDataProvider {
+object EstateDummyData {
 
 	// ---------------------
 	// Random Model
@@ -131,7 +131,7 @@ object DummyDataProvider {
 	// ---------------------
 	fun getRandomEstateList(): List<Estate> {
 		val list = mutableListOf<Estate>()
-		repeat(350)
+		repeat(40)
 		{
 			list.add(randomEstate())
 		}

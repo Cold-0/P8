@@ -28,13 +28,12 @@ import com.cold0.realestatemanager.ComposeUtils
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.home.HomeViewModel
 import com.cold0.realestatemanager.screens.home.filter.EtateListFilter
-import java.util.*
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalCoilApi
 @Composable
-fun EstateList(estateList: List<Estate>, estateSelected: Pair<UUID, Date>, viewModel: HomeViewModel) {
+fun EstateList(estateList: List<Estate>, estateSelected: Long, viewModel: HomeViewModel) {
 	val (small, width) = ComposeUtils.getScreenInfo()
 	var textfieldSize by remember { mutableStateOf(Size.Zero) }
 	Box(Modifier.width(if (small) width.dp else 250.dp)) {
@@ -88,7 +87,7 @@ fun EstateList(estateList: List<Estate>, estateSelected: Pair<UUID, Date>, viewM
 						)
 					}) {
 				items(estateList) { estate ->
-					EstateListItem(estate, estate.compareKeys(estateSelected), viewModel = viewModel)
+					EstateListItem(estate, estate.uid == estateSelected, viewModel = viewModel)
 				}
 			}
 		}

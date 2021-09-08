@@ -27,35 +27,6 @@ class EstateDatabaseConverter {
 	}
 
 	// ----------------------
-	// Date (Calendar)
-	// ----------------------
-	@TypeConverter
-	fun fromLong(value: Long): GregorianCalendar {
-		val cal = GregorianCalendar()
-		cal.time = Date(value)
-		return cal
-	}
-
-	@TypeConverter
-	fun toLong(calendar: GregorianCalendar): Long {
-		val cal: Calendar = calendar
-		return cal.time.time
-	}
-
-	// ----------------------
-	// UUID
-	// ----------------------
-	@TypeConverter
-	fun fromUUID(uuid: UUID): String {
-		return uuid.toString()
-	}
-
-	@TypeConverter
-	fun uuidFromString(string: String): UUID {
-		return UUID.fromString(string)
-	}
-
-	// ----------------------
 	// EstateType
 	// ----------------------
 	@TypeConverter

@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.cold0.realestatemanager.R
-import com.cold0.realestatemanager.repository.DummyDataProvider
+import com.cold0.realestatemanager.repository.EstateDummyData
 
 @Composable
 fun HomeDebug(viewModel: HomeViewModel) {
@@ -34,7 +34,7 @@ fun HomeDebug(viewModel: HomeViewModel) {
 				DropdownMenuItem(
 					onClick = {
 						viewModel.deleteAllEstate()
-						viewModel.addEstate(DummyDataProvider.getRandomEstateList())
+						viewModel.addEstate(EstateDummyData.getRandomEstateList())
 					})
 				{
 					Text("Delete all list and add new Dummies")

@@ -8,11 +8,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.repository.Repository
+import com.cold0.realestatemanager.repository.EstateRepository
 import com.cold0.realestatemanager.repository.database.EstateDatabase
 import com.cold0.realestatemanager.screens.home.filter.FilterSetting
 import com.cold0.realestatemanager.screens.home.filter.PropertyContainer
-import java.util.*
 import kotlin.concurrent.thread
 
 class HomeViewModel : ViewModel() {
@@ -20,7 +19,7 @@ class HomeViewModel : ViewModel() {
 	// Lazy Database Init
 	// ----------------------------
 	fun initDatabase(context: Context) {
-		Repository.db = EstateDatabase.getDatabase(context)
+		EstateRepository.db = EstateDatabase.getInstance(context)
 	}
 
 	// ----------------------------
@@ -33,19 +32,19 @@ class HomeViewModel : ViewModel() {
 		return estateList.observeAsState()
 	}
 
-	private val estateSelected: MutableLiveData<Pair<UUID, Date>> = MutableLiveData(Pair(UUID.randomUUID(), Date()))
+	private val estateSelected: MutableLiveData<Long> = MutableLiveData(0)
 
 	@Composable
-	fun rememberEstateSelected(): State<Pair<UUID, Date>?> {
+	fun rememberEstateSelected(): State<Long?> {
 		return estateSelected.observeAsState()
 	}
 
 	@Composable
-	fun ObserveEstateSelected(lifecycleOwner: LifecycleOwner, onUpdate: (Pair<UUID, Date>) -> (Unit)) {
+	fun ObserveEstateSelected(lifecycleOwner: LifecycleOwner, onUpdate: (Long) -> (Unit)) {
 		estateSelected.observe(lifecycleOwner, onUpdate)
 	}
 
-	private val filterSetting = MutableLiveData(FilterSetting.Default)
+	private val filterSetting = MutableLiveData(FilterSetting.Default.copy())
 
 	fun setFilterSetting(fs: FilterSetting) {
 		filterSetting.postValue(fs)
@@ -53,26 +52,25 @@ class HomeViewModel : ViewModel() {
 	}
 
 	fun getFilterSetting(): FilterSetting {
-		return filterSetting.value ?: FilterSetting.Default
+		return filterSetting.value ?: FilterSetting.Default.copy()
 	}
 
 	// ----------------------------
 	// Set/Get Selected Estate
 	// ----------------------------
-	fun setSelectedEstate(pair: Pair<UUID, Date>) {
-		estateSelected.postValue(pair)
+	fun setSelectedEstate(uid: Long) {
+		estateSelected.postValue(uid)
 	}
 
 	fun getSelectedEstate(): Estate {
 		return estateList.value?.find {
-			it.uid == estateSelected.value?.first ?: false
-					&& it.added == estateSelected.value?.second ?: false
+			it.uid == estateSelected.value ?: false
 		} ?: getFirstEstate()
 	}
 
 	private fun getFirstEstate(): Estate {
 		estateList.value?.first()?.let {
-			setSelectedEstate(it.getKeys())
+			setSelectedEstate(it.uid)
 			return it
 		}
 		return Estate()
@@ -116,7 +114,7 @@ class HomeViewModel : ViewModel() {
 	// ----------------------------
 	fun updateEstateListFromDB() {
 		thread {
-			var list = Repository.db?.estateDao()?.getAll()
+			var list = EstateRepository.db?.estateDao()?.getAll()
 			val filterSetting = filterSetting.value
 
 			if (filterSetting != null && list != null) {
@@ -150,22 +148,22 @@ class HomeViewModel : ViewModel() {
 
 	fun addEstate(estate: Estate) {
 		thread {
-			Repository.db?.estateDao()?.insert(estate)
-			setSelectedEstate(estate.getKeys())
+			EstateRepository.db?.estateDao()?.insert(estate)
+			setSelectedEstate(estate.uid)
 			updateEstateListFromDB()
 		}
 	}
 
 	fun addEstate(estateList: List<Estate>) {
 		thread {
-			Repository.db?.estateDao()?.insert(*(estateList.toTypedArray()))
+			EstateRepository.db?.estateDao()?.insert(*(estateList.toTypedArray()))
 			updateEstateListFromDB()
 		}
 	}
 
 	fun updateEstate(estate: Estate) {
 		thread {
-			Repository.db?.estateDao()?.update(estate)
+			EstateRepository.db?.estateDao()?.update(estate)
 			updateEstateListFromDB()
 		}
 	}
@@ -174,30 +172,30 @@ class HomeViewModel : ViewModel() {
 	// ----------------------------
 	// Delete
 	// ----------------------------
-	fun deleteEstate(keys: Pair<UUID, Date>) {
+	fun deleteEstate(uid: Long) {
 		thread {
-			Repository.db?.estateDao()?.deleteByUIDAndTimestamp(keys.first, keys.second)
+			EstateRepository.db?.estateDao()?.delete(uid)
 			updateEstateListFromDB()
 		}
 	}
 
 	fun deleteEstate(estate: Estate) {
 		thread {
-			Repository.db?.estateDao()?.delete(estate)
+			EstateRepository.db?.estateDao()?.delete(estate)
 			updateEstateListFromDB()
 		}
 	}
 
 	fun deleteEstate(estateList: List<Estate>) {
 		thread {
-			Repository.db?.estateDao()?.delete(*(estateList.toTypedArray()))
+			EstateRepository.db?.estateDao()?.delete(*(estateList.toTypedArray()))
 			updateEstateListFromDB()
 		}
 	}
 
 	fun deleteAllEstate() {
 		thread {
-			Repository.db?.estateDao()?.deleteAll()
+			EstateRepository.db?.estateDao()?.deleteAll()
 			updateEstateListFromDB()
 		}
 	}

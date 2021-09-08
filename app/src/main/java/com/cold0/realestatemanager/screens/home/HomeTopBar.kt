@@ -83,7 +83,7 @@ fun HomeTopBar(
 					if (result.resultCode == Activity.RESULT_OK) {
 						result.data?.getParcelableExtra<Estate>("estateReturn")?.let {
 							viewModel.addEstate(it)
-							viewModel.setSelectedEstate(it.getKeys())
+							viewModel.setSelectedEstate(it.uid)
 							NotificationHelper.sendSimpleNotification(
 								context = context,
 								title = "Real Estate Manager",

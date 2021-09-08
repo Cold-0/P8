@@ -1,29 +1,39 @@
 package com.cold0.realestatemanager.repository.database
 
+import android.database.Cursor
 import androidx.room.*
 import com.cold0.realestatemanager.model.Estate
-import java.util.*
 
 @Dao
 interface EstateDao {
 	@Query("SELECT * FROM Estate")
 	fun getAll(): List<Estate>
 
+	@Query("SELECT * FROM Estate")
+	fun getAllCursor(): Cursor
+
+	@Query("SELECT * FROM Estate WHERE Estate.uid = :uid")
+	fun getCursor(uid: Long): Cursor
+
+	@Query("SELECT * FROM Estate WHERE Estate.uid = :uid")
+	fun get(uid: Long): Estate
+
 	@Insert
-	fun insert(vararg Estates: Estate)
+	fun insert(Estate: Estate): Long
+
+	@Insert
+	fun insert(vararg Estates: Estate): LongArray
 
 	@Delete
 	fun delete(vararg Estates: Estate)
 
 	@Query("DELETE FROM estate WHERE uid = :uid")
-	fun deleteByUID(uid: UUID)
-
-	@Query("DELETE FROM estate WHERE uid = :uid AND added = :timestamp")
-	fun deleteByUIDAndTimestamp(uid: UUID, timestamp: Date)
+	fun delete(uid: Long): Int
 
 	@Query("DELETE FROM estate")
 	fun deleteAll()
 
 	@Update
-	fun update(vararg Estates: Estate)
+	fun update(vararg Estates: Estate): Int
+
 }

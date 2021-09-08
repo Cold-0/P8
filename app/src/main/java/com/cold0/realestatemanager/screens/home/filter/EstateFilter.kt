@@ -58,18 +58,20 @@ fun EtateListFilter(top: Dp, viewmodel: HomeViewModel, closeFilterView: () -> (U
 		Row(Modifier.fillMaxWidth())
 		{
 			Button(onClick = {
+				val copy = FilterSetting.Default.copy()
+
 				// Reset map
-				mapOfProps = FilterSetting.Default.mapOfProps
+				mapOfProps = copy.mapOfProps
 
 				// Reset Estates
-				estateTo = FilterSetting.Default.to
-				estateFrom = FilterSetting.Default.from
+				estateTo = copy.to
+				estateFrom = copy.from
 
 				// Reset Enum Checkbox
-				checkboxType = FilterSetting.Default.type
-				checkboxStatus = FilterSetting.Default.status
+				checkboxType = copy.type
+				checkboxStatus = copy.status
 
-				viewmodel.setFilterSetting(FilterSetting.Default)
+				viewmodel.setFilterSetting(copy)
 				closeFilterView()
 			},
 				Modifier

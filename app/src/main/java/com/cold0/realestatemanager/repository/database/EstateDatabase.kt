@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cold0.realestatemanager.model.Estate
-import com.cold0.realestatemanager.repository.DummyDataProvider
+import com.cold0.realestatemanager.repository.EstateDummyData
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -15,34 +15,34 @@ import java.util.concurrent.Executors
 @TypeConverters(EstateDatabaseConverter::class)
 abstract class EstateDatabase : RoomDatabase() {
 
-    abstract fun estateDao(): EstateDao
+	abstract fun estateDao(): EstateDao
 
-    companion object {
-        @Volatile
-        private var INSTANCE: EstateDatabase? = null
+	companion object {
+		@Volatile
+		private var INSTANCE: EstateDatabase? = null
 
-        private const val NUMBER_OF_THREADS = 4
-        val databaseWriteExecutor: ExecutorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS)
+		private const val NUMBER_OF_THREADS = 4
+		val databaseWriteExecutor: ExecutorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS)
 
-        private val roomDatabaseCallback: Callback = object : Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-                databaseWriteExecutor.execute {
-                    INSTANCE?.estateDao()?.insert(*(DummyDataProvider.getRandomEstateList().toTypedArray()))
-                }
-            }
-        }
+		private val roomDatabaseCallback: Callback = object : Callback() {
+			override fun onCreate(db: SupportSQLiteDatabase) {
+				super.onCreate(db)
+				databaseWriteExecutor.execute {
+					INSTANCE?.estateDao()?.insert(*(EstateDummyData.getRandomEstateList().toTypedArray()))
+				}
+			}
+		}
 
-        fun getDatabase(context: Context): EstateDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    EstateDatabase::class.java,
-                    "realEstateOffline.SQLite.db"
-                ).addCallback(roomDatabaseCallback).build()
-                INSTANCE = instance
-                instance
-            }
-        }
-    }
+		fun getInstance(context: Context): EstateDatabase {
+			return INSTANCE ?: synchronized(this) {
+				val instance = Room.databaseBuilder(
+					context.applicationContext,
+					EstateDatabase::class.java,
+					"realEstateOffline.SQLite.db"
+				).addCallback(roomDatabaseCallback).build()
+				INSTANCE = instance
+				instance
+			}
+		}
+	}
 }

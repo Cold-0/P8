@@ -91,7 +91,7 @@ class HomeActivity : ComponentActivity() {
 						openMap -> {
 							estateList?.let {
 								EstateMap(list = it, setSelectedEstate = { it1 ->
-									viewModel.setSelectedEstate(it1.getKeys())
+									viewModel.setSelectedEstate(it1.uid)
 									openMap = !openMap
 								})
 							}
@@ -111,7 +111,7 @@ class HomeActivity : ComponentActivity() {
 									style = MaterialTheme.typography.h6.copy(color = Color.LightGray),
 									modifier = Modifier.padding(64.dp)
 								)
-								Button({ viewModel.setFilterSetting(FilterSetting.Default) }) {
+								Button({ viewModel.setFilterSetting(FilterSetting.Default.copy()) }) {
 									Text("Reset Filter")
 								}
 							}
@@ -122,7 +122,7 @@ class HomeActivity : ComponentActivity() {
 						else -> {
 							estateList?.let { estateListChecked ->
 								Row(Modifier.fillMaxSize()) {
-									val pair = estateSelected ?: Pair(UUID.randomUUID(), Date())
+									val pair = estateSelected ?: 0
 									// -------------------------
 									// Estate List
 									// -------------------------

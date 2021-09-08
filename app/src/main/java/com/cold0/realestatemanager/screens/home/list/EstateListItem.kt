@@ -49,7 +49,7 @@ fun EstateListItem(estate: Estate, isSelected: Boolean, viewModel: HomeViewModel
 				)
 			}
 			.clickable {
-				viewModel.setSelectedEstate(estate.getKeys())
+				viewModel.setSelectedEstate(estate.uid)
 			}
 	)
 	{
