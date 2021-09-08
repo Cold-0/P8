@@ -17,7 +17,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class EstateContentProviderInstrugmentedTest {
+class EstateContentProviderInstrumentedTest {
 	companion object {
 		private const val uid: Long = 105
 		private const val description: String = "Lorem Ipsum Blabla"

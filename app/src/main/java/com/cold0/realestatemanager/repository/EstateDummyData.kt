@@ -103,7 +103,7 @@ object EstateDummyData {
 		return Collections.unmodifiableList(list)
 	}
 
-	private fun randomEstate(): Estate {
+	fun randomEstate(): Estate {
 		val loc = randomLocation()
 		return Estate(
 			added = randomDate(),

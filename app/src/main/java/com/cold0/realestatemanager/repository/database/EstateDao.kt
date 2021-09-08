@@ -30,6 +30,9 @@ interface EstateDao {
 	@Query("DELETE FROM estate WHERE uid = :uid")
 	fun delete(uid: Long): Int
 
+	@Query("delete from estate where uid in (:idList)")
+	fun delete(idList: List<Long>)
+
 	@Query("DELETE FROM estate")
 	fun deleteAll()
 

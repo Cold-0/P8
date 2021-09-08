@@ -2,6 +2,8 @@ package com.cold0.realestatemanager
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.*
 
 class UtilsUnitTest {
 	@Test
@@ -25,6 +27,6 @@ class UtilsUnitTest {
 		// ----------------------------
 		// Today Date Format
 		// ----------------------------
-		assertEquals("08/09/2021", Utils.getTodayDate())
+		assertEquals(SimpleDateFormat("dd/MM/yyyy").format(Date()), Utils.getTodayDate())
 	}
 }

@@ -8,7 +8,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class NetworkCheckInstrugmentedTest {
+class NetworkCheckInstrumentedTest {
 	@Test
 	fun checkNotInternet() {
 		InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("svc wifi disable")
