@@ -30,7 +30,7 @@ object EstateDummyData {
 			Triple("63 Pearl St, New York, NY 10004, United States", 40.703740, -74.010700),
 			Triple("60 Broad St, New York, NY 10004, United States", 40.705330, -74.012000),
 			Triple("85 Broad St, New York, NY 10004, United States", 40.704201, -74.011017),
-			Triple("45 Stone St, New York, NY 10004, United States", 40.7043974, 74.0126032),
+			Triple("45 Stone St, New York, NY 10004, United States", 40.704397, -74.0126032),
 			Triple("17 State St 16 floor, New York, NY 10004, United States", 40.7027842, -74.0162479),
 			Triple("1 Pearl St, New York, NY 10004, USA", 40.7033931, -74.0161949),
 			Triple("2 Moore St, New York, NY 10004, USA", 40.7029918, -74.014545),

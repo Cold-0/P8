@@ -119,19 +119,19 @@ object ComposeUtils {
 		return Pair(configuration.screenWidthDp <= 450, configuration.screenWidthDp)
 	}
 
-	fun formatApiRequestGeoapify(
+	fun formatApiRequestStaticMap(
 		width: Int = 400,
 		height: Int = 400,
+		zoom: Int = 15,
 		localisation: String = "-74.005157,40.710785",
-		apiKey: String = BuildConfig.GEOAPIFY_KEY,
+		apiKey: String = BuildConfig.MAPS_API_KEY,
 	): String {
-		return "https://maps.geoapify.com/v1/staticmap" +
-				"?style=osm-bright-grey" +
-				"&width=$width&height=$height" +
-				"&center=lonlat:$localisation" +
-				"&zoom=16.4226&pitch=44" +
-				"&marker=lonlat:$localisation;color:%23ff0000;size:medium" +
-				"&apiKey=$apiKey"
+		return "https://maps.googleapis.com/maps/api/staticmap?" +
+				"center=$localisation" +
+				"&size=${width}x${height}" +
+				"&zoom=$zoom" +
+				"&markers=color:red%7C$localisation" +
+				"&key=$apiKey"
 	}
 
 	// ------------------------

@@ -26,9 +26,7 @@ import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.commons.OutlinedDropDown
 import com.cold0.realestatemanager.screens.commons.TopBarReturn
-import com.cold0.realestatemanager.screens.home.detail.EstateDetailMinimap
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
-import com.google.android.libraries.maps.model.LatLng
 
 
 @ExperimentalComposeUiApi
@@ -174,18 +172,6 @@ private fun EditEstateMain(estate: Estate, onEstateChange: (Estate) -> Unit) {
 					onEstateChange(estate)
 				}
 			}
-
-			// ----------------------------
-			// Minimap
-			// ----------------------------
-			if (!small)
-				Column(Modifier
-					.weight(1.0f)
-					.padding(8.dp), verticalArrangement = Arrangement.Top) {
-					EstateDetailMinimap(LatLng(estate.latitude, estate.longitude))
-				}
 		}
-		if (small)
-			EstateDetailMinimap(LatLng(estate.latitude, estate.longitude))
 	}
 }

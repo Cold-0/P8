@@ -27,7 +27,7 @@ fun EstateDetailMinimap(localisation: LatLng) {
 	Box(modifier = Modifier.fillMaxSize()) {
 		Image(
 			rememberImagePainter(
-				data = ComposeUtils.formatApiRequestGeoapify(400, 400, "${localisation.latitude.format(8)},${localisation.longitude.format(8)}"),
+				data = ComposeUtils.formatApiRequestStaticMap(400, 400, 19, "${localisation.latitude.format(6)},${localisation.longitude.format(6)}"),
 				builder = {
 					placeholder(R.drawable.ic_launcher_background)
 					error(R.drawable.ic_launcher_foreground)
@@ -38,7 +38,7 @@ fun EstateDetailMinimap(localisation: LatLng) {
 				.size(250.dp)
 				.clickable {
 					ComposeUtils.openPhotoViewerActivity(context,
-						Photo(onlineUrl = ComposeUtils.formatApiRequestGeoapify(1024, 1024, "${localisation.latitude.format(8)},${localisation.longitude.format(8)}")))
+						Photo(onlineUrl = ComposeUtils.formatApiRequestStaticMap(1024, 1024, 14, "${localisation.latitude.format(6)},${localisation.longitude.format(6)}")))
 				}
 				.align(Alignment.Center),
 			contentDescription = stringResource(R.string.content_description_mini_map_preview),

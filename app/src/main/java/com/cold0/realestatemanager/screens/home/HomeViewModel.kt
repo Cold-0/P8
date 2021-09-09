@@ -9,14 +9,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.repository.EstateRepository
-import com.cold0.realestatemanager.repository.EstateRepository.geocoderService
 import com.cold0.realestatemanager.repository.database.EstateDatabase
 import com.cold0.realestatemanager.screens.commons.PropertyContainer
 import com.cold0.realestatemanager.screens.home.filter.FilterSetting
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
 class HomeViewModel : ViewModel() {
@@ -153,19 +149,14 @@ class HomeViewModel : ViewModel() {
 
 	@DelicateCoroutinesApi
 	fun addEstate(estate: Estate) {
-		GlobalScope.launch(Dispatchers.IO) {
-			val answer = geocoderService.getLocation(estate.address)
-			val list = answer.results
-			if (list?.size ?: 0 > 0) {
-				val location = list?.get(0)?.geometry?.location
-				if (location != null) {
-					estate.latitude = location.lat!!
-					estate.longitude = location.lng!!
-				}
+		EstateRepository.callGeocoderService(estate.address) { lat, lng ->
+			estate.latitude = lat
+			estate.longitude = lng
+			thread() {
+				EstateRepository.db?.estateDao()?.insert(estate)
+				setSelectedEstate(estate.uid)
+				updateEstateListFromDB()
 			}
-			EstateRepository.db?.estateDao()?.insert(estate)
-			setSelectedEstate(estate.uid)
-			updateEstateListFromDB()
 		}
 	}
 
@@ -179,21 +170,15 @@ class HomeViewModel : ViewModel() {
 
 	@DelicateCoroutinesApi
 	fun updateEstate(estate: Estate) {
-		GlobalScope.launch(Dispatchers.IO) {
-			val answer = geocoderService.getLocation(estate.address)
-			val list = answer.results
-			if (list?.size ?: 0 > 0) {
-				val location = list?.get(0)?.geometry?.location
-				if (location != null) {
-					estate.latitude = location.lat!!
-					estate.longitude = location.lng!!
-				}
+		EstateRepository.callGeocoderService(estate.address) { lat, lng ->
+			estate.latitude = lat
+			estate.longitude = lng
+			thread() {
+				EstateRepository.db?.estateDao()?.update(estate)
+				updateEstateListFromDB()
 			}
-			EstateRepository.db?.estateDao()?.update(estate)
-			updateEstateListFromDB()
 		}
 	}
-
 
 	// ----------------------------
 	// Delete
