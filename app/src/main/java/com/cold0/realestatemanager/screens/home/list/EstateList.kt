@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import coil.annotation.ExperimentalCoilApi
-import com.cold0.realestatemanager.ComposeUtils
+import com.cold0.realestatemanager.utils.ComposerUtils
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.screens.home.HomeViewModel
 import com.cold0.realestatemanager.screens.home.filter.EtateListFilter
@@ -34,7 +34,7 @@ import com.cold0.realestatemanager.screens.home.filter.EtateListFilter
 @ExperimentalCoilApi
 @Composable
 fun EstateList(estateList: List<Estate>, estateSelected: Long, viewModel: HomeViewModel) {
-	val (small, width) = ComposeUtils.getScreenInfo()
+	val (small, width) = ComposerUtils.getScreenWidthInfo()
 	var textfieldSize by remember { mutableStateOf(Size.Zero) }
 	Box(Modifier.width(if (small) width.dp else 250.dp)) {
 		var filterDialogOpenned by remember { mutableStateOf(false) }

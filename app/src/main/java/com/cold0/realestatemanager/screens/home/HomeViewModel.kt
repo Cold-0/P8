@@ -12,7 +12,6 @@ import com.cold0.realestatemanager.repository.EstateRepository
 import com.cold0.realestatemanager.repository.database.EstateDatabase
 import com.cold0.realestatemanager.screens.home.filter.FilterSettings
 import com.cold0.realestatemanager.screens.home.filter.FilterUtils
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlin.concurrent.thread
 
 class HomeViewModel : ViewModel() {
@@ -77,8 +76,13 @@ class HomeViewModel : ViewModel() {
 		return Estate()
 	}
 
+	// ----------------------------------------------------------------------------------------------------
+	// DATABASE METHODS
 	// ----------------------------
-	// EstateList Method
+
+
+	// ----------------------------
+	// DB Pull Data
 	// ----------------------------
 	fun updateEstateListFromDB() {
 		thread {
@@ -87,9 +91,9 @@ class HomeViewModel : ViewModel() {
 		}
 	}
 
-
-
-	@DelicateCoroutinesApi
+	// ----------------------------
+	// Update
+	// ----------------------------
 	fun addEstate(estate: Estate) {
 		EstateRepository.callGeocoderService(estate.address) { lat, lng ->
 			estate.latitude = lat
@@ -110,7 +114,9 @@ class HomeViewModel : ViewModel() {
 		}
 	}
 
-	@DelicateCoroutinesApi
+	// ----------------------------
+	// Update
+	// ----------------------------
 	fun updateEstate(estate: Estate) {
 		EstateRepository.callGeocoderService(estate.address) { lat, lng ->
 			estate.latitude = lat

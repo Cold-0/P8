@@ -2,6 +2,7 @@ package com.cold0.realestatemanager
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.cold0.realestatemanager.utils.Utils
 import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue
 import org.junit.Test

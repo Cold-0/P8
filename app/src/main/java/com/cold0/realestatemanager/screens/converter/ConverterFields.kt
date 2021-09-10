@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.cold0.realestatemanager.Utils
+import com.cold0.realestatemanager.utils.Utils
 
 @Composable
 fun ConverterFields() {

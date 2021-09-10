@@ -1,5 +1,6 @@
 package com.cold0.realestatemanager
 
+import com.cold0.realestatemanager.utils.Utils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.text.SimpleDateFormat

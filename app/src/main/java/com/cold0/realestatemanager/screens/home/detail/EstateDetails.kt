@@ -20,10 +20,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import com.cold0.realestatemanager.ComposeUtils.estateFormat
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateStatus
+import com.cold0.realestatemanager.utils.ExtensionUtils.estateFormat
 import com.google.android.libraries.maps.model.LatLng
 
 @ExperimentalCoilApi

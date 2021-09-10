@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
-import com.cold0.realestatemanager.ComposeUtils.estateFormat
+import com.cold0.realestatemanager.utils.ExtensionUtils.estateFormat
 import java.util.*
 
 @ExperimentalComposeUiApi

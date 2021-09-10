@@ -21,14 +21,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import com.cold0.realestatemanager.ComposeUtils
-import com.cold0.realestatemanager.ComposeUtils.registerForActivityResult
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateStatus
 import com.cold0.realestatemanager.notifications.NotificationHelper
 import com.cold0.realestatemanager.screens.commons.OutlinedDatePickerButton
 import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
+import com.cold0.realestatemanager.utils.ActivityUtils
+import com.cold0.realestatemanager.utils.ComposerUtils.registerForActivityResult
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -191,10 +191,10 @@ fun HomeTopBar(
 							}
 							Divider()
 						}
-						DropdownMenuItem(onClick = { ComposeUtils.openSimulatorActivity(context) }) {
+						DropdownMenuItem(onClick = { ActivityUtils.openSimulatorActivity(context) }) {
 							Text("Simulator")
 						}
-						DropdownMenuItem(onClick = { ComposeUtils.openConverterActivity(context) }) {
+						DropdownMenuItem(onClick = { ActivityUtils.openConverterActivity(context) }) {
 							Text("Converter")
 						}
 					}

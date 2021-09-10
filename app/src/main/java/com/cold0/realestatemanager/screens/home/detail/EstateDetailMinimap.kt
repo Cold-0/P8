@@ -14,10 +14,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import com.cold0.realestatemanager.ComposeUtils
-import com.cold0.realestatemanager.ComposeUtils.format
 import com.cold0.realestatemanager.R
 import com.cold0.realestatemanager.model.Photo
+import com.cold0.realestatemanager.utils.ActivityUtils
+import com.cold0.realestatemanager.utils.ExtensionUtils.truncat
+import com.cold0.realestatemanager.utils.MapUtils
 import com.google.android.libraries.maps.model.LatLng
 
 @ExperimentalCoilApi
@@ -27,7 +28,7 @@ fun EstateDetailMinimap(localisation: LatLng) {
 	Box(modifier = Modifier.fillMaxSize()) {
 		Image(
 			rememberImagePainter(
-				data = ComposeUtils.formatApiRequestStaticMap(400, 400, 19, "${localisation.latitude.format(6)},${localisation.longitude.format(6)}"),
+				data = MapUtils.formatApiRequestStaticMap(400, 400, 19, "${localisation.latitude.truncat(6)},${localisation.longitude.truncat(6)}"),
 				builder = {
 					placeholder(R.drawable.ic_launcher_background)
 					error(R.drawable.ic_launcher_foreground)
@@ -37,8 +38,8 @@ fun EstateDetailMinimap(localisation: LatLng) {
 			modifier = Modifier
 				.size(250.dp)
 				.clickable {
-					ComposeUtils.openPhotoViewerActivity(context,
-						Photo(onlineUrl = ComposeUtils.formatApiRequestStaticMap(1024, 1024, 14, "${localisation.latitude.format(6)},${localisation.longitude.format(6)}")))
+					ActivityUtils.openPhotoViewerActivity(context,
+						Photo(onlineUrl = MapUtils.formatApiRequestStaticMap(1024, 1024, 14, "${localisation.latitude.truncat(6)},${localisation.longitude.truncat(6)}")))
 				}
 				.align(Alignment.Center),
 			contentDescription = stringResource(R.string.content_description_mini_map_preview),

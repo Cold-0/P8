@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.ColorUtils
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import com.cold0.realestatemanager.ComposeUtils
+import com.cold0.realestatemanager.utils.ComposerUtils
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.model.EstateStatus
 import com.cold0.realestatemanager.screens.home.HomeViewModel
@@ -61,7 +61,7 @@ fun EstateListItem(estate: Estate, isSelected: Boolean, viewModel: HomeViewModel
 					contentDescription = estate.photos.first().name,
 					modifier = Modifier.fillMaxSize(),
 					contentScale = ContentScale.Crop,
-					colorFilter = if (estate.status == EstateStatus.Sold) ComposeUtils.colorFilterGrayscale else null
+					colorFilter = if (estate.status == EstateStatus.Sold) ComposerUtils.colorFilterGrayscale else null
 				)
 			} else {
 				Surface(modifier = Modifier

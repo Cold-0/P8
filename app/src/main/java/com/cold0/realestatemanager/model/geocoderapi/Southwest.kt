@@ -1,9 +1,9 @@
-package com.cold0.realestatemanager.geocoder
+package com.cold0.realestatemanager.model.geocoderapi
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Northeast {
+class Southwest {
 	@SerializedName("lat")
 	@Expose
 	var lat: Double? = null

@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.BuildConfig
-import com.cold0.realestatemanager.ComposeUtils.getScreenInfo
+import com.cold0.realestatemanager.utils.ComposerUtils.getScreenWidthInfo
 import com.cold0.realestatemanager.network.NetworkStatus
 import com.cold0.realestatemanager.network.NetworkStatusTracker
 import com.cold0.realestatemanager.network.NetworkStatusViewModel
@@ -64,7 +64,7 @@ class HomeActivity : ComponentActivity() {
 			// ----------------------------
 			// Remember / Var
 			// ----------------------------
-			val (small) = getScreenInfo()
+			val (small) = getScreenWidthInfo()
 			var openLeftDrawer by remember { mutableStateOf(true) }
 			val estateList by viewModel.rememberEstateList()
 			viewModel.updateEstateListFromDB()

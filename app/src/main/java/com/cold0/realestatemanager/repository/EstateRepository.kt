@@ -1,7 +1,7 @@
 package com.cold0.realestatemanager.repository
 
 import android.util.Log
-import com.cold0.realestatemanager.geocoder.GeocoderResponse
+import com.cold0.realestatemanager.model.geocoderapi.GeocoderResponse
 import com.cold0.realestatemanager.repository.database.EstateDatabase
 import com.cold0.realestatemanager.repository.retrofit.RetrofitInstance
 import com.cold0.realestatemanager.repository.retrofit.services.GeocoderService
