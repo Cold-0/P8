@@ -86,7 +86,7 @@ class HomeViewModel : ViewModel() {
 	// ----------------------------
 	fun updateEstateListFromDB() {
 		thread {
-			val list = FilterUtils.filterList(EstateRepository.db?.estateDao()?.getAll(), filterSetting.value)
+			val list = EstateRepository.db?.estateDao()?.getAll()?.let { filterSetting.value?.let { it1 -> FilterUtils.filterList(it, it1) } }
 			estateList.postValue(list)
 		}
 	}

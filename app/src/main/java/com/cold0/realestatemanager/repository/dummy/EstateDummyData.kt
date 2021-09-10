@@ -13,7 +13,7 @@ object EstateDummyData {
 	// ---------------------
 	// Random Model
 	// ---------------------
-	private fun randomLoremIpsum(): String {
+	fun randomLoremIpsum(): String {
 		return listOf(
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent pulvinar erat eget auctor ultricies. Vestibulum id purus iaculis, semper mauris id, mollis velit. Maecenas in tempor metus. Sed sed lectus tellus. Duis condimentum odio arcu, nec sodales nisl feugiat at. Nulla ut nisi eu lorem pulvinar efficitur. Nunc risus felis, fringilla et tempor is, convallis quis dolor. Mauris varius mattis imperdiet. Quisque ullamcorper erat ut dui tempus gravida. Maecenas laoreet et quam vel fringilla. Quisque sed libero varius, auctor augue non, viverra mi. Praesent cursus enim eu mauris suscipit ornare. In pulvinar nulla finibus ante ultrices, at rhoncus nulla tristique. Ut at sapien ac massa iaculis pharetra non quis metus. Morbi quis ullamcorper diam, sit amet blandit velit.",
 			"Mauris euismod rutrum mauris, vitae tincidunt turpis fringilla vel. Praesent vehicula urna sed ligula dignissim, vitae rhoncus augue imperdiet. Etiam ac sem justo. Quisque condimentum tincidunt urna, non bibendum nisl. Donec sollicitudin tortor eget nisl ultrices, non mattis tellus varius. Curabitur ultricies lorem et nibh venenatis laoreet. Etiam orci tellus, tincidunt et iaculis sit amet, scelerisque ut velit. Donec et malesuada lectus. Maecenas elit lectus, consequat ultricies dictum aliquet, rutrum a tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin ornare ullamcorper volutpat. Vestibulum ligula augue, commodo ut condimentum nec, bibendum varius mauris.",
@@ -62,15 +62,15 @@ object EstateDummyData {
 		).random()
 	}
 
-	private fun randomDistrict(): String {
+	fun randomDistrict(): String {
 		return listOf("Manhattan", "Montauk", "Brooklyn", "Southampton", "Upper East Side", "Queens", "Staten Island", "Bronx", "New Jersey").random()
 	}
 
-	private fun randomName(): String {
+	fun randomName(): String {
 		return listOf("Bon", "Julia", "José", "Hamza", "Esteban", "Camille", "Marie", "Antoine").random()
 	}
 
-	private fun randomDate(): Date {
+	fun randomDate(): Date {
 		return GregorianCalendar(nextInt(2020, 2022), nextInt(0, 12), nextInt(0, 29)).time
 	}
 
@@ -78,7 +78,7 @@ object EstateDummyData {
 		return "https://picsum.photos/id/${nextInt(50)}/400"
 	}
 
-	private inline fun <reified E : Enum<E>> randomEnum(): E {
+	inline fun <reified E : Enum<E>> randomEnum(): E {
 		return enumValues<E>().random()
 	}
 

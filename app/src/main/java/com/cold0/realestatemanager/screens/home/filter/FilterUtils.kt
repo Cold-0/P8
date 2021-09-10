@@ -37,34 +37,35 @@ object FilterUtils {
 		return false
 	}
 
-	fun filterList(list: List<Estate>?, filterSetting: FilterSettings?): List<Estate>? {
-		var returnedList: List<Estate>? = list
-		if (returnedList != null) {
-			if (filterSetting != null) {
-				if (filterSetting.enabled) {
-					// Properties
-					filterSetting.mapOfProps.keys.forEach { prop ->
-						if (filterSetting.mapOfProps[prop] == true)
-							returnedList = returnedList!!.filter {
-								filterByProperty(it, filterSetting.from, filterSetting.to, prop)
-							}
-					}
+	fun filterList(list: List<Estate>, filterSetting: FilterSettings): List<Estate> {
 
-					// List
-					if (filterSetting.status) {
-						returnedList = returnedList?.filter {
-							it.status == filterSetting.from.status
-						}
+		var returnedList: List<Estate> = list
+
+		if (filterSetting.enabled) {
+			// Properties
+			filterSetting.mapOfProps.keys.forEach { prop ->
+				if (filterSetting.mapOfProps[prop] == true)
+					returnedList = returnedList.filter {
+						filterByProperty(it, filterSetting.from, filterSetting.to, prop)
 					}
-					if (filterSetting.type) {
-						returnedList = returnedList?.filter {
-							it.type == filterSetting.from.type
-						}
-					}
+			}
+
+			// List
+			if (filterSetting.status) {
+				returnedList = returnedList.filter {
+					it.status == filterSetting.from.status
 				}
 			}
-			returnedList = returnedList?.sortedBy { it.status }
+
+			if (filterSetting.type) {
+				returnedList = returnedList.filter {
+					it.type == filterSetting.from.type
+				}
+			}
 		}
-		return returnedList;
+
+		returnedList = returnedList.sortedBy { it.status }
+
+		return returnedList.toList();
 	}
 }
