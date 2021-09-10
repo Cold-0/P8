@@ -52,8 +52,7 @@
             android:name="com.cold0.realestatemanager.provider.EstateContentProvider"
             android:authorities="com.cold0.realestatemanager.provider"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
 
     </application>
-
 </manifest>
