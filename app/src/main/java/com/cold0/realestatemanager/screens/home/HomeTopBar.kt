@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.cold0.realestatemanager.R
@@ -30,10 +29,8 @@ import com.cold0.realestatemanager.screens.editestate.EditEstateActivity
 import com.cold0.realestatemanager.utils.ActivityUtils
 import com.cold0.realestatemanager.utils.ComposerUtils.registerForActivityResult
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@DelicateCoroutinesApi
 @ExperimentalPermissionsApi
 @ExperimentalCoroutinesApi
 @ExperimentalComposeUiApi
@@ -126,7 +123,7 @@ fun HomeTopBar(
 				// ----------------------------
 				// MAP
 				// ----------------------------
-				if (!mapOpen)
+				if (!mapOpen && !listEstate.isNullOrEmpty())
 					IconButton(
 						onClick = {
 							toggleMap()
@@ -141,14 +138,6 @@ fun HomeTopBar(
 				var threeDotExpanded by remember { mutableStateOf(false) }
 
 				if (!listEstate.isNullOrEmpty() && !mapOpen) {
-					IconButton(
-						onClick = {
-							threeDotExpanded = !threeDotExpanded
-						},
-					) {
-						Icon(imageVector = Icons.Filled.MoreVert, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
-					}
-
 					var openDialog by remember { mutableStateOf(false) }
 					val estate = viewModel.getSelectedEstate()
 					if (openDialog) {
@@ -180,22 +169,28 @@ fun HomeTopBar(
 						)
 					}
 
-					DropdownMenu(
-						offset = DpOffset((-4).dp, 4.dp),
-						expanded = threeDotExpanded,
-						onDismissRequest = { threeDotExpanded = false },
+					IconButton(
+						onClick = {
+							threeDotExpanded = !threeDotExpanded
+						},
 					) {
-						if (estate.status == EstateStatus.Available) {
-							DropdownMenuItem(onClick = { openDialog = true }) {
-								Text("Mark as sold")
+						Icon(imageVector = Icons.Filled.MoreVert, contentDescription = stringResource(R.string.content_description_add_real_estate), tint = Color.White)
+						DropdownMenu(
+							expanded = threeDotExpanded,
+							onDismissRequest = { threeDotExpanded = false },
+						) {
+							if (estate.status == EstateStatus.Available) {
+								DropdownMenuItem(onClick = { openDialog = true }) {
+									Text("Mark as sold")
+								}
+								Divider()
 							}
-							Divider()
-						}
-						DropdownMenuItem(onClick = { ActivityUtils.openSimulatorActivity(context) }) {
-							Text("Simulator")
-						}
-						DropdownMenuItem(onClick = { ActivityUtils.openConverterActivity(context) }) {
-							Text("Converter")
+							DropdownMenuItem(onClick = { ActivityUtils.openSimulatorActivity(context) }) {
+								Text("Simulator")
+							}
+							DropdownMenuItem(onClick = { ActivityUtils.openConverterActivity(context) }) {
+								Text("Converter")
+							}
 						}
 					}
 				}
