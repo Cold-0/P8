@@ -1,5 +1,6 @@
 package com.cold0.realestatemanager.network
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.map
 
+@SuppressLint("MissingPermission") // Bug
 class NetworkStatusTracker(context: Context) {
 
 	private val connectivityManager =
@@ -19,6 +21,7 @@ class NetworkStatusTracker(context: Context) {
 	@ExperimentalCoroutinesApi
 	val networkStatus = callbackFlow {
 		val networkStatusCallback = object : ConnectivityManager.NetworkCallback() {
+
 			override fun onUnavailable() {
 				trySend(NetworkStatus.Unavailable)
 			}
