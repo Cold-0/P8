@@ -18,7 +18,7 @@ import com.cold0.realestatemanager.model.Estate
 @ExperimentalComposeUiApi
 @Composable
 fun OutlinedFieldFromTo(
-	propsContainer: PropertyContainer,
+	propsContainer: FilterPropertyContainer,
 	from: Estate,
 	to: Estate,
 	onValuesChanged: (Estate, Estate) -> (Unit),

@@ -31,6 +31,9 @@ fun EtateListFilter(top: Dp, viewmodel: HomeViewModel, closeFilterView: () -> (U
 		.fillMaxWidth()
 		.verticalScroll(rememberScrollState())
 	) {
+		// ------------
+		// Remembers
+		// ------------
 		var estateFrom by remember {
 			mutableStateOf(viewmodel.getFilterSetting().from,
 				policy = neverEqualPolicy())
@@ -55,10 +58,13 @@ fun EtateListFilter(top: Dp, viewmodel: HomeViewModel, closeFilterView: () -> (U
 				policy = neverEqualPolicy())
 		}
 
+		// ------------
+		// Buttons
+		// ------------
 		Row(Modifier.fillMaxWidth())
 		{
 			Button(onClick = {
-				val copy = FilterSetting.Default.copy()
+				val copy = FilterSettings.Default.copy()
 
 				// Reset map
 				mapOfProps = copy.mapOfProps
@@ -80,7 +86,7 @@ fun EtateListFilter(top: Dp, viewmodel: HomeViewModel, closeFilterView: () -> (U
 			}
 			Spacer(Modifier.width(8.dp))
 			Button(onClick = {
-				viewmodel.setFilterSetting(FilterSetting(
+				viewmodel.setFilterSetting(FilterSettings(
 					to = estateTo,
 					from = estateFrom,
 					enabled = true,

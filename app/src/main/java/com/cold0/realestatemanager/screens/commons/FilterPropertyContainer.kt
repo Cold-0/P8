@@ -4,7 +4,7 @@ import com.cold0.realestatemanager.model.Estate
 import java.util.*
 import kotlin.reflect.KMutableProperty1
 
-data class PropertyContainer(
+data class FilterPropertyContainer(
 	var intProps: KMutableProperty1<Estate, Int>? = null,
 	var stringProps: KMutableProperty1<Estate, String>? = null,
 	var dateProps: KMutableProperty1<Estate, Date>? = null,

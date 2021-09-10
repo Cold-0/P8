@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModel
 import com.cold0.realestatemanager.model.Estate
 import com.cold0.realestatemanager.repository.EstateRepository
 import com.cold0.realestatemanager.repository.database.EstateDatabase
-import com.cold0.realestatemanager.screens.commons.PropertyContainer
-import com.cold0.realestatemanager.screens.home.filter.FilterSetting
+import com.cold0.realestatemanager.screens.home.filter.FilterSettings
+import com.cold0.realestatemanager.screens.home.filter.FilterUtils
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlin.concurrent.thread
 
@@ -45,15 +45,15 @@ class HomeViewModel : ViewModel() {
 		estateSelected.observe(lifecycleOwner, onUpdate)
 	}
 
-	private val filterSetting = MutableLiveData(FilterSetting.Default.copy())
+	private val filterSetting = MutableLiveData(FilterSettings.Default.copy())
 
-	fun setFilterSetting(fs: FilterSetting) {
+	fun setFilterSetting(fs: FilterSettings) {
 		filterSetting.postValue(fs)
 		updateEstateListFromDB()
 	}
 
-	fun getFilterSetting(): FilterSetting {
-		return filterSetting.value ?: FilterSetting.Default.copy()
+	fun getFilterSetting(): FilterSettings {
+		return filterSetting.value ?: FilterSettings.Default.copy()
 	}
 
 	// ----------------------------
@@ -77,75 +77,17 @@ class HomeViewModel : ViewModel() {
 		return Estate()
 	}
 
-	private fun filterList(estate: Estate, from: Estate, to: Estate, prop: PropertyContainer): Boolean {
-		when {
-			prop.intProps != null -> {
-				val value = prop.intProps?.get(estate)
-				val valueFrom = prop.intProps?.get(from)
-				val valueTo = prop.intProps?.get(to)
-				if (value != null && valueFrom != null && valueTo != null) {
-					if (value >= valueFrom && value <= valueTo)
-						return true
-				}
-			}
-
-			prop.stringProps != null -> {
-				val value = prop.stringProps?.get(estate)
-				val valueFrom = prop.stringProps?.get(from)
-
-				if (value != null && valueFrom != null) {
-					return value.contains(valueFrom, ignoreCase = true)
-				}
-			}
-
-			prop.dateProps != null -> {
-				val value = prop.dateProps?.get(estate)
-				val valueFrom = prop.dateProps?.get(from)
-				val valueTo = prop.dateProps?.get(to)
-				if (value != null && valueFrom != null && valueTo != null) {
-					return (value.after(valueFrom) && value.before(valueTo))
-				}
-			}
-		}
-		return false
-	}
-
 	// ----------------------------
 	// EstateList Method
 	// ----------------------------
 	fun updateEstateListFromDB() {
 		thread {
-			var list = EstateRepository.db?.estateDao()?.getAll()
-			val filterSetting = filterSetting.value
-
-			if (filterSetting != null && list != null) {
-				if (filterSetting.enabled) {
-
-					// Properties
-					filterSetting.mapOfProps.keys.forEach { prop ->
-						if (filterSetting.mapOfProps[prop] == true)
-							list = list!!.filter {
-								filterList(it, filterSetting.from, filterSetting.to, prop)
-							}
-					}
-
-					// List
-					if (filterSetting.status) {
-						list = list?.filter {
-							it.status == filterSetting.from.status
-						}
-					}
-					if (filterSetting.type) {
-						list = list?.filter {
-							it.type == filterSetting.from.type
-						}
-					}
-				}
-			}
-			list = list?.sortedBy { it.status }
+			val list = FilterUtils.filterList(EstateRepository.db?.estateDao()?.getAll(), filterSetting.value)
 			estateList.postValue(list)
 		}
 	}
+
+
 
 	@DelicateCoroutinesApi
 	fun addEstate(estate: Estate) {

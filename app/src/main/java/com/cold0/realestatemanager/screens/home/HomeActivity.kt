@@ -26,7 +26,7 @@ import com.cold0.realestatemanager.network.NetworkStatus
 import com.cold0.realestatemanager.network.NetworkStatusTracker
 import com.cold0.realestatemanager.network.NetworkStatusViewModel
 import com.cold0.realestatemanager.screens.home.detail.EstateDetails
-import com.cold0.realestatemanager.screens.home.filter.FilterSetting
+import com.cold0.realestatemanager.screens.home.filter.FilterSettings
 import com.cold0.realestatemanager.screens.home.list.EstateList
 import com.cold0.realestatemanager.screens.home.maps.EstateMap
 import com.cold0.realestatemanager.theme.RealEstateManagerTheme
@@ -111,7 +111,7 @@ class HomeActivity : ComponentActivity() {
 									style = MaterialTheme.typography.h6.copy(color = Color.LightGray),
 									modifier = Modifier.padding(64.dp)
 								)
-								Button({ viewModel.setFilterSetting(FilterSetting.Default.copy()) }) {
+								Button({ viewModel.setFilterSetting(FilterSettings.Default.copy()) }) {
 									Text("Reset Filter")
 								}
 							}
